@@ -88,8 +88,8 @@ export const MobileSidebar: FC<SidebarProps> = (props) => {
       href: '/search'
     },
     {
-      title: 'Wishlist',
-      href: '/wjishlist'
+      title: 'Bundles',
+      href: '/bundles'
     }
   ];
 
@@ -101,7 +101,7 @@ export const MobileSidebar: FC<SidebarProps> = (props) => {
 
   return (
     <Drawer
-      anchor="right"
+      anchor="left"
       onClose={onClose}
       open={open}
       variant="temporary"
