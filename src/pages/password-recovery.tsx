@@ -89,7 +89,7 @@ export const PasswordRecovery: FC = () => {
                   label="Email address"
                   name="email"
                   onBlur={formik.handleBlur}
-                  onChange={() => { }}
+                  onChange={formik.handleChange}
                   size="small"
                   type="email"
                   value={formik.values.email}
