@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import numeral from 'numeral';
 import { Box, Button, Card, Divider, Link, Skeleton, Typography } from '@material-ui/core';
 import { ProductLabel } from './product/product-label';
@@ -24,6 +24,7 @@ interface ProductCardProps {
 
 export const ProductCard: FC<ProductCardProps> = (props) => {
   const { product, variant = 'card', loading = false } = props;
+  const navigate = useNavigate();
   const appDispatch = useStoreDispatch();
   const items = useStoreSelector((state) => state.cart.items);
   const { settings } = useSettings();
@@ -48,6 +49,10 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
     } catch (error) {
       console.error(error);
       setAddLoading(false);
+
+      if (error.status === 401) {
+        navigate('/login');
+      }
     }
   };
 

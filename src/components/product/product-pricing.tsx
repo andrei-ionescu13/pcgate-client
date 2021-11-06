@@ -60,6 +60,10 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+
+      if (error.status === 401) {
+        navigate('/login');
+      }
     }
   };
 
