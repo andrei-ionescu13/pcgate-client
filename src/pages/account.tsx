@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Divider, Typography } from '@material-ui/core';
+import { Box, Container, Divider, Typography } from '@mui/material';
 import { AccountSecurity } from '../components/account/account-security';
 import { AccountWebsiteSettings } from '../components/account/account-website-settings';
 

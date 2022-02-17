@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 import { Moon as MoonIcon } from '../icons/moon';
 import { Sun as SunIcon } from '../icons/sun';
 import { useSettings } from '../contexts/settings-context';

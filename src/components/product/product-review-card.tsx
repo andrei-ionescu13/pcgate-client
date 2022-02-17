@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import type { FC } from 'react';
 import { formatDistanceToNow } from 'date-fns';
-import { Box, Button, Card, Rating, Typography } from '@material-ui/core';
+import { Box, Button, Card, Rating, Typography } from '@mui/material';
 import type { Review } from '../../types/product';
-import { authFetch } from '../../utils/auth-fetch';
+import { useRemoveProductReview } from 'api/products';
 
 interface ProductReviewCardProps {
   review: Review;
@@ -13,23 +12,14 @@ interface ProductReviewCardProps {
 
 export const ProductReviewCard: FC<ProductReviewCardProps> = (props) => {
   const { review, showDelete = false, onDelete } = props;
-  const [loading, setLoading] = useState(false);
+  const { mutate, isLoading } = useRemoveProductReview();
 
   const handleDelete = async () => {
-    try {
-      setLoading(true);
-
-      await authFetch('/reviews', {
-        method: 'DELETE',
-        body: JSON.stringify({ reviewId: review._id })
-      });
-
-      setLoading(false);
-      onDelete(review._id);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
+    mutate((review._id), {
+      onSuccess: () => {
+        onDelete(review._id);
+      }
+    });
   };
 
   return (
@@ -88,7 +78,7 @@ export const ProductReviewCard: FC<ProductReviewCardProps> = (props) => {
       </Typography>
       {showDelete && (<Button
         color="error"
-        disabled={loading}
+        disabled={isLoading}
         onClick={handleDelete}
         sx={{
           display: 'block',

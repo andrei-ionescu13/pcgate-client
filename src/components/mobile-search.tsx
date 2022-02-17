@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Drawer, IconButton } from '@material-ui/core';
+import { Drawer, IconButton } from '@mui/material';
 import { Search } from '../components/search';
 import { Search as SearchIcon } from '../icons/search';
 

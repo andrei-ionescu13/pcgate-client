@@ -8,7 +8,7 @@ import {
   MenuItem,
   TextField,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { SearchInput } from '../components/search-input';
 import { LibraryProduct } from '../components/library/library-product';
 

@@ -5,7 +5,7 @@ import { AuthGuard } from './components/auth-guard';
 import { Home } from './pages/home';
 import { Bundles } from './pages/bundles';
 import { Product } from './pages/product';
-import { Search } from './pages/search';
+import { Products } from './pages/products';
 import { Orders } from './pages/orders';
 import { Order } from './pages/order';
 import { Register } from './pages/register';
@@ -31,7 +31,7 @@ export const routes: [PartialRouteObject] = [
       },
       {
         path: 'search',
-        element: <Search />
+        element: <Products />
       },
 
       {

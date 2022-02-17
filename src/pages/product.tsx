@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import { ProductDetails } from '../components/product/product-details';
 import { ProductInfo } from '../components/product/product-info';
 import { ProductMediaSlideshow } from '../components/product/product-media-slideshow';
@@ -9,8 +9,7 @@ import { ProductPricing } from '../components/product/product-pricing';
 import { ProductRequirements } from '../components/product/product-requirements';
 import { ProductReviews } from '../components/product/product-reviews';
 import { AtomSpinner } from 'components/spinner';
-import { useFetch } from '../hooks/use-fetch';
-import type { Product as ProductI } from '../types/product';
+import { useGetProduct } from 'api/products';
 
 interface Slide {
   slug: string;
@@ -18,14 +17,12 @@ interface Slide {
   url: string;
 }
 
-
 export const Product: FC = () => {
   const { slug } = useParams();
-  const { pathname } = useLocation();
-  const [product, loading] = useFetch<ProductI>(`/products/slug/${slug}`, {}, [pathname]);
+  const { data: product, isLoading } = useGetProduct(slug);
 
   const getContent = () => {
-    if (loading) return (
+    if (isLoading) return (
       <Box
         sx={{
           display: 'grid',

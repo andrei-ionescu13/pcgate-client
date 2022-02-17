@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Box, List, ListItemButton, Popover, Typography } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { Box, List, ListItemButton, Popover, Typography } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 import { ChevronDown as ChevronDownIcon } from '../icons/chevron-down';
 import { useAuth } from '../contexts/auth-context';
 

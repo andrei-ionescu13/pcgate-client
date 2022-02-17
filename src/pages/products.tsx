@@ -6,22 +6,18 @@ import {
   Box,
   Container,
   Grid,
-  MenuItem,
   Pagination,
-  TextField,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { FilterAccordion } from '../components/filter-accordion';
 import { ProductCard } from '../components/product-card';
-import { useFetch } from '../hooks/use-fetch';
+import { useGetQueryProducts } from 'api/products';
 import { usePrevious } from '../hooks/use-previous';
-import type { Product } from '../types/product';
+import { ProductsMenu } from 'components/products/products-menu';
 
-interface ProductsStateData {
-  products: Product[];
-  counts: {
-    totalCount: number;
-  }
+export interface OptionI {
+  label: string;
+  value: string | number;
 }
 
 const items = [
@@ -143,7 +139,7 @@ const items = [
   }
 ];
 
-const sortByOptions = [
+const sortByOptions: OptionI[] = [
   {
     label: 'Release Date',
     value: 'release -1'
@@ -162,68 +158,57 @@ const sortByOptions = [
   },
 ];
 
-const showOptions = [
+const showOptions: OptionI[] = [
   {
     label: '6 Results',
     value: 6
   },
   {
+    label: '12 Results',
+    value: 12
+  },
+  {
     label: '24 Results',
     value: 24
-  },
-  {
-    label: '36 Results',
-    value: 36
-  },
-  {
-    label: '48 Results',
-    value: 48
-  },
-  {
-    label: '60 Results',
-    value: 60
   }
 ];
 
-export const Search: FC = () => {
-  const location = useLocation();
+export const Products: FC = () => {
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
+  const searchParams = new URLSearchParams(search);
   const [page, setPage] = useState<number>(Number.parseInt(searchParams.get('page') as string) || 1);
-  const [values, setValues] = useState({
-    sortBy: sortByOptions[0].value,
-    show: showOptions[0].value
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, OptionI>>({
+    sortBy: sortByOptions[0],
+    show: showOptions[0]
   });
   const [os, setOs] = useState(searchParams.getAll('os'));
   const [drm, setDrm] = useState(searchParams.getAll('drm'));
   const [genres, setGenres] = useState(searchParams.getAll('genres'));
   const [features, setFeatures] = useState(searchParams.getAll('features'));
   const [query, setQuery] = useState(searchParams.get('query'));
-  const [data, loading] = useFetch<ProductsStateData>('/products/', {
-    method: 'POST',
-    body: JSON.stringify({
-      query,
-      skip: (page - 1) * values.show,
-      limit: values.show,
-      os,
-      drm,
-      genres,
-      features,
-      sortBy: values.sortBy.split(' ')[0],
-      sort: values.sortBy.split(' ')[1],
-    })
-  }, [page, values.sortBy, values.show, os, drm, query, genres, features]);
+  const { data, isLoading: loading } = useGetQueryProducts({
+    query,
+    skip: (page - 1) * (selectedOptions.show.value as number),
+    limit: selectedOptions.show.value,
+    os,
+    drm,
+    genres,
+    features,
+    sortBy: (selectedOptions.sortBy.value as string).split(' ')[0],
+    sort: (selectedOptions.sortBy.value as string).split(' ')[1],
+  });
   const previousTotalCount = usePrevious(data?.counts?.totalCount);
 
   const navigateToPage = (newPage: number): void => {
     searchParams.set('page', JSON.stringify(newPage));
-    navigate(location.pathname + '?' + searchParams.toString());
+    navigate(pathname + '?' + searchParams.toString());
   };
 
-  const handleValuesChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setValues((prevValues) => ({
+  const handleSelectedOptionsChange = (type: string, option: OptionI): void => {
+    setSelectedOptions((prevValues) => ({
       ...prevValues,
-      [event.target.name]: event.target.value
+      [type]: option
     }));
     navigateToPage(1);
   };
@@ -239,7 +224,6 @@ export const Search: FC = () => {
     setQuery(searchParams.get('query'));
     setGenres(searchParams.getAll('genres'));
     setFeatures(searchParams.getAll('features'));
-    window.scrollTo({ top: 0 });
   }, [location.search]);
 
   return (
@@ -276,13 +260,9 @@ export const Search: FC = () => {
             <Box sx={{ flexGrow: 1 }} />
             <Box
               sx={{
-                display: 'grid',
-                gridTemplateColumns: {
-                  sm: '1fr 2fr 1fr 2fr',
-                  xs: '1fr 2fr'
-                },
+                display: 'flex',
                 alignItems: 'center',
-                gap: 2.5,
+                gap: 2,
                 mt: {
                   md: 0,
                   xs: 2
@@ -295,52 +275,24 @@ export const Search: FC = () => {
               >
                 Sort by:
               </Typography>
-              <TextField
-                name="sortBy"
-                onChange={handleValuesChange}
-                select
-                size="small"
-                sx={{
-                  borderRadius: 1,
-                  minWidth: 150
-                }}
-                value={values.sortBy}
-              >
-                {sortByOptions.map((option) => (
-                  <MenuItem
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <ProductsMenu
+                options={sortByOptions}
+                selectedOption={selectedOptions.sortBy}
+                type="sortBy"
+                onClick={handleSelectedOptionsChange}
+              />
               <Typography
                 color="textSecondary"
                 variant="body1"
               >
                 Show:
               </Typography>
-              <TextField
-                name="show"
-                onChange={handleValuesChange}
-                select
-                size="small"
-                sx={{
-                  borderRadius: 1,
-                  minWidth: 150
-                }}
-                value={values.show}
-              >
-                {showOptions.map((option) => (
-                  <MenuItem
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <ProductsMenu
+                onClick={handleSelectedOptionsChange}
+                options={showOptions}
+                selectedOption={selectedOptions.show}
+                type="show"
+              />
             </Box>
           </Box>
           <Grid
@@ -379,7 +331,7 @@ export const Search: FC = () => {
                 spacing={3}
                 xs={12}
               >
-                {loading && Array(values.show).fill(1).map((_, index) => (
+                {loading && Array(selectedOptions.show.value).fill(1).map((_, index) => (
                   <Grid
                     item
                     key={index}
@@ -414,7 +366,7 @@ export const Search: FC = () => {
                 {((data && data.counts?.totalCount > 0) || (loading && previousTotalCount > 0)) && (
                   <Pagination
                     color="primary"
-                    count={Math.ceil((data?.counts?.totalCount || previousTotalCount) / values.show)}
+                    count={Math.ceil((data?.counts?.totalCount || previousTotalCount) / (selectedOptions.show.value as number))}
                     onChange={handlePaginate}
                     page={page}
                     shape="rounded"

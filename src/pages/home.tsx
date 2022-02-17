@@ -1,17 +1,16 @@
 import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import { Slideshow } from '../components/slideshow';
 import { CountdownProduct } from '../components/countdown-product';
 import { BrowseSection } from '../components/browse-section';
 import { ProductsSwipper } from '../components/products-swipper';
-import { useFetch } from '../hooks/use-fetch';
-import type { Product } from '../types/product';
+import { useGetBestSellers, useGetComingSoong, useGetSpecialDeal } from '../api/products';
 
 export const Home: FC = () => {
-  const [comingSoonProduct, comingSoonProductLoading] = useFetch<Product>('/products/highlighted/coming-soon');
-  const [specialDealProduct, specialDealProductLoading] = useFetch<Product>('/products/highlighted/special-deal');
-  const [bestSellerProducts, bestSellerProductsLoading] = useFetch<Product[]>('/products/best-sellers');
+  const { isLoading: bestSellersLoading, data: bestSellers } = useGetBestSellers();
+  const { isLoading: coomingSoonLoading, data: coomingSoon } = useGetComingSoong();
+  const { isLoading: specialDealLoading, data: specialDeal } = useGetSpecialDeal();
 
   return (
     <>
@@ -55,8 +54,8 @@ export const Home: FC = () => {
                 <CountdownProduct
                   countdownDate={new Date(2021, 11, 17)}
                   label="Coming soon"
-                  product={comingSoonProduct}
-                  loading={comingSoonProductLoading}
+                  product={coomingSoon}
+                  loading={coomingSoonLoading}
                 />
               </Grid>
               <Grid
@@ -68,8 +67,8 @@ export const Home: FC = () => {
                 <CountdownProduct
                   countdownDate={new Date(2021, 11, 17)}
                   label="Special Deal"
-                  product={specialDealProduct}
-                  loading={specialDealProductLoading}
+                  product={specialDeal}
+                  loading={specialDealLoading}
                 />
               </Grid>
             </Grid>
@@ -83,8 +82,8 @@ export const Home: FC = () => {
               Top Sellers
             </Typography>
             <ProductsSwipper
-              loading={bestSellerProductsLoading}
-              products={bestSellerProducts}
+              loading={bestSellersLoading}
+              products={bestSellers}
             />
           </Box>
           <BrowseSection />

@@ -1,4 +1,5 @@
 //@ts-nocheck
+import jwtDecode from 'jwt-decode';
 import { ApiError } from './api-error';
 
 const getNewAccesToken = async (refreshToken: string | null): Promise<string> => {
@@ -20,7 +21,9 @@ const getNewAccesToken = async (refreshToken: string | null): Promise<string> =>
 
 export const authFetch = async <T>(url: string, options = {}): Promise<T> => {
   let accessToken = window.localStorage.getItem('accessToken');
-  const refreshToken: string | null = window.localStorage.getItem('refreshToken');
+  const refreshToken = window.localStorage.getItem('refreshToken');
+
+  console.log(jwtDecode(accessToken));
 
   let respose = await fetch(`${process.env.REACT_APP_API_ENDPOINT}${url}`, {
     ...options,

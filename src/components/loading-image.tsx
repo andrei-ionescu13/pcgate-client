@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { FC, ReactNode } from 'react';
-import { Skeleton } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { Skeleton } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 
 interface LoadingImageProps {
   [key: string]: any;

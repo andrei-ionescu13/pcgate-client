@@ -1,8 +1,8 @@
 import type { FC, ChangeEvent } from 'react';
-import { Box, Typography, InputBase } from '@material-ui/core';
-import type { InputBaseProps } from '@material-ui/core';
-import type { SxProps } from '@material-ui/system';
-import type { Theme } from '@material-ui/core/styles';
+import { Box, Typography, InputBase } from '@mui/material';
+import type { InputBaseProps } from '@mui/material';
+import type { SxProps } from '@mui/system';
+import type { Theme } from '@mui/material/styles';
 
 interface InputFieldProps extends InputBaseProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;

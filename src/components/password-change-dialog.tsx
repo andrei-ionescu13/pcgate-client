@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Divider,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 interface PasswordChangeDialogProps {
   open: boolean;

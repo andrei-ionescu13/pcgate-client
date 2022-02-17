@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@mui/material';
 
 const items = [
   {

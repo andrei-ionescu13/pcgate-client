@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Card, Link, Skeleton, Typography } from '@material-ui/core';
+import { Box, Card, Link, Skeleton, Typography } from '@mui/material';
 import { useCountdown } from '../hooks/use-countdown';
 import type { Product } from '../types/product';
 import { LoadingImage } from './loading-image';
@@ -42,6 +42,7 @@ export const CountdownProduct: FC<CountdownProductProps> = (props) => {
           display: 'flex',
           flexDirection: 'column'
         }}
+        elevation={0}
       >
         <LoadingImage
           alt=""
@@ -84,6 +85,7 @@ export const CountdownProduct: FC<CountdownProductProps> = (props) => {
               <Typography
                 color="inherit"
                 variant="body2"
+                sx={{ fontSize: 12 }}
               >
                 {item.value}
               </Typography>

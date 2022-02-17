@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Card, Typography } from '@material-ui/core';
+import { Button, Card, Typography } from '@mui/material';
 
 export const CartEmpty: FC = () => (
   <Card

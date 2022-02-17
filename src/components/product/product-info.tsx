@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Box, Card, CardContent, List, ListItem, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, List, ListItem, Typography } from '@mui/material';
 import { ShieldCheck as ShieldCheckIcon } from '../../icons/shield-check';
 import { User as UserIcon } from '../../icons/user';
 import { capitalize } from '../../utils/capitalize';

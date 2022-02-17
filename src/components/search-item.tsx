@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import numeral from 'numeral';
-import { Box, Typography, Link } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { Box, Typography, Link } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 import { ProductDiscount } from './product-discount';
 import { LoadingImage } from '../components/loading-image';
 import { Steam as SteamIcon } from '../icons/steam';

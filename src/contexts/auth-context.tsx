@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-shadow */
+//@ts-nocheck
+
 import { createContext, useEffect, useReducer, useContext } from 'react';
 import type { FC, ReactNode } from 'react';
+import jwtDecode from 'jwt-decode';
 import PropTypes from 'prop-types';
 import { setWishlistProducts } from '../store/slices/wishlist';
 import { setCart } from '../store/slices/cart';
-import { useStoreDispatch } from '../hooks/use-store-dispatch';
+import { useAppDispatch } from '../hooks/use-store-dispatch';
 import type { User } from '../types/user';
+import { appFetch } from 'utils/app-fetch';
 
 interface State {
   isInitialized: boolean;
@@ -101,34 +105,21 @@ export const AuthContext = createContext<AuthContextValue>({
 });
 
 const getUserData = async (accessToken: string): Promise<{ user?: User; status?: number; }> => {
-  const result: { user?: User; status?: number; } = {
-    user: undefined,
-    status: undefined
-  };
-  const res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/me`, {
+  const data = await appFetch('auth/me', {
     headers: {
       'access-token': `Bearer ${accessToken}`
     }
   });
-  result.status = res.status;
 
-  if (res.status === 401) {
-    return result;
-  }
-
-  const data = await res.json();
-  result.user = data;
-
-  return result;
+  return data;
 };
 
 const getNewAccesToken = async (refreshToken: string): Promise<string> => {
-  const res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/access-token`, {
+  const { accessToken } = await appFetch('auth/access-token', {
     headers: {
       'refresh-token': refreshToken
     }
   });
-  const { accessToken } = await res.json();
   window.localStorage.setItem('accessToken', accessToken);
 
   return accessToken;
@@ -137,7 +128,7 @@ const getNewAccesToken = async (refreshToken: string): Promise<string> => {
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
-  const appDispatch = useStoreDispatch();
+  const appDispatch = useAppDispatch();
 
   useEffect(() => {
     const initialize = async (): Promise<void> => {
@@ -145,37 +136,26 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         let accessToken = window.localStorage.getItem('accessToken');
         const refreshToken = window.localStorage.getItem('refreshToken');
 
-        if (accessToken) {
-          let { user, status } = await getUserData(accessToken);
+        if ((!Boolean(accessToken) || jwtDecode(accessToken).exp * 1000 < Date.now()) &&
+          Boolean(refreshToken) && jwtDecode(refreshToken).exp * 1000 > Date.now()) {
+          console.log('dasdas');
+          accessToken = await getNewAccesToken(refreshToken);
+        }
 
-          if (status === 401 && refreshToken) {
-            accessToken = await getNewAccesToken(refreshToken);
-            let { user } = await getUserData(accessToken);
-            appDispatch(setWishlistProducts(user?.wishlist || []));
-            appDispatch(setCart(user?.cart));
-            dispatch({
-              type: 'INITIALIZE',
-              payload: {
-                isAuthenticated: true,
-                user: {
-                  _id: user?._id
-                }
+        if (accessToken) {
+          const { user } = await getUserData(accessToken);
+          appDispatch(setWishlistProducts(user?.wishlist || []));
+          appDispatch(setCart(user?.cart));
+          dispatch({
+            type: 'INITIALIZE',
+            payload: {
+              isAuthenticated: true,
+              user: {
+                _id: user?._id,
+                email: user?.email
               }
-            });
-          } else {
-            appDispatch(setWishlistProducts(user?.wishlist || []));
-            appDispatch(setCart(user?.cart));
-            dispatch({
-              type: 'INITIALIZE',
-              payload: {
-                isAuthenticated: true,
-                user: {
-                  _id: user?._id,
-                  email: user?.email
-                }
-              }
-            });
-          }
+            }
+          });
         } else {
           dispatch({
             type: 'INITIALIZE',
@@ -200,31 +180,19 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
-    let res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/login`, {
-      headers: { 'Content-Type': 'application/json' },
+    const { accessToken, refreshToken } = await appFetch('auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password })
     });
 
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.message);
-    }
-
-    const { accessToken, refreshToken } = await res.json();
     window.localStorage.setItem('accessToken', accessToken);
     window.localStorage.setItem('refreshToken', refreshToken);
 
-    const res2 = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/me`, {
+    const user = await appFetch('auth/me', {
       headers: {
         'access-token': `Bearer ${accessToken}`
       }
     });
-    if (!res2.ok) {
-      const data = await res2.json();
-      throw new Error(data.message);
-    }
-    const user = await res2.json();
 
     dispatch({
       type: 'LOGIN',
@@ -243,42 +211,24 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   };
 
   const register = async (email: string, password: string, confirmPassword: string): Promise<void> => {
-    const res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
-      headers: { 'Content-Type': 'application/json' },
+    await appFetch('auth/register', {
       method: 'POST',
       body: JSON.stringify({ email, password, confirmPassword })
     });
-
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.message);
-    }
   };
 
   const passwordRecovery = async (email: string): Promise<void> => {
-    const res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/password-recovery`, {
-      headers: { 'Content-Type': 'application/json' },
+    await appFetch('auth/password-recovery', {
       method: 'POST',
       body: JSON.stringify({ email })
     });
-
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.message);
-    }
   };
 
   const passwordReset = async (userId: string, token: string, password: string, confirmPassword: string): Promise<void> => {
-    const res = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/auth/password-reset`, {
-      headers: { 'Content-Type': 'application/json' },
+    await appFetch('auth/password-reset', {
       method: 'POST',
       body: JSON.stringify({ password, confirmPassword, userId, token })
     });
-
-    if (!res.ok) {
-      const data = await res.json();
-      throw new Error(data.message);
-    }
   };
 
   return (

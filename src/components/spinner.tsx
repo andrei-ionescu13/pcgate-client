@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import { Box } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import { useTheme } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
+import { styled } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
 
 const AtomSpinnerRoot = styled(Box)<{ styleProps: { color: string; } }>(
   ({ styleProps }) => ({

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Box, Typography, LinearProgress } from '@material-ui/core';
+import { Box, Typography, LinearProgress } from '@mui/material';
 import type { ReviewsSummary } from '../../types/product';
 
 

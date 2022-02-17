@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Link, List, ListItem } from '@material-ui/core';
+import { Card, Link, List, ListItem } from '@mui/material';
 import { NavLink } from './nav-link';
 
 const items = [

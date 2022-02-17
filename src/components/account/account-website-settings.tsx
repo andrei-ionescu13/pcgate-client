@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Box, Card, Typography } from '@material-ui/core';
-import type { SxProps } from '@material-ui/system';
+import { Box, Button, Card, Typography } from '@mui/material';
+import type { SxProps } from '@mui/system';
 import { LanguageCurrencyDialog } from '../language-currency-dialog';
 import { useSettings } from '../../contexts/settings-context';
 
@@ -78,14 +78,13 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (props) =
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Typography
+            <Button
               color="primary"
               onClick={handleOpenDialog}
-              sx={{ cursor: 'pointer' }}
-              variant="body1"
+              variant="text"
             >
               Change Language
-            </Typography>
+            </Button>
           </Box>
           <Box
             sx={{
@@ -109,14 +108,13 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (props) =
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Typography
+            <Button
               color="primary"
               onClick={handleOpenDialog}
-              sx={{ cursor: 'pointer' }}
-              variant="body1"
+              variant="text"
             >
               Change Currency
-            </Typography>
+            </Button>
           </Box>
           <Box
             sx={{
@@ -142,14 +140,13 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (props) =
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Typography
+            <Button
               color="primary"
               onClick={handleSwitchTheme}
-              sx={{ cursor: 'pointer' }}
-              variant="body1"
+              variant="text"
             >
               Change Theme
-            </Typography>
+            </Button>
           </Box>
         </Card>
       </Box>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Card, Link, Typography } from '@material-ui/core';
-import type { SxProps } from '@material-ui/system';
+import { Box, Button, Card, Typography } from '@mui/material';
+import type { SxProps } from '@mui/system';
 import { EmailChangeDialog } from '../email-change-dialog';
 import { PasswordChangeDialog } from '../password-change-dialog';
 import { useAuth } from '../../contexts/auth-context';
@@ -15,7 +15,7 @@ export const AccountSecurity: FC<AccountSecurityProps> = (props) => {
   const { user } = useAuth();
   const [emailChangeDialogOpen, setEmailChangeDialogOpen] = useState(false);
   const [passwordChangeDialogOpen, setPasswordChangeDialogOpen] = useState(false);
-  console.log(user);
+
   return (
     <>
       <Box {...props}>
@@ -58,14 +58,13 @@ export const AccountSecurity: FC<AccountSecurityProps> = (props) => {
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Typography
+            <Button
               color="primary"
               onClick={() => { setEmailChangeDialogOpen(true); }}
-              sx={{ cursor: 'pointer' }}
-              variant="body1"
+              variant="text"
             >
               Change Email Address
-            </Typography>
+            </Button>
           </Box>
           <Box
             sx={{
@@ -83,14 +82,13 @@ export const AccountSecurity: FC<AccountSecurityProps> = (props) => {
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Typography
+            <Button
               color="primary"
               onClick={() => { setPasswordChangeDialogOpen(true); }}
-              sx={{ cursor: 'pointer' }}
-              variant="body1"
+              variant="text"
             >
               Change Password
-            </Typography>
+            </Button>
           </Box>
           <Box
             sx={{
@@ -114,15 +112,14 @@ export const AccountSecurity: FC<AccountSecurityProps> = (props) => {
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Link
+            <Button
               color="primary"
               component={RouterLink}
               to="/password-recovery"
-              underline="none"
-              variant="body1"
+              variant="text"
             >
               Reset Password
-            </Link>
+            </Button>
           </Box>
         </Card>
       </Box>

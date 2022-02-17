@@ -29,9 +29,9 @@ export const getTimeLeft = (timeDiff: number) => {
   ];
 
   return mappedDiff.filter((item, index) => {
-    if (index === 0 && !Boolean(item.value)) return false;
+    if (item.value <= 0 && index === 0) return false;
 
-    if (!Boolean(item.value) && !Boolean(mappedDiff[index - 1].value)) return false;
+    if (item.value <= 0 && mappedDiff[index - 1].value <= 0) return false;
 
     return true;
   });

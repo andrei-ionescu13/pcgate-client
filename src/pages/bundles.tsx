@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, Card, CardContent, Chip, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
 import { BundleCard } from '../components/bundle-card';
 import { bundles } from '../__mock__/bundle';
 

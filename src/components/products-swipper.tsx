@@ -3,10 +3,10 @@ import 'swiper/components/pagination/pagination.min.css';
 import type { FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Navigation } from 'swiper';
-import { Box, Grid } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import { useTheme } from '@material-ui/core/styles';
-import type { SxProps } from '@material-ui/system';
+import { Box, Grid } from '@mui/material';
+import { styled } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
+import type { SxProps } from '@mui/system';
 import { ProductCard } from './product-card';
 import type { Product } from '../types/product';
 

@@ -11,8 +11,8 @@ import {
   FormHelperText,
   TextField,
   Typography
-} from '@material-ui/core';
-import type { Theme } from '@material-ui/core/styles';
+} from '@mui/material';
+import type { Theme } from '@mui/material/styles';
 import { useAuth } from '../contexts/auth-context';
 
 export const PasswordReset: FC = () => {
@@ -48,7 +48,7 @@ export const PasswordReset: FC = () => {
         helpers.setSubmitting(true);
 
         await passwordReset(userId, token, password, confirmPassword);
-        navigate('/login');
+        navigate('login');
 
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);

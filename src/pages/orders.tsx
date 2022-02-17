@@ -1,12 +1,11 @@
 import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, Container, Typography } from '@mui/material';
 import { Order } from '../components/orders/order';
-import { useAuthFetch } from '../hooks/use-auth-fetch';
-import type { Order as OrderI } from '../types/orders';
+import { useGetOrders } from 'api/orders';
 
 export const Orders: FC = () => {
-  const [orders, loading] = useAuthFetch<OrderI[]>('/orders');
+  const { data: orders, isLoading: loading } = useGetOrders();
 
   if (loading) {
     return null;

@@ -1,8 +1,8 @@
 import type { FC, ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '@material-ui/core';
-import type { SxProps } from '@material-ui/system';
-import { styled } from '@material-ui/system';
+import { Link } from '@mui/material';
+import type { SxProps } from '@mui/system';
+import { styled } from '@mui/system';
 
 interface NavLinkProps {
   active?: boolean;

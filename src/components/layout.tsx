@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { Theme } from '@material-ui/core';
+import { Box, useMediaQuery } from '@mui/material';
+import type { Theme } from '@mui/material';
 import { Footer } from './footer';
 import { Navbar } from './navbar';
 import { MobileSidebar } from './mobile-sidebar';

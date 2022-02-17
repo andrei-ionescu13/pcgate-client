@@ -3,7 +3,7 @@ import 'swiper/components/pagination/pagination.min.css';
 import type { FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 

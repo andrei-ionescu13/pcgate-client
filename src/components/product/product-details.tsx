@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { format } from 'date-fns';
-import { Card, CardContent, Typography, List } from '@material-ui/core';
+import { Card, CardContent, Typography, List } from '@mui/material';
 import { PropertyItem } from '../property-item';
 import { PropertyItemList } from '../property-item-list';
 import { capitalize } from '../../utils/capitalize';

@@ -1,5 +1,5 @@
-import { createTheme, responsiveFontSizes } from '@material-ui/core/styles';
-import type { Theme, ThemeOptions } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import type { Theme, ThemeOptions } from '@mui/material/styles';
 
 const baseThemeOptions: ThemeOptions = {
   components: {
@@ -64,28 +64,32 @@ const baseThemeOptions: ThemeOptions = {
       textTransform: 'none'
     },
     h1: {
-
+      lineHeight: 1.2
     },
     h2: {
-
+      lineHeight: 1.2
     },
     h3: {
-      fontWeight: 600
+      fontWeight: 600,
+      lineHeight: 1.2
     },
     h4: {
-      fontWeight: 600
+      fontWeight: 600,
+      lineHeight: 1.2
     },
     h5: {
-      fontWeight: 600
+      fontWeight: 600,
+      lineHeight: 1.2
 
     },
     h6: {
+      lineHeight: 1.2
 
     },
     body1: {
+
     },
     body2: {
-      lineHeight: 1.6
     },
     subtitle1: {
       fontWeight: 500
@@ -94,10 +98,9 @@ const baseThemeOptions: ThemeOptions = {
       fontWeight: 500
     },
     overline: {
-
     },
     caption: {
-
+      lineHeight: 1.2
     }
   }
 };
@@ -153,7 +156,7 @@ const lightThemeOptions: ThemeOptions = {
   },
   palette: {
     background: {
-      default: '#EBF4FF',
+      default: '#ebe6e1',
       paper: '#fff'
     },
     divider: '#d3d3d3',

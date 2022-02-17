@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Box, Card, Rating, Typography } from '@material-ui/core';
+import { Box, Card, Rating, Typography } from '@mui/material';
 import type { ReviewsSummary } from '../../types/product';
 
 interface ProductReviewsAverageProps {

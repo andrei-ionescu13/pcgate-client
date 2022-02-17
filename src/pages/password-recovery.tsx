@@ -2,8 +2,8 @@ import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Card, Container, FormHelperText, TextField, Typography } from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles';
+import { Box, Button, Card, Container, FormHelperText, TextField, Typography } from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import { useAuth } from '../contexts/auth-context';
 
 export const PasswordRecovery: FC = () => {

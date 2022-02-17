@@ -12,7 +12,7 @@ import {
   RadioGroup,
   Radio,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSettings } from '../contexts/settings-context';
 
 type Language = 'en' | 'de' | 'es' | 'fr';

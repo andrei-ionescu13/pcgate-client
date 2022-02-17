@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-import { Box, Button, Collapse, Drawer, IconButton, List, ListItemButton, ListItemText } from '@material-ui/core';
+import { Box, Button, Collapse, Drawer, IconButton, List, ListItemButton, ListItemText } from '@mui/material';
 import { ChevronDown as ChevronDownIcon } from '../icons/chevron-down';
 import { ChevronUp as ChevronUpIcon } from '../icons/chevron-up';
 import { X as XIcon } from '../icons/x';

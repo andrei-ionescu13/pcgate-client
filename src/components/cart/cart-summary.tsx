@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { FC } from 'react';
 import numeral from 'numeral';
 import {
@@ -9,11 +8,11 @@ import {
   Divider,
   FormControlLabel,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { Gift as GiftIcon } from '../../icons/gift';
 import { useSettings } from '../../contexts/settings-context';
-import { authFetch } from '../../utils/auth-fetch';
 import type { Cart } from '../../types/cart';
+import { useCheckout } from 'api/cart';
 
 interface CartSummaryProps {
   cart: Cart;
@@ -22,21 +21,8 @@ interface CartSummaryProps {
 export const CartSummary: FC<CartSummaryProps> = (props) => {
   const { cart } = props;
   const { settings } = useSettings();
-  const [loading, setLoading] = useState(false);
 
-  const handleClick = async () => {
-    try {
-      setLoading(true);
-      const { url } = await authFetch<{ url: string }>('/checkout', {
-        method: 'POST',
-        body: JSON.stringify({ currency: settings.currency })
-      });
-      window.location.href = url;
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
+  const { mutate, isLoading } = useCheckout();
 
   return (
     <Card
@@ -143,9 +129,9 @@ export const CartSummary: FC<CartSummaryProps> = (props) => {
       />
       <Button
         color="primary"
-        disabled={loading}
+        disabled={isLoading}
         fullWidth
-        onClick={handleClick}
+        onClick={() => { mutate(settings.currency); }}
         size="large"
         sx={{ mt: 1 }}
         variant="contained"

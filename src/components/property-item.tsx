@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import { Typography, ListItem } from '@material-ui/core';
+import { Typography, ListItem } from '@mui/material';
 
 interface PropertyItemProps {
   align?: 'horizontal' | 'vertical';

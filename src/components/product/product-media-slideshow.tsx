@@ -4,8 +4,8 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Navigation } from 'swiper';
-import { Box } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { Youtube as YoutubeIcon } from '../../icons/youtube';
 
 SwiperCore.use([Pagination, Navigation]);
@@ -74,7 +74,7 @@ export const ProductMediaSlideshow: FC<ProductMediaSlideshowProps> = (props) => 
         ) : (
           <img
             alt=""
-            src={`https://fanatical.imgix.net/product/original/${selectedSlide.slug}?auto=compress,format&w=350&fit=crop&h=197`}
+            src={`https://fanatical.imgix.net/product/original/${selectedSlide.slug}?auto=compress`}
           />
         )}
       </Box>

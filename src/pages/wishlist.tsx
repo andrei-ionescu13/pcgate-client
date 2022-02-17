@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import { ProductCard } from '../components/product-card';
 import { useStoreSelector } from '../hooks/use-store-selector';
 

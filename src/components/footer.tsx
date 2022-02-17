@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Container } from '@material-ui/core';
+import { Box, Button, Container } from '@mui/material';
 import { Logo } from '../components/logo';
 import { LanguageCurrencyDialog } from '../components/language-currency-dialog';
 

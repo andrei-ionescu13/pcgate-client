@@ -3,16 +3,15 @@ import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import numeral from 'numeral';
-import { Box, Container, List, Typography } from '@material-ui/core';
+import { Box, Container, List, Typography } from '@mui/material';
 import { PropertyItem } from '../components/property-item';
 import { LibraryProduct } from '../components/library/library-product';
-import { useAuthFetch } from '../hooks/use-auth-fetch';
-import type { Order as OrderI } from '../types/orders';
-import { getCurrencySymbol } from 'utils/get-currency-symbol';
+import { useGetOrder } from '../api/orders';
+import { getCurrencySymbol } from '../utils/get-currency-symbol';
 
 export const Order: FC = () => {
   const { orderId } = useParams();
-  const [order, loading] = useAuthFetch<OrderI>(`/orders/${orderId}`);
+  const { data: order, isLoading: loading } = useGetOrder(orderId);
 
   if (loading) {
     return null;

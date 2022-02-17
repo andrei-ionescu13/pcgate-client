@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
@@ -8,7 +7,7 @@ import {
   CardContent,
   Grid,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { LoadingImage } from 'components/loading-image';
 import { ProductDiscount } from '../../components/product-discount';
 import { WishlistButton } from '../../components/wishlist-button';
@@ -17,11 +16,8 @@ import { Uplay as UplayIcon } from '../../icons/uplay';
 import { Rockstar as RockstarIcon } from '../../icons/rockstar';
 import { Steam as SteamIcon } from '../../icons/steam';
 import { useSettings } from '../../contexts/settings-context';
-import { setCart } from '../../store/slices/cart';
-import { useStoreDispatch } from '../../hooks/use-store-dispatch';
 import { useStoreSelector } from '../../hooks/use-store-selector';
-import { authFetch } from '../../utils/auth-fetch';
-import type { Cart } from '../../types/cart';
+import { useAddCartItem } from 'api/cart';
 import type { Product } from '../../types/product';
 
 const icons = {
@@ -37,35 +33,11 @@ interface ProductPricingProps {
 export const ProductPricing: FC<ProductPricingProps> = (props) => {
   const { product } = props;
   const navigate = useNavigate();
-  const appDispatch = useStoreDispatch();
   const { settings } = useSettings();
   const items = useStoreSelector((state) => state.cart.items);
-  const [loading, setLoading] = useState(false);
   const isInCart = Boolean(items.find((item) => item.product._id === product?._id));
 
-  const handleAddToCart = async (): Promise<void> => {
-    if (isInCart)
-      return;
-
-    try {
-      setLoading(true);
-
-      const data = await authFetch<Cart>('/users/cart', {
-        method: 'POST',
-        body: JSON.stringify({ productId: product?._id })
-      });
-
-      appDispatch(setCart(data));
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    }
-  };
+  const { mutate, isLoading } = useAddCartItem();
 
   return (
     <Card elevation={0}>
@@ -160,9 +132,9 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
         </Box>
         <Button
           color="primary"
-          disabled={loading}
+          disabled={isLoading}
           fullWidth
-          onClick={() => isInCart ? navigate('/cart') : handleAddToCart()}
+          onClick={() => isInCart ? navigate('/cart') : mutate(product._id)}
           size="large"
           startIcon={<ShoppingCartIcon />}
           variant="contained"

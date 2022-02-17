@@ -8,8 +8,8 @@ import {
   Link,
   Toolbar,
   useMediaQuery
-} from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { AccountPopover } from './account-popover';
 import { CartDropdown } from './cart-dropdown';
 import { Logo } from './logo';
@@ -102,16 +102,31 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
             isAuthenticated ? <AccountPopover /> : (
               <>
                 <Button
-                  color="primary"
                   component={RouterLink}
-                  sx={{ mr: 1.5 }}
+                  sx={{
+                    borderColor: '#fff',
+                    color: '#fff',
+                    mr: 1.5,
+
+                    '&:hover': {
+                      backgroundColor: '#fff',
+                      color: '#000'
+                    }
+                  }}
                   to="/register"
                   variant="outlined"
                 >
                   Register
                 </Button>
                 <Button
-                  color="primary"
+                  sx={{
+                    backgroundColor: '#fff',
+                    color: '#000',
+
+                    '&:hover': {
+                      backgroundColor: '#fff'
+                    }
+                  }}
                   component={RouterLink}
                   to="/login"
                   variant="contained"

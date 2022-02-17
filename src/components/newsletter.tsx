@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Container, FormHelperText, InputBase, Typography } from '@material-ui/core';
+import { Box, Button, Container, FormHelperText, InputBase, Typography } from '@mui/material';
 
 export const Newsletter: FC = () => {
   const formik = useFormik({

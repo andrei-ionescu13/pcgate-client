@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Badge, Box } from '@material-ui/core';
+import { Badge, Box } from '@mui/material';
 import { Heart as HeartIcon } from '../icons/heart';
 import { useStoreSelector } from '../hooks/use-store-selector';
 

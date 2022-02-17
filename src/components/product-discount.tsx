@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import { Box, Typography } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { Box, Typography } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 
 type Variant = 'small' | 'medium' | 'large';
 
@@ -46,7 +46,7 @@ export const ProductDiscount: FC<ProductDiscountProps> = (props) => {
         variant="body2"
       >
         -
-        {percentage}
+        {Math.floor(percentage)}
         %
       </Typography>
     </ProductDiscountRoot>

@@ -8,9 +8,9 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox
-} from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+} from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 import { ChevronRightOutlined as ChevronRightIcon } from '../icons/chevron-right-outlined';
 
 const FilterAccordionRoot = styled('div')(
@@ -32,7 +32,7 @@ export const FilterAccordion: FC<FilterAccordionProps> = (props) => {
   const { field, items } = props;
   const location = useLocation();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const searchParams = new URLSearchParams(location.search);
   const valuesSelected = searchParams.getAll(field.name);
 
@@ -68,16 +68,18 @@ export const FilterAccordion: FC<FilterAccordionProps> = (props) => {
       >
         <Typography
           color="textPrimary"
-          variant="body1"
+          variant="subtitle2"
         >
           {field.label}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         <ChevronRightIcon
+          fontSize='small'
           sx={{
             color: 'text.secondary',
             transform: open ? 'rotate(90deg)' : 'none'
-          }} />
+          }}
+        />
       </Box>
       <Collapse in={open}>
         <FormGroup sx={{
@@ -97,6 +99,11 @@ export const FilterAccordion: FC<FilterAccordionProps> = (props) => {
               key={item.value}
               label={item.label}
               value={item.value}
+              componentsProps={{
+                typography: {
+                  variant: 'body2'
+                }
+              }}
             />
           ))}
         </FormGroup>

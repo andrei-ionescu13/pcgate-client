@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Card, CardContent, CardMedia, Chip, Link, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, CardMedia, Chip, Link, Typography } from '@mui/material';
 import type { Bundle } from '../types/bundle';
 
 interface BundleCardProps {

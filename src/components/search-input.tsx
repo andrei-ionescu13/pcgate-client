@@ -1,8 +1,8 @@
 import type { ChangeEvent, FC } from 'react';
-import { InputBase } from '@material-ui/core';
-import type { InputBaseProps, InputBaseComponentProps } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { InputBase } from '@mui/material';
+import type { InputBaseProps, InputBaseComponentProps } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 import { Search as SearchIcon } from '../icons/search';
 
 interface SearchInputProps extends InputBaseProps {

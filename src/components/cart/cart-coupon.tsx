@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FC, ChangeEvent } from 'react';
-import { Box, Button, Card, InputBase, Typography } from '@material-ui/core';
+import { Box, Button, Card, InputBase, Typography } from '@mui/material';
 
 export const CartCoupon: FC = () => {
   const [code, setCode] = useState('');

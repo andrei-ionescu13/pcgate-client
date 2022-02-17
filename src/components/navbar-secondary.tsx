@@ -5,7 +5,7 @@ import {
   Container,
   Toolbar,
   List,
-} from '@material-ui/core';
+} from '@mui/material';
 import { CartDropdown } from './cart-dropdown';
 import { NavLink } from './nav-link';
 import { SwitchThemeButton } from './switch-theme-button';

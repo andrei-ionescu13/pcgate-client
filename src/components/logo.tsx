@@ -1,7 +1,7 @@
 import type { FC } from 'react';
-import { SvgIcon } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { SvgIcon } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 
 interface LogoProps {
   sx?: SxProps;

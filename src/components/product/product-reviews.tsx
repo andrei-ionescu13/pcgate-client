@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Box, Button, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { ProductReviewCard } from './product-review-card';
 import { ProductReviewsAverage } from './product-reviews-average';
 import { ProductReviewDialog } from './product-review-dialog';

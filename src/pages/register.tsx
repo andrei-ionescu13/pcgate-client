@@ -11,8 +11,8 @@ import {
   FormHelperText,
   Typography,
   TextField
-} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import { useAuth } from '../contexts/auth-context';
 
 export const Register: FC = () => {

@@ -16,7 +16,7 @@ ReactDOM.render(
       <ReduxProvider store={store}>
         <AuthProvider>
           <SettingsProvider>
-            <BrowserRouter>
+            <BrowserRouter >
               <App />
             </BrowserRouter>
           </SettingsProvider>

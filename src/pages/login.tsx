@@ -12,8 +12,8 @@ import {
   Link,
   TextField,
   Typography
-} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import { useAuth } from '../contexts/auth-context';
 
 export const Login: FC = () => {
@@ -33,7 +33,7 @@ export const Login: FC = () => {
       try {
         const { email, password } = values;
         await login(email, password);
-        navigate('/');
+        navigate('');
       } catch (err) {
         console.error(err);
         helpers.setStatus({ success: false });

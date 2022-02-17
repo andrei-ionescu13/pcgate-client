@@ -1,20 +1,17 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import numeral from 'numeral';
-import { Box, Button, Card, Divider, Link, Skeleton, Typography } from '@material-ui/core';
+import { Box, Button, Card, Divider, Link, Skeleton, Typography } from '@mui/material';
 import { ProductLabel } from './product/product-label';
 import { ProductDiscount } from './product-discount';
 import { WishlistButton } from './wishlist-button';
 import { ShoppingCart as ShoppingCartIcon } from '../icons/shopping-cart';
 import { Steam as SteamIcon } from '../icons/steam';
-import { setCart } from '../store/slices/cart';
 import { useSettings } from '../contexts/settings-context';
-import { useStoreDispatch } from '../hooks/use-store-dispatch';
 import { useStoreSelector } from '../hooks/use-store-selector';
-import { authFetch } from '../utils/auth-fetch';
-import type { Cart } from '../types/cart';
 import type { Product } from '../types/product';
+import { useAddCartItem } from 'api/cart';
 
 interface ProductCardProps {
   loading?: boolean;
@@ -24,37 +21,12 @@ interface ProductCardProps {
 
 export const ProductCard: FC<ProductCardProps> = (props) => {
   const { product, variant = 'card', loading = false } = props;
-  const navigate = useNavigate();
-  const appDispatch = useStoreDispatch();
   const items = useStoreSelector((state) => state.cart.items);
   const { settings } = useSettings();
   const [coverLoaded, setCoverLoaded] = useState<boolean>(false);
-  const [addLoading, setAddLoading] = useState(false);
   const isInCart = Boolean(items.find((item) => item.product._id === product?._id));
 
-  const handleAddToCart = async (): Promise<void> => {
-    if (isInCart)
-      return;
-
-    try {
-      setAddLoading(true);
-
-      const data = await authFetch<Cart>('/users/cart', {
-        method: 'POST',
-        body: JSON.stringify({ productId: product?._id })
-      });
-
-      appDispatch(setCart(data));
-      setAddLoading(false);
-    } catch (error) {
-      console.error(error);
-      setAddLoading(false);
-
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    }
-  };
+  const { mutate, isLoading } = useAddCartItem();
 
   if (variant === 'card') {
     if (loading) {
@@ -180,8 +152,8 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
             )}
             <Button
               color="primary"
-              disabled={addLoading}
-              onClick={handleAddToCart}
+              disabled={isLoading}
+              onClick={() => { if (!isInCart) mutate(product._id); }}
               startIcon={<ShoppingCartIcon />}
               size="small"
               sx={{

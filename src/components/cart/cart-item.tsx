@@ -1,17 +1,13 @@
-import { useState } from 'react';
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import numeral from 'numeral';
-import { Box, Card, IconButton, Link, Typography } from '@material-ui/core';
+import { Box, Card, IconButton, Link, Typography } from '@mui/material';
 import { ProductDiscount } from '../product-discount';
 import { Steam as SteamIcon } from '../../icons/steam';
 import { X as XIcon } from '../../icons/x';
 import { useSettings } from '../../contexts/settings-context';
-import { setCart } from '../../store/slices/cart';
-import { useStoreDispatch } from '../../hooks/use-store-dispatch';
-import { authFetch } from '../../utils/auth-fetch';
 import type { Product } from '../../types/product';
-import type { Cart } from '../../types/cart';
+import { useRemoveCartItem } from 'api/cart';
 
 interface CartItemProps {
   item: {
@@ -23,24 +19,9 @@ interface CartItemProps {
 export const CartItem: FC<CartItemProps> = (props) => {
   const { item } = props;
   const { product } = item;
-  const appDispatch = useStoreDispatch();
   const { settings } = useSettings();
-  const [loading, setLoading] = useState(false);
 
-  const handleRemoveFromCart = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      const cart = await authFetch<Cart>('/users/cart', {
-        method: 'DELETE',
-        body: JSON.stringify({ productId: product?._id })
-      });
-      appDispatch(setCart(cart));
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
+  const { mutate, isLoading } = useRemoveCartItem();
 
   return (
     <Card
@@ -129,8 +110,8 @@ export const CartItem: FC<CartItemProps> = (props) => {
         </Box>
         <IconButton
           color="primary"
-          disabled={loading}
-          onClick={handleRemoveFromCart}
+          disabled={isLoading}
+          onClick={() => { mutate(product._id); }}
         >
           <XIcon />
         </IconButton>

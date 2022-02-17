@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 
 export const Rockstar: FC<SvgIconProps> = (props) => (
   <SvgIcon

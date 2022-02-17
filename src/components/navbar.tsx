@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import { AppBar, useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { AppBar, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { NavbarPrimary } from './navbar-primary';
 import { NavbarSecondary } from './navbar-secondary';
 import { useAuth } from '../contexts/auth-context';

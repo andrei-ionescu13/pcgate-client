@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Card, Link, Typography } from '@material-ui/core';
+import { Box, Button, Card, Link, Typography } from '@mui/material';
 import { Steam as SteamIcon } from '../../icons/steam';
 import type { Product } from 'types/product';
 

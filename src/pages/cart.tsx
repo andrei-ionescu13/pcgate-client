@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import { CartItem } from '../components/cart/cart-item';
 import { CartSummary } from '../components/cart/cart-summary';
 import { CartCoupon } from '../components/cart/cart-coupon';

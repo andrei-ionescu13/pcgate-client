@@ -2,9 +2,9 @@ import type { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns';
 import numeral from 'numeral';
-import { Box, Button, List, ListItem, Typography } from '@material-ui/core';
-import { styled } from '@material-ui/system';
-import type { SxProps } from '@material-ui/system';
+import { Box, Button, List, ListItem, Typography } from '@mui/material';
+import { styled } from '@mui/system';
+import type { SxProps } from '@mui/system';
 import { getCurrencySymbol } from 'utils/get-currency-symbol';
 
 interface OrderProps {

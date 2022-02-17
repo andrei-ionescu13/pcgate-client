@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -11,13 +10,11 @@ import {
   Typography,
   Rating,
   IconButton
-} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import { X as XIcon } from '../../icons/x';
-import { useAuth } from '../../contexts/auth-context';
-import { useIsMounted } from '../../hooks/use-is-mounted';
-import { authFetch } from '../../utils/auth-fetch';
 import type { Review, ReviewsSummary } from '../../types/product';
+import { useAddProductReview } from 'api/products';
 
 interface ProductReviewDialogProps {
   onClose: () => void;
@@ -28,9 +25,7 @@ interface ProductReviewDialogProps {
 
 export const ProductReviewDialog: FC<ProductReviewDialogProps> = (props) => {
   const { open, onClose, productId, onSubmit } = props;
-  const isMounted = useIsMounted();
-  const { logout } = useAuth();
-  const navigate = useNavigate();
+  const { mutate, isLoading } = useAddProductReview();
   const formik = useFormik({
     initialValues: {
       text: '',
@@ -48,35 +43,14 @@ export const ProductReviewDialog: FC<ProductReviewDialogProps> = (props) => {
       title: Yup.string().max(255).required('Title is required')
     }),
     onSubmit: async (values, helpers) => {
-      try {
-        helpers.setSubmitting(true);
-        const data = await authFetch<{ reviews: Review[]; reviewsSummary: ReviewsSummary; }>('/reviews', {
-          method: 'POST',
-          body: JSON.stringify({ ...values, productId })
-        });
-        if (isMounted) {
-          if (data?.reviews && data?.reviewsSummary) {
-            onSubmit(data.reviews, data.reviewsSummary);
-          }
-
+      mutate({ ...values, productId }, {
+        onSuccess: (data) => {
+          onSubmit(data.reviews, data.reviewsSummary);
           helpers.setStatus({ success: true });
-          helpers.setSubmitting(false);
           helpers.resetForm();
+          onClose();
         }
-        onClose();
-      } catch (err) {
-        console.error(err);
-        if (err.status === 401) {
-          logout();
-          navigate('/login');
-        }
-        if (isMounted) {
-          helpers.setSubmitting(true);
-          helpers.setStatus({ success: false });
-          helpers.setErrors({ submit: err.message });
-          helpers.setSubmitting(false);
-        }
-      }
+      });
     }
   });
 
@@ -260,7 +234,7 @@ export const ProductReviewDialog: FC<ProductReviewDialogProps> = (props) => {
         </Box>
         <Button
           color="primary"
-          disabled={formik.isSubmitting}
+          disabled={isLoading}
           size="large"
           sx={{ my: 3 }}
           type="submit"
