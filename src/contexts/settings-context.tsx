@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 
-type Currency = 'EUR' | 'USD';
-
+type Currency = 'EUR' | 'USD' | 'JPY' | 'GBP';
 type CurrencySymbol = '€' | '$';
 
 interface Settings {
@@ -23,7 +22,9 @@ interface SettingsProviderProps {
 
 const currencySymbols: Record<Currency, CurrencySymbol> = {
   EUR: '€',
-  USD: '$'
+  USD: '$',
+  JPY: '$',
+  GBP: '$'
 };
 
 const initialSettings: Settings = {

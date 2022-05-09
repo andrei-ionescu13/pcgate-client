@@ -17,7 +17,7 @@ import { useSettings } from '../contexts/settings-context';
 
 type Language = 'en' | 'de' | 'es' | 'fr';
 
-type Currency = 'EUR' | 'USD';
+type Currency = 'EUR' | 'USD' | 'JPY' | 'GBP';
 
 interface LanguageOption {
   label: 'English' | 'Deutsch' | 'Espaniol' | 'Français';
@@ -56,6 +56,14 @@ const currencyOptions: CurrencyOption[] = [
   {
     value: 'USD',
     label: 'Dollar (USD)'
+  },
+  {
+    value: 'JPY',
+    label: 'Yen (JPY)'
+  },
+  {
+    value: 'GBP',
+    label: 'Pounds (GBP)'
   }
 ];
 
@@ -68,7 +76,7 @@ export const LanguageCurrencyDialog: FC<LanguageCurrencyDialogProps> = (props) =
   const { open, onClose } = props;
   const { settings, saveSettings } = useSettings();
   const [language, setLanguage] = useState(settings.language);
-  const [currency, setCurrency] = useState(settings.currency);
+  const [currency, setCurrency] = useState<Currency>(settings.currency);
 
   const handleLanguageChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLanguage(event.target.value as Language);

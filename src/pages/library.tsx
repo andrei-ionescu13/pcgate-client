@@ -10,7 +10,6 @@ import {
   Typography
 } from '@mui/material';
 import { SearchInput } from '../components/search-input';
-import { LibraryProduct } from '../components/library/library-product';
 
 interface Values {
   sortBy: string;

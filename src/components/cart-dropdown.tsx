@@ -55,7 +55,7 @@ const CartDropdownItem: FC<CartDropdownItemProps> = (props) => {
           variant="subtitle2"
         >
           {settings.currencySymbol}
-          {numeral(product.currentPrice[settings.currency] / 100).format('0,0.00')}
+          {numeral(product.price[settings.currency] / 100).format('0,0.00')}
         </Typography>
         {product.current_discount.display_percentage && (
           <Typography
@@ -64,7 +64,7 @@ const CartDropdownItem: FC<CartDropdownItemProps> = (props) => {
             variant="caption"
           >
             {settings.currencySymbol}
-            {numeral(product.price[settings.currency] / 100).format('0,0.00')}
+            {numeral(product.fullPrice[settings.currency] / 100).format('0,0.00')}
           </Typography>
         )}
       </Box>

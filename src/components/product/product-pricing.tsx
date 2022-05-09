@@ -108,7 +108,7 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
             variant="h5"
           >
             {settings.currencySymbol}
-            {product.currentPrice[settings.currency] / 100}
+            {product.price[settings.currency] / 100}
           </Typography>
           {product.current_discount.display_percentage && (
             <>
@@ -121,7 +121,7 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
                 variant="body1"
               >
                 {settings.currencySymbol}
-                {product.price[settings.currency] / 100}
+                {product.fullPrice[settings.currency] / 100}
               </Typography>
               <ProductDiscount
                 percentage={product.current_discount.percent * 100}

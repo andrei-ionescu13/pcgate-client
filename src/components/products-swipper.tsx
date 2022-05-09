@@ -104,8 +104,6 @@ export const ProductsSwipper: FC<ProductsSwipperProps> = (props) => {
             slidesPerGroup: 1
           }
         }}
-        loop={true}
-        loopFillGroupWithBlank={true}
         navigation={true}
         pagination={{
           clickable: true

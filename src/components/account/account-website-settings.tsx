@@ -16,10 +16,10 @@ const languageLabels = {
   fr: 'Français'
 };
 
-const currencyLabels = {
-  EUR: 'Euro (EUR)',
-  USD: 'Dollar (USD)'
-};
+// const currencyLabels = {
+//   EUR: 'Euro (EUR)',
+//   USD: 'Dollar (USD)'
+// };
 
 export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (props) => {
   const { settings, saveSettings } = useSettings();
@@ -104,7 +104,7 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (props) =
                 color="textPrimary"
                 variant="body2"
               >
-                {currencyLabels[settings.currency]}
+                {settings.currency}
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 1 }} />

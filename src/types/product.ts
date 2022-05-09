@@ -48,7 +48,7 @@ export interface Product {
   price: {
     [key: string]: number;
   };
-  currentPrice: {
+  fullPrice: {
     [key: string]: number;
   };
   img?: any;

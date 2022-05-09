@@ -25,7 +25,6 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
   const { settings } = useSettings();
   const [coverLoaded, setCoverLoaded] = useState<boolean>(false);
   const isInCart = Boolean(items.find((item) => item.product._id === product?._id));
-
   const { mutate, isLoading } = useAddCartItem();
 
   if (variant === 'card') {
@@ -141,7 +140,7 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
                   variant="caption"
                 >
                   {settings.currencySymbol}
-                  {numeral(product.price[settings.currency] / 100).format('0,0.00')}
+                  {numeral(product.fullPrice[settings.currency] / 100).format('0,0.00')}
                 </Typography>
                 <ProductDiscount
                   percentage={product.current_discount.percent * 100}
@@ -186,7 +185,7 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
                 <>
                   <span className="price">
                     {settings.currencySymbol}
-                    {numeral(product.currentPrice[settings.currency] / 100).format('0,0.00')}
+                    {numeral(product.price[settings.currency] / 100).format('0,0.00')}
                   </span>
                   <span className="add-label">
                     Add
@@ -274,7 +273,7 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
                 variant="body2"
               >
                 {settings.currencySymbol}
-                {numeral(product.price[settings.currency] / 100).format('0,0.00')}
+                {numeral(product.fullPrice[settings.currency] / 100).format('0,0.00')}
               </Typography>
               <Typography
                 align="center"
@@ -283,12 +282,11 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
                 variant="h6"
               >
                 {settings.currencySymbol}
-                {numeral(product.currentPrice[settings.currency] / 100).format('0,0.00')}
+                {numeral(product.price[settings.currency] / 100).format('0,0.00')}
               </Typography>
             </Box>
           </Box>
           <Button
-
             fullWidth
             color="primary"
             size="large"
