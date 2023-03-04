@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/contexts/*": [
+        "contexts/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/types/*": [
+        "types/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/icons/*": [
+        "icons/*"
+      ],
+      "@/constants": [
+        "constants"
+      ],
+      "@/api/*": [
+        "api/*"
+      ],
+      "@/store/*": [
+        "store/*"
+      ],
+    },
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "useUnknownInCatchVariables": false,
+    "incremental": true
+  },
+  "include": [
+    "src",
+    "temp/components",
+    "temp",
+    "temp"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "store": "12333333",
+    "bundles": "Bundles",
+    "blog": "Blog"
+  },
+  "buttons": {
+    "login": "login",
+    "register": "register",
+    "language/currency": "language/currency"
+  },
+  "search": {
+    "label": "Search",
+    "no_results_title": "There were no results",
+    "no_results_body": "We couldn't find any results for you. Try adjusting the terms of your search. You can search for games by name or publisher",
+    "view_all_deals_button": "View all deals"
+  }
+}
