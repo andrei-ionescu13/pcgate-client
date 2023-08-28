@@ -1,49 +1,59 @@
-import Head from 'next/head';
-import type { NextPage, GetServerSideProps } from 'next';
-import { Box, Pagination, Typography } from '@mui/material';
-import { appFetch } from '@/utils/app-fetch';
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import { AccountLayout } from 'layout/account/account-layout';
-import { SearchInput } from '../../../components/search-input';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import type { Order as OrderI } from '@/types/orders';
-import { Order } from '@/components/account/orders/order';
-import { NextPageWithLayout } from 'pages/_app';
-import { Layout } from 'layout/layout';
+import Head from "next/head";
+import type { NextPage, GetServerSideProps } from "next";
+import { Box, Pagination, Typography } from "@mui/material";
+import { appFetch } from "@/utils/app-fetch";
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import { AccountLayout } from "layout/account/account-layout";
+import { SearchInput } from "../../../components/search-input";
+import { ChangeEvent, FormEvent, useState } from "react";
+import type { Order as OrderI } from "@/types/orders";
+import { Order } from "@/components/account/orders/order";
+import { NextPageWithLayout } from "pages/_app";
+import { Layout } from "layout/layout";
 
 interface GetUserOrdersReturn {
   orders: OrderI[];
   count: number;
 }
 
-const getUserOrders = (query: Record<string, any>, config: Record<string, any> = {}) => () => appFetch<GetUserOrdersReturn>({
-  url: '/auth/orders',
-  withAuth: true,
-  query,
-  ...config
-})
+const getUserOrders =
+  (query: Record<string, any>, config: Record<string, any> = {}) =>
+  () =>
+    appFetch<GetUserOrdersReturn>({
+      url: "/orders",
+      withAuth: true,
+      query,
+      ...config,
+    });
 
 const Orders: NextPageWithLayout = () => {
-  const [keyword, setKeyword] = useState('');
-  const [queryKeyword, setQueryKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
+  const [queryKeyword, setQueryKeyword] = useState("");
   const [page, setPage] = useState(1);
   const query = {
     keyword: queryKeyword,
-    page
+    page,
   };
-  const { data, isPreviousData, isRefetching } = useQuery(['orders', query], getUserOrders(query), { keepPreviousData: true })
+  const { data, isPreviousData, isRefetching } = useQuery(
+    ["orders", query],
+    getUserOrders(query),
+    { keepPreviousData: true }
+  );
 
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value)
-  }
+    setKeyword(event.target.value);
+  };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value)
-  }
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
 
   const handleSubmit = (event: FormEvent<EventTarget>): void => {
     event.preventDefault();
-    setQueryKeyword(keyword)
+    setQueryKeyword(keyword);
   };
 
   if (!data) return null;
@@ -55,21 +65,19 @@ const Orders: NextPageWithLayout = () => {
         <title>Order</title>
       </Head>
       <Box>
-        <Typography
-          color="textPrimary"
-          variant="h4"
-        >
+        <Typography color="textPrimary" variant="h4">
           Orders
         </Typography>
         <Typography
           color="textSecondary"
           sx={{
             mb: 5,
-            mt: 2
+            mt: 2,
           }}
           variant="body1"
         >
-          To view an order in more detail, and to view the keys associated with that order, simply click on View Order for the appropriate order.
+          To view an order in more detail, and to view the keys associated with
+          that order, simply click on View Order for the appropriate order.
         </Typography>
         <Box mb={5}>
           <form onSubmit={handleSubmit}>
@@ -82,9 +90,9 @@ const Orders: NextPageWithLayout = () => {
         </Box>
         <Box
           sx={{
-            backgroundColor: '#1E4582',
-            color: '#fff',
-            py: 2
+            backgroundColor: "#1E4582",
+            color: "#fff",
+            py: 2,
           }}
         >
           <Typography
@@ -92,9 +100,9 @@ const Orders: NextPageWithLayout = () => {
             component="p"
             sx={{
               display: {
-                md: 'none'
+                md: "none",
               },
-              px: 2
+              px: 2,
             }}
             variant="subtitle1"
           >
@@ -103,43 +111,31 @@ const Orders: NextPageWithLayout = () => {
           <Box
             sx={{
               display: {
-                md: 'flex',
-                xs: 'none'
+                md: "flex",
+                xs: "none",
               },
-              '& > div': {
-                px: 2
-              }
+              "& > div": {
+                px: 2,
+              },
             }}
           >
             <Box sx={{ flex: 1 }}>
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
+              <Typography color="inherit" variant="subtitle1">
                 Date
               </Typography>
             </Box>
             <Box sx={{ flex: 2 }}>
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
+              <Typography color="inherit" variant="subtitle1">
                 Items
               </Typography>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
+              <Typography color="inherit" variant="subtitle1">
                 Status
               </Typography>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
+              <Typography color="inherit" variant="subtitle1">
                 Action
               </Typography>
             </Box>
@@ -147,15 +143,18 @@ const Orders: NextPageWithLayout = () => {
         </Box>
         <Box
           sx={{
-            backgroundColor: 'background.default',
-            position: 'relative',
-            filter: (isRefetching && isPreviousData) ? 'blur(4px) saturate(100%)' : undefined,
+            backgroundColor: "background.default",
+            position: "relative",
+            filter:
+              isRefetching && isPreviousData
+                ? "blur(4px) saturate(100%)"
+                : undefined,
           }}
         >
-          {(isRefetching && isPreviousData) && (
+          {isRefetching && isPreviousData && (
             <Box
               sx={{
-                position: 'absolute',
+                position: "absolute",
                 inset: 0,
                 zIndex: 999,
               }}
@@ -166,9 +165,9 @@ const Orders: NextPageWithLayout = () => {
               key={order._id}
               order={order}
               sx={{
-                '& + &': {
-                  mt: 1
-                }
+                "& + &": {
+                  mt: 1,
+                },
               }}
             />
           ))}
@@ -177,8 +176,8 @@ const Orders: NextPageWithLayout = () => {
           <Box
             sx={{
               mt: 5,
-              display: 'flex',
-              justifyContent: 'center',
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             <Pagination
@@ -195,33 +194,37 @@ const Orders: NextPageWithLayout = () => {
   );
 };
 
-
-export const getServerSideProps: GetServerSideProps = async ({ locale, req, res }) => {
-  const queryClient = new QueryClient()
+export const getServerSideProps: GetServerSideProps = async ({
+  locale,
+  req,
+  res,
+}) => {
+  const queryClient = new QueryClient();
   const query = {
-    keyword: '',
-    page: 1
-  }
+    keyword: "",
+    page: 1,
+  };
   try {
-    await queryClient.fetchQuery(['orders', query], getUserOrders(query, { req, res }))
+    await queryClient.fetchQuery(
+      ["orders", query],
+      getUserOrders(query, { req, res })
+    );
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-    }
-  }
-}
+    },
+  };
+};
 export default Orders;
 
 Orders.getLayout = (page: React.ReactElement) => {
   return (
     <Layout>
-      <AccountLayout>
-        {page}
-      </AccountLayout>
+      <AccountLayout>{page}</AccountLayout>
     </Layout>
-  )
-}
+  );
+};

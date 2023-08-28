@@ -2,14 +2,15 @@ import { ApiError } from "./api-error";
 import { setCookie } from "cookies-next";
 import Router from "next/router";
 
+const hasClient = typeof window !== "undefined";
+
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
-const apiUrl =
-  typeof window === "undefined"
-    ? process.env.NEXT_PUBLIC_API_PATH
-    : `${process.env.NEXT_PUBLIC_URL}/api`;
+const apiUrl = hasClient
+  ? `${process.env.NEXT_PUBLIC_URL}/api`
+  : process.env.NEXT_PUBLIC_API_PATH;
 const buildQueryString = (query: Record<string, any>): string => {
   const finalQuery: URLSearchParams = new URLSearchParams();
 
@@ -20,7 +21,10 @@ const buildQueryString = (query: Record<string, any>): string => {
   return finalQuery.toString();
 };
 
-export const getNewAccesToken = async (cookies?: any): Promise<string> => {
+export const getNewAccesToken = async (
+  cookies?: any,
+  res?: any
+): Promise<string> => {
   const respose = await fetch(`${apiUrl}/auth/access-token`, {
     credentials: "include",
     headers: {
@@ -34,7 +38,11 @@ export const getNewAccesToken = async (cookies?: any): Promise<string> => {
     return data;
   }
 
-  Router.push("/login");
+  if (res) {
+    res.redirect(307, "login");
+  } else {
+    Router.push("/login");
+  }
   throw new ApiError(respose.status, data.message);
 };
 
@@ -113,7 +121,7 @@ export const appFetch = async <T>({
       throw new ApiError(response.status, data.message);
     }
 
-    const newAccesToken = await getNewAccesToken(req?.headers.cookie);
+    const newAccesToken = await getNewAccesToken(req?.headers.cookie, res);
 
     if (req && res) {
       setCookie("accessToken", newAccesToken, {
@@ -133,7 +141,7 @@ export const appFetch = async <T>({
     data = await response.json();
 
     if (response.status === 401) {
-      Router.push("/login");
+      hasClient ? Router.push("/login") : res.push(307, "login");
     }
 
     throw new ApiError(response.status, data.message);

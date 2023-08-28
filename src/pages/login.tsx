@@ -38,7 +38,7 @@ const Login: NextPageWithLayout = () => {
   const formik = useFormik({
     initialValues: {
       email: "andrei.ionescu3535@gmail.com",
-      password: "Parola123",
+      password: "Password1234",
     },
     validationSchema: Yup.object({
       email: Yup.string().email().max(255).required(),

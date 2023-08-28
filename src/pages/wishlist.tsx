@@ -24,6 +24,7 @@ const Wishlist: NextPageWithLayout = () => {
   const wishlistProductsStore = useStoreSelector(
     (state) => state.wishlist.products
   );
+
   if (!wishlistedProducts) return null;
 
   return (

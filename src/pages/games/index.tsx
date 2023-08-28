@@ -1,46 +1,49 @@
-import { useState, useEffect, MouseEvent, useRef } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import type { GetServerSideProps } from 'next';
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Drawer
-} from '@mui/material';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { appFetch } from '@/utils/app-fetch';
-import { ParsedUrlQuery } from 'querystring';
-import { Product } from '@/types/product';
-import { AdjustmentsHorizontal as AdjustmentsHorizontalIcon } from '@/icons/adjustments-horizontal';
-import { SortByPopoverQuery } from '@/components/sort-by-popover-query';
-import { PaginationQuery } from '@/components/pagination-query';
-import { ProductCard } from '@/components/product-card';
-import { ProductCardLine } from '@/components/product-card-line';
-import { ViewModeButton } from '@/components/view-mode-button';
-import { ProductsFilters } from '@/components/products/products-filters';
-import { ProductsFilterChip } from '@/components/products/products-filter-chip';
-import type { Genre, Platform } from '@/types/common';
-import { Layout } from 'layout/layout';
-import { NextPageWithLayout } from 'pages/_app';
+import { useState, useEffect, MouseEvent, useRef } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import type { GetServerSideProps } from "next";
+import { Box, Container, Typography, Button, Drawer } from "@mui/material";
+import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
+import { appFetch } from "@/utils/app-fetch";
+import { ParsedUrlQuery } from "querystring";
+import { Product } from "@/types/product";
+import { AdjustmentsHorizontal as AdjustmentsHorizontalIcon } from "@/icons/adjustments-horizontal";
+import { SortByPopoverQuery } from "@/components/sort-by-popover-query";
+import { PaginationQuery } from "@/components/pagination-query";
+import { ProductCard } from "@/components/product-card";
+import { ProductCardLine } from "@/components/product-card-line";
+import { ViewModeButton } from "@/components/view-mode-button";
+import { ProductsFilters } from "@/components/products/products-filters";
+import { ProductsFilterChip } from "@/components/products/products-filter-chip";
+import type { Genre, Platform } from "@/types/common";
+import { Layout } from "layout/layout";
+import { NextPageWithLayout } from "pages/_app";
 
-const getProducts = (query: ParsedUrlQuery, config: Record<string, any> = {}) => () => appFetch<{ products: Product[]; count: number; }>({
-  url: `/products`,
-  query,
-  ...config
-});
+const getProducts =
+  (query: ParsedUrlQuery, config: Record<string, any> = {}) =>
+  () =>
+    appFetch<{ products: Product[]; count: number }>({
+      url: `/products`,
+      query,
+      ...config,
+    });
 
-const getGenres = (config: Record<string, any> = {}) => () => appFetch<Genre[]>({
-  url: `/genres`,
-  ...config
-});
+const getGenres =
+  (config: Record<string, any> = {}) =>
+  () =>
+    appFetch<Genre[]>({
+      url: `/genres`,
+      ...config,
+    });
 
-const getPlatforms = (config: Record<string, any> = {}) => () => appFetch<Platform[]>({
-  url: `/platforms`,
-  ...config
-});
+const getPlatforms =
+  (config: Record<string, any> = {}) =>
+  () =>
+    appFetch<Platform[]>({
+      url: `/platforms`,
+      ...config,
+    });
 
 export interface OptionI {
   label: string;
@@ -49,58 +52,66 @@ export interface OptionI {
 
 const items = [
   {
-    value: 'name',
-    label: 'Name'
+    value: "name",
+    label: "Name",
   },
   {
-    value: 'price_asc',
-    label: 'Price low'
+    value: "price_asc",
+    label: "Price low",
   },
   {
-    value: 'price_desc',
-    label: 'Price heigh'
+    value: "price_desc",
+    label: "Price heigh",
   },
   {
-    value: 'discount',
-    label: 'Discount'
+    value: "discount",
+    label: "Discount",
   },
   {
-    value: 'releaseDate',
-    label: 'Release Date'
+    value: "releaseDate",
+    label: "Release Date",
   },
 ];
 
 const Products: NextPageWithLayout = () => {
   const { query } = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { error, data, isRefetching, isPreviousData } = useQuery(['products', query], getProducts(query), { keepPreviousData: true });
-  const { data: genres } = useQuery(['genres'], getGenres());
-  const { data: platforms } = useQuery(['platforms'], getPlatforms());
+  const { error, data, isRefetching, isPreviousData } = useQuery(
+    ["products", query],
+    getProducts(query),
+    { keepPreviousData: true }
+  );
+  const { data: genres } = useQuery(["genres"], getGenres());
+  const { data: platforms } = useQuery(["platforms"], getPlatforms());
   const mappedQuery: Array<[string, string]> = [];
-  const chipFor = ['price_min', 'price_max', 'os', 'platforms', 'genres'];
+  const chipFor = ["price_min", "price_max", "os", "platforms", "genres"];
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const handleViewModeChange = (event: MouseEvent<HTMLButtonElement>) => {
-    setViewMode((prev) => prev === 'grid' ? 'list' : 'grid')
-  }
+  const handleViewModeChange = () => {
+    setViewMode((prev) => (prev === "grid" ? "list" : "grid"));
+  };
 
-  const handleOpenDrawer = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleOpenDrawer = () => {
     setDrawerOpen(true);
-  }
+  };
 
-  const handleCloseDrawer = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleCloseDrawer = () => {
     setDrawerOpen(false);
-  }
+  };
 
-  Object.keys(query).filter(key => chipFor.includes(key)).forEach((key) => {
-    if (typeof query[key] === 'string') {
-      mappedQuery.push([key, query[key] as string])
-    } else if (Array.isArray(query[key])) {
-      (query?.[key] as string[])?.forEach((x: string) => mappedQuery.push([key, x]))
-    }
-  })
-
+  Object.keys(query)
+    .filter((key) => chipFor.includes(key))
+    .forEach((key) => {
+      if (typeof query[key] === "string") {
+        mappedQuery.push([key, query[key] as string]);
+      } else if (Array.isArray(query[key])) {
+        (query?.[key] as string[])?.forEach((x: string) =>
+          mappedQuery.push([key, x])
+        );
+      }
+    });
+  console.log(data);
   if (!data || !genres || !platforms) return null;
   const { products, count } = data;
 
@@ -108,18 +119,19 @@ const Products: NextPageWithLayout = () => {
     <>
       <Drawer
         sx={{
-          marginTop: '110px',
+          marginTop: "110px",
           width: 320,
           flexShrink: 0,
-          position: 'relative',
-          '& .MuiDrawer-paper': {
-            marginTop: '110px',
-            height: 'calc(100% - 110px)',
+          position: "relative",
+          "& .MuiDrawer-paper": {
+            marginTop: "110px",
+            height: "calc(100% - 110px)",
             width: 320,
-            boxSizing: 'border-box', p: 2
+            boxSizing: "border-box",
+            p: 2,
           },
-          '& .MuiBackdrop-root': {
-            marginTop: '110px',
+          "& .MuiBackdrop-root": {
+            marginTop: "110px",
           },
         }}
         variant="temporary"
@@ -127,30 +139,24 @@ const Products: NextPageWithLayout = () => {
         open={drawerOpen}
         onClose={handleCloseDrawer}
       >
-        <ProductsFilters
-          platforms={platforms}
-          genres={genres}
-        />
+        <ProductsFilters platforms={platforms} genres={genres} />
       </Drawer>
       <Head>
         <title>Store</title>
       </Head>
       <Box
         sx={{
-          backgroundColor: 'background.default',
-          py: 5
+          backgroundColor: "background.default",
+          py: 5,
         }}
       >
-        <Container
-          maxWidth="lg"
-          ref={containerRef}
-        >
+        <Container maxWidth="lg" ref={containerRef}>
           <Box
             sx={{
-              display: 'grid',
+              display: "grid",
               gridTemplateColumns: {
-                md: '220px 1fr',
-                xs: ' 1fr'
+                md: "220px 1fr",
+                xs: " 1fr",
               },
               columnGap: 5,
               rowGap: 2,
@@ -159,16 +165,16 @@ const Products: NextPageWithLayout = () => {
             <Box />
             <Box
               sx={{
-                display: 'grid',
-                width: '100%',
-                gap: 1
+                display: "grid",
+                width: "100%",
+                gap: 1,
               }}
             >
               <Box
                 sx={{
-                  display: 'flex',
-                  width: '100%',
-                  gap: 1
+                  display: "flex",
+                  width: "100%",
+                  gap: 1,
                 }}
               >
                 <Button
@@ -177,16 +183,12 @@ const Products: NextPageWithLayout = () => {
                   onClick={handleOpenDrawer}
                   sx={{
                     display: {
-                      md: 'none',
-                      xs: 'inline-flex'
-                    }
+                      md: "none",
+                      xs: "inline-flex",
+                    },
                   }}
                 >
-                  <Typography
-                    color="textPrimary"
-                    variant="body2"
-                    mr={1}
-                  >
+                  <Typography color="textPrimary" variant="body2" mr={1}>
                     Filters
                   </Typography>
                   <AdjustmentsHorizontalIcon />
@@ -195,8 +197,8 @@ const Products: NextPageWithLayout = () => {
                 <Box
                   sx={{
                     display: {
-                      md: 'block',
-                      xs: 'none'
+                      md: "block",
+                      xs: "none",
                     },
                   }}
                 >
@@ -210,10 +212,10 @@ const Products: NextPageWithLayout = () => {
               <Box
                 sx={{
                   display: {
-                    md: 'none',
-                    xs: 'flex'
+                    md: "none",
+                    xs: "flex",
                   },
-                  justifyContent: 'flex-end',
+                  justifyContent: "flex-end",
                 }}
               >
                 <ViewModeButton
@@ -223,9 +225,9 @@ const Products: NextPageWithLayout = () => {
               </Box>
               <Box
                 sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 1
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 1,
                 }}
               >
                 {mappedQuery.map(([key, value]) => (
@@ -238,65 +240,63 @@ const Products: NextPageWithLayout = () => {
               </Box>
             </Box>
 
-
             <Box
               sx={{
                 display: {
-                  md: 'block',
-                  xs: 'none'
-                }
+                  md: "block",
+                  xs: "none",
+                },
               }}
             >
-              <ProductsFilters
-                platforms={platforms}
-                genres={genres}
-              />
+              <ProductsFilters platforms={platforms} genres={genres} />
             </Box>
             <Box>
               <Box
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: () => viewMode === 'grid' ? ({
-                    lg: 'repeat(3, 1fr)',
-                    sm: 'repeat(2, 1fr)',
-                    xs: '1fr'
-                  }) : '1fr',
+                  display: "grid",
+                  gridTemplateColumns: () =>
+                    viewMode === "grid"
+                      ? {
+                          lg: "repeat(3, 1fr)",
+                          sm: "repeat(2, 1fr)",
+                          xs: "1fr",
+                        }
+                      : "1fr",
                   gap: 2,
-                  filter: (isRefetching && isPreviousData) ? 'blur(4px) saturate(100%)' : undefined,
-                  position: 'relative'
+                  filter:
+                    isRefetching && isPreviousData
+                      ? "blur(4px) saturate(100%)"
+                      : undefined,
+                  position: "relative",
                 }}
               >
-                {(isRefetching && isPreviousData) && (
+                {isRefetching && isPreviousData && (
                   <Box
                     sx={{
-                      position: 'absolute',
+                      position: "absolute",
                       inset: 0,
                       zIndex: 999,
                     }}
                   />
                 )}
-                {products.map((product) => viewMode === 'grid' ? (
-                  <ProductCard
-                    key={product._id}
-                    product={product}
-                  />
-                ) : (
-                  <ProductCardLine
-                    key={product._id}
-                    product={product}
-                  />
-                ))}
+                {products.map((product) =>
+                  viewMode === "grid" ? (
+                    <ProductCard key={product._id} product={product} />
+                  ) : (
+                    <ProductCardLine key={product._id} product={product} />
+                  )
+                )}
               </Box>
               {Math.ceil(count / 36) !== 1 && (
                 <Box
                   sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    mt: 10
+                    display: "flex",
+                    justifyContent: "center",
+                    mt: 10,
                   }}
                 >
                   <PaginationQuery
-                    size='large'
+                    size="large"
                     count={Math.ceil(count / 36)}
                     variant="outlined"
                     color="primary"
@@ -311,41 +311,35 @@ const Products: NextPageWithLayout = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
-  // const queryClient = new QueryClient();
-  // const limit = Number.parseInt(query.limit) || 2;
-  // const page = Number.parseInt(query.page) || 1;
-  // const skip = (page - 1) * limit
-
-  // const body = {
-  //   ...query,
-  //   skip,
-  //   limit
-  // };
-  // await queryClient.prefetchQuery(['products', body], () => getQueryProducts(body));
-  const queryClient = new QueryClient()
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+  res,
+}) => {
+  const queryClient = new QueryClient();
 
   try {
-    await queryClient.fetchQuery(['products', query], getProducts(query, { req, res }))
-    await queryClient.fetchQuery(['genres'], getGenres({ req, res }))
-    await queryClient.fetchQuery(['platforms'], getPlatforms({ req, res }))
+    await Promise.all([
+      queryClient.fetchQuery(
+        ["products", query],
+        getProducts(query, { req, res })
+      ),
+      queryClient.fetchQuery(["genres"], getGenres({ req, res })),
+      queryClient.fetchQuery(["platforms"], getPlatforms({ req, res })),
+    ]);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      query
-    }
-  }
-}
+      query,
+    },
+  };
+};
 
 export default Products;
 
 Products.getLayout = (page: React.ReactElement) => {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
-}
+  return <Layout>{page}</Layout>;
+};

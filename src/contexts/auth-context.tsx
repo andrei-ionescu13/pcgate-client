@@ -1,10 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import type { FC, ReactNode } from 'react';
-import { appFetch } from '@/utils/app-fetch';
-import { Cart } from '@/types/cart';
-import { setWishlistProducts } from '@/store/slices/wishlist';
-import { useAppDispatch } from '@/store/use-store-dispatch';
-import { setCart } from '@/store/slices/cart';
+import { createContext, useContext, useEffect, useState } from "react";
+import type { FC, ReactNode } from "react";
+import { appFetch } from "@/utils/app-fetch";
+import { Cart } from "@/types/cart";
+import { setWishlistProducts } from "@/store/slices/wishlist";
+import { useAppDispatch } from "@/store/use-store-dispatch";
+import { setCart } from "@/store/slices/cart";
 
 export interface Decoded {
   userId: string;
@@ -14,8 +14,7 @@ export interface Decoded {
   avatar: string;
 }
 
-
-interface User extends Omit<Decoded, 'iat' | 'exp'> {
+interface User extends Omit<Decoded, "iat" | "exp"> {
   cart: Cart;
   wishlist: string[];
   avatar: string;
@@ -27,10 +26,34 @@ interface SessionContextValue {
   user: User | null | undefined;
   isAuthenticated: boolean;
   userIsLoading: boolean;
-  login: ({ email, password }: { email: string, password: string }) => Promise<void>;
-  register: ({ email, password, confirmPassword }: { email: string, password: string, confirmPassword: string }) => Promise<void>;
+  login: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => Promise<void>;
+  register: ({
+    email,
+    password,
+    confirmPassword,
+  }: {
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
-  passwordReset: ({ userId, token, password, confirmPassword }: { userId: string, token: string, password: string, confirmPassword: string }) => Promise<void>;
+  passwordReset: ({
+    userId,
+    token,
+    password,
+    confirmPassword,
+  }: {
+    userId: string;
+    token: string;
+    password: string;
+    confirmPassword: string;
+  }) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (user: Partial<User>) => void;
 }
@@ -45,53 +68,84 @@ const defaultSessionContext = {
   logout: () => Promise.resolve(),
   passwordReset: () => Promise.resolve(),
   requestPasswordReset: (email: string) => Promise.resolve(),
-  updateUser: () => { }
-}
+  updateUser: () => {},
+};
 
-const SessionContext = createContext<SessionContextValue>(defaultSessionContext);
+const SessionContext = createContext<SessionContextValue>(
+  defaultSessionContext
+);
 interface AuthProviderProps {
   children: ReactNode;
   decoded: Decoded | null;
 }
 
-export const login = ({ email, password }: { email: string, password: string }) => appFetch<void>({
-  url: '/auth/login',
-  config: {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-  }
-})
+export const login = ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) =>
+  appFetch<void>({
+    url: "/auth/login",
+    config: {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    },
+  });
 
-export const register = ({ email, password, confirmPassword }: { email: string, password: string, confirmPassword: string }) => appFetch<void>({
-  url: '/auth/register',
-  config: {
-    method: 'POST',
-    body: JSON.stringify({ email, password, confirmPassword })
-  }
-})
+export const register = ({
+  email,
+  password,
+  confirmPassword,
+}: {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}) =>
+  appFetch<void>({
+    url: "/auth/register",
+    config: {
+      method: "POST",
+      body: JSON.stringify({ email, password, confirmPassword }),
+    },
+  });
 
-export const logout = () => appFetch<void>({
-  url: '/auth/logout',
-  config: {
-    method: 'POST',
-  }
-})
+export const logout = () =>
+  appFetch<void>({
+    url: "/auth/logout",
+    config: {
+      method: "POST",
+    },
+  });
 
-export const requestPasswordReset = (email: string) => appFetch<void>({
-  url: '/auth/password-reset-token',
-  config: {
-    method: 'POST',
-    body: JSON.stringify({ email })
-  }
-})
+export const requestPasswordReset = (email: string) =>
+  appFetch<void>({
+    url: "/auth/password-reset-token",
+    config: {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    },
+  });
 
-export const passwordReset = ({ userId, token, password, confirmPassword }: { userId: string, token: string, password: string, confirmPassword: string }) => appFetch<void>({
-  url: '/auth/password-reset',
-  config: {
-    method: 'PUT',
-    body: JSON.stringify({ userId, token, password, confirmPassword })
-  }
-})
+export const passwordReset = ({
+  userId,
+  token,
+  password,
+  confirmPassword,
+}: {
+  userId: string;
+  token: string;
+  password: string;
+  confirmPassword: string;
+}) =>
+  appFetch<void>({
+    url: "/auth/password-reset",
+    config: {
+      method: "PUT",
+      body: JSON.stringify({ userId, token, password, confirmPassword }),
+    },
+  });
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { decoded, children } = props;
@@ -99,39 +153,38 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const [user, setUser] = useState<User | null | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-
+  console.log(decoded);
   useEffect(() => {
     const getUser = async () => {
       try {
         setIsLoading(true);
         const user = await appFetch<User>({
-          url: '/auth/me',
-          withAuth: true
+          url: "/auth/me",
+          withAuth: true,
         });
-        setUser(user)
-        dispatch(setWishlistProducts(user.wishlist))
-        dispatch(setCart(user.cart))
-
+        setUser(user);
+        dispatch(setWishlistProducts(user.wishlist));
+        dispatch(setCart(user.cart));
       } catch (error) {
-        setUser(null)
+        setUser(null);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
     isAuthenticated && getUser();
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   const updateUser = (user: Partial<User>) => {
     setUser((prev) => {
       if (prev) {
-        return ({
+        return {
           ...prev,
-          ...user
-        })
+          ...user,
+        };
       }
-    })
-  }
+    });
+  };
 
   return (
     <SessionContext.Provider
@@ -145,13 +198,12 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         updateUser,
         logout,
         requestPasswordReset,
-        passwordReset
+        passwordReset,
       }}
     >
       {children}
     </SessionContext.Provider>
-  )
+  );
 };
-
 
 export const useAuth = () => useContext(SessionContext);
