@@ -1,7 +1,6 @@
-import { useState, useEffect, MouseEvent, useRef } from "react";
+import { useState, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import type { FC } from "react";
 import type { GetServerSideProps } from "next";
 import { Box, Container, Typography, Button, Drawer } from "@mui/material";
 import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
@@ -19,6 +18,10 @@ import { ProductsFilterChip } from "@/components/products/products-filter-chip";
 import type { Genre, Platform } from "@/types/common";
 import { Layout } from "layout/layout";
 import { NextPageWithLayout } from "pages/_app";
+import { Publisher } from "@/types/publishers";
+import { Feature } from "@/types/feature";
+import { Developer } from "@/types/developer";
+import { OperatingSystem } from "@/types/operating-system";
 
 const getProducts =
   (query: ParsedUrlQuery, config: Record<string, any> = {}) =>
@@ -29,19 +32,33 @@ const getProducts =
       ...config,
     });
 
-const getGenres =
+const listGenres =
   (config: Record<string, any> = {}) =>
   () =>
-    appFetch<Genre[]>({
-      url: `/genres`,
-      ...config,
-    });
+    appFetch<Genre[]>({ url: "/genres", withAuth: true, ...config });
+const listPublishers =
+  (config: Record<string, any> = {}) =>
+  () =>
+    appFetch<Publisher[]>({ url: "/publishers", withAuth: true, ...config });
+const listPlatforms =
+  (config: Record<string, any> = {}) =>
+  () =>
+    appFetch<Platform[]>({ url: "/platforms", withAuth: true, ...config });
+const listDevelopers =
+  (config: Record<string, any> = {}) =>
+  () =>
+    appFetch<Developer[]>({ url: "/developers", withAuth: true, ...config });
+const listFeatures =
+  (config: Record<string, any> = {}) =>
+  () =>
+    appFetch<Feature[]>({ url: "/features", withAuth: true, ...config });
 
-const getPlatforms =
+const listOperatingSystems =
   (config: Record<string, any> = {}) =>
   () =>
-    appFetch<Platform[]>({
-      url: `/platforms`,
+    appFetch<OperatingSystem[]>({
+      url: "/operating-systems",
+      withAuth: true,
       ...config,
     });
 
@@ -68,7 +85,7 @@ const items = [
     label: "Discount",
   },
   {
-    value: "releaseDate",
+    value: "release_date",
     label: "Release Date",
   },
 ];
@@ -81,13 +98,37 @@ const Products: NextPageWithLayout = () => {
     getProducts(query),
     { keepPreviousData: true }
   );
-  const { data: genres } = useQuery(["genres"], getGenres());
-  const { data: platforms } = useQuery(["platforms"], getPlatforms());
+  const developersQuery = useQuery(["developers"], listDevelopers());
+  const featuresQuery = useQuery(["features"], listFeatures());
+  const genresQuery = useQuery(["genres"], listGenres());
+  const operatingSystemsQuery = useQuery(
+    ["oerating-systems"],
+    listOperatingSystems()
+  );
+  const platformsQuery = useQuery(["platforms"], listPlatforms());
+  const publishersQuery = useQuery(["publishers"], listPublishers());
+
+  const genres = genresQuery.data || [];
+  const platforms = platformsQuery.data || [];
+  const publishers = publishersQuery.data || [];
+  const developers = developersQuery.data || [];
+  const features = featuresQuery.data || [];
+  const operatingSystems = operatingSystemsQuery.data || [];
+
   const mappedQuery: Array<[string, string]> = [];
-  const chipFor = ["price_min", "price_max", "os", "platforms", "genres"];
+  const chipFor = [
+    "price_min",
+    "price_max",
+    "os",
+    "platforms",
+    "genres",
+    "publishers",
+    "developers",
+    "features",
+  ];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
+  console.log(operatingSystems);
   const handleViewModeChange = () => {
     setViewMode((prev) => (prev === "grid" ? "list" : "grid"));
   };
@@ -111,7 +152,7 @@ const Products: NextPageWithLayout = () => {
         );
       }
     });
-  console.log(data);
+
   if (!data || !genres || !platforms) return null;
   const { products, count } = data;
 
@@ -139,7 +180,14 @@ const Products: NextPageWithLayout = () => {
         open={drawerOpen}
         onClose={handleCloseDrawer}
       >
-        <ProductsFilters platforms={platforms} genres={genres} />
+        <ProductsFilters
+          platforms={platforms}
+          genres={genres}
+          publishers={publishers}
+          developers={developers}
+          features={features}
+          operatingSystems={operatingSystems}
+        />
       </Drawer>
       <Head>
         <title>Store</title>
@@ -248,7 +296,14 @@ const Products: NextPageWithLayout = () => {
                 },
               }}
             >
-              <ProductsFilters platforms={platforms} genres={genres} />
+              <ProductsFilters
+                platforms={platforms}
+                genres={genres}
+                publishers={publishers}
+                developers={developers}
+                features={features}
+                operatingSystems={operatingSystems}
+              />
             </Box>
             <Box>
               <Box
@@ -324,8 +379,15 @@ export const getServerSideProps: GetServerSideProps = async ({
         ["products", query],
         getProducts(query, { req, res })
       ),
-      queryClient.fetchQuery(["genres"], getGenres({ req, res })),
-      queryClient.fetchQuery(["platforms"], getPlatforms({ req, res })),
+      queryClient.fetchQuery(["developers"], listDevelopers({ req, res })),
+      queryClient.fetchQuery(["features"], listFeatures({ req, res })),
+      queryClient.fetchQuery(["genres"], listGenres({ req, res })),
+      queryClient.fetchQuery(
+        ["oerating-systems"],
+        listOperatingSystems({ req, res })
+      ),
+      queryClient.fetchQuery(["platforms"], listPlatforms({ req, res })),
+      queryClient.fetchQuery(["publishers"], listPublishers({ req, res })),
     ]);
   } catch (error) {
     console.error(error);

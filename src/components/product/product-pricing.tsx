@@ -1,30 +1,30 @@
-import type { FC } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
+import type { FC } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import {
   Box,
   Button,
   Card,
   CardContent,
   Grid,
-  Typography
-} from '@mui/material';
-import { Link } from '@/components/link';
+  Typography,
+} from "@mui/material";
+import { Link } from "@/components/link";
 // import { WishlistButton } from '@/components/wishlist-button';
-import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
-import { Uplay as UplayIcon } from '@/icons/uplay';
-import { Rockstar as RockstarIcon } from '@/icons/rockstar';
-import { Steam as SteamIcon } from '@/icons/steam';
-import { useSettings } from '@/contexts/settings-context';
-import numeral from 'numeral';
-import type { Product } from '@/types/product';
-import { ProductDiscount } from '../product-discount';
-import { AppImage } from '@/components/app-image';
-import { AddButton } from '@/components/add-button';
-import { useFormatCurrency } from '@/hooks/use-format-currency';
+import { ShoppingCart as ShoppingCartIcon } from "@/icons/shopping-cart";
+import { Uplay as UplayIcon } from "@/icons/uplay";
+import { Rockstar as RockstarIcon } from "@/icons/rockstar";
+import { Steam as SteamIcon } from "@/icons/steam";
+import { useSettings } from "@/contexts/settings-context";
+import numeral from "numeral";
+import type { Product } from "@/types/product";
+import { ProductDiscount } from "../product-discount";
+import { AppImage } from "@/components/app-image";
+import { AddButton } from "@/components/add-button";
+import { useFormatCurrency } from "@/hooks/use-format-currency";
 
 const icons = {
-  rockstar: <RockstarIcon sx={{ fontSize: 72, height: 'fit-content' }} />,
+  rockstar: <RockstarIcon sx={{ fontSize: 72, height: "fit-content" }} />,
   steam: <SteamIcon />,
   uplay: <UplayIcon />,
 };
@@ -40,7 +40,7 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
   return (
     <Card>
       <AppImage
-        layout='responsive'
+        layout="responsive"
         alt={product.title}
         height={9}
         src={product.cover.public_id}
@@ -48,12 +48,19 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
       />
       <CardContent
         sx={{
-          display: 'grid',
-          gridAutoFlow: 'row',
-          gap: 2
+          display: "grid",
+          gridAutoFlow: "row",
+          gap: 2,
         }}
       >
-        <Box sx={{ width: '64px', position: 'relative', pb: 5, color: 'text.primary' }} >
+        <Box
+          sx={{
+            width: "64px",
+            position: "relative",
+            pb: 5,
+            color: "text.primary",
+          }}
+        >
           <AppImage
             priority
             src={product.platform.logo.public_id}
@@ -62,29 +69,32 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
                 (min-width: 1200px) 400px,
                 (min-width: 900px) 33vw,
                 (min-width: 600px) 50vw"
-            layout='fill'
+            layout="fill"
             objectFit="contain"
           />
         </Box>
         <Box
           sx={{
-            alignItems: 'center',
-            display: 'flex'
+            alignItems: "center",
+            display: "flex",
+            gap: 1,
           }}
         >
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <Typography
-              color="textSecondary"
-              sx={{ textDecoration: 'line-through' }}
-              variant="body1"
-            >
-              {formatCurrency(product.initialPrice)}
-            </Typography>
+            {product.originalPrice && (
+              <Typography
+                color="textSecondary"
+                sx={{ textDecoration: "line-through" }}
+                variant="body1"
+              >
+                {formatCurrency(product.originalPrice)}
+              </Typography>
+            )}
             <Typography
               color="textPrimary"
               sx={{ fontWeight: 600 }}
@@ -93,18 +103,14 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
               {formatCurrency(product.price)}
             </Typography>
           </Box>
-          {product.initialPrice && (
+          {product.originalPrice && (
             <ProductDiscount
-              initialPrice={product.initialPrice}
+              initialPrice={product.originalPrice}
               price={product.price}
             />
           )}
         </Box>
-        <AddButton
-          fullWidth
-          size="large"
-          productId={product._id}
-        >
+        <AddButton fullWidth size="large" productId={product._id}>
           Add to cart
         </AddButton>
       </CardContent>

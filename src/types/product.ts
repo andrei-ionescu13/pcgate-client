@@ -6,28 +6,58 @@ interface Platform {
   logo: Asset;
 }
 
+interface Publisher {
+  name: string;
+  _id: string;
+  slug: string;
+}
+
+interface Genre {
+  name: string;
+  _id: string;
+  slug: string;
+}
+
+interface Developer {
+  name: string;
+  _id: string;
+  slug: string;
+}
+
+interface OperatingSystem {
+  name: string;
+  _id: string;
+  slug: string;
+}
+
+interface Feature {
+  name: string;
+  _id: string;
+  slug: string;
+}
+
 export interface ProductReview extends Review {
   product: string;
   hasDelete: boolean;
 }
 
 export interface Product {
-  _id: string,
+  _id: string;
   cover: Asset;
   images: Asset[];
   videos: string[];
   title: string;
   price: number;
-  initialPrice: number;
-  genres: string[];
+  originalPrice?: number;
+  genres: Genre[];
   releaseDate: string;
-  publisher: string;
+  publisher: Publisher;
   platform: Platform;
-  developers: string[];
+  developers: Developer[];
   languages: string[];
-  features: string[];
+  features: Feature[];
   link: string[];
-  os: string[];
+  os: OperatingSystem[];
   markdown: string;
   metaTitle: string;
   metaDescription: string;
@@ -43,9 +73,9 @@ export interface Product {
       3: number;
       4: number;
       5: number;
-    },
+    };
     average: number;
-  },
+  };
   reviews: ProductReview[];
   discount: string;
   createdAt: string;

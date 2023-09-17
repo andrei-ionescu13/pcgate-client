@@ -153,7 +153,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const [user, setUser] = useState<User | null | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-  console.log(decoded);
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -171,7 +171,6 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         setIsLoading(false);
       }
     };
-
     isAuthenticated && getUser();
   }, [isAuthenticated]);
 

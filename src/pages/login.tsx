@@ -37,8 +37,8 @@ const Login: NextPageWithLayout = () => {
   const [showPassword, setShowPassword] = useState(false);
   const formik = useFormik({
     initialValues: {
-      email: "andrei.ionescu3535@gmail.com",
-      password: "Password1234",
+      email: "kanahi9009@viicard.com",
+      password: "Password123",
     },
     validationSchema: Yup.object({
       email: Yup.string().email().max(255).required(),

@@ -15,7 +15,7 @@ const buildQueryString = (query: Record<string, any>): string => {
   const finalQuery: URLSearchParams = new URLSearchParams();
 
   Object.keys(query).forEach((key) => {
-    finalQuery.append(key, query[key]);
+    query[key] && finalQuery.append(key, query[key]);
   });
 
   return finalQuery.toString();
@@ -56,7 +56,6 @@ export const appFetch = async <T>({
   noContentType = false,
   query = undefined,
   withAuth = false,
-  responseType = "json",
 }: {
   req?: any;
   res?: any;
@@ -65,7 +64,6 @@ export const appFetch = async <T>({
   noContentType?: boolean;
   query?: Record<string, any>;
   withAuth?: boolean;
-  responseType?: string;
 }): Promise<ReturnType<T>> => {
   const { headers = {}, ...restConfig } = config;
   console.log(apiUrl);
@@ -84,17 +82,13 @@ export const appFetch = async <T>({
     });
 
   const handleSuccessResponse = async (response: any) => {
-    if (responseType === "json") {
-      let data: any = await response.text();
-      data = data ? JSON.parse(data) : {};
+    const data: any = await response.text();
 
-      return data;
+    if (response.headers.get("content-type").includes("json")) {
+      return JSON.parse(data);
     }
 
-    if (responseType === "blob") {
-      const data = await response.blob();
-      return data as ReturnType<T>;
-    }
+    return data;
   };
 
   const appFetch = async () => {

@@ -24,12 +24,12 @@ export interface Asset {
 }
 
 export interface Review {
-  _id: string,
-  userName: string,
-  user: string,
-  rating: 2,
-  content: string,
-  createdAt: string,
+  _id: string;
+  userName: string;
+  user: string;
+  rating: 2;
+  content: string;
+  createdAt: string;
 }
 
 export interface Meta {
@@ -57,6 +57,7 @@ export interface ProductKey {
 
 export interface Genre {
   _id: string;
+  slug: string;
   name: string;
 }
 
@@ -64,11 +65,12 @@ export interface Platform {
   _id: string;
   name: string;
   logo: Asset;
+  slug: string;
 }
 
 export interface Coupon {
   _id: string;
   code: string;
-  type: 'amount' | 'percentage';
+  type: "amount" | "percentage";
   value: number;
 }

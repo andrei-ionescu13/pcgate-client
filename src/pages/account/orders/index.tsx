@@ -39,7 +39,7 @@ const Orders: NextPageWithLayout = () => {
     getUserOrders(query),
     { keepPreviousData: true }
   );
-
+  console.log(data);
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
@@ -181,7 +181,7 @@ const Orders: NextPageWithLayout = () => {
             }}
           >
             <Pagination
-              count={Math.ceil(count / 2)}
+              count={Math.ceil(count / 12)}
               variant="outlined"
               color="primary"
               page={page}

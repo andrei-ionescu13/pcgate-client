@@ -25,6 +25,7 @@ const getCart =
 
 const Cart: NextPageWithLayout = () => {
   const { data: cart } = useQuery(["cart"], getCart(), { staleTime: 99999999 });
+
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState(
     cart?.hasPriceChanged || cart?.hasQuantityChanged || cart?.hasUnavailable
