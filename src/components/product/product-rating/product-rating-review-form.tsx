@@ -36,10 +36,11 @@ export const ProductRatingReviewForm: FC<ProductRatingReviewFormProps> = (
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const createReview = useCreateReview(() =>
-    queryClient.invalidateQueries(["product", product.slug])
+    Promise.all([
+      queryClient.invalidateQueries(["product", product.slug]),
+      queryClient.invalidateQueries(["product", product.slug, "reviews"]),
+    ])
   );
-
-  console.log(isAuthenticated);
 
   const formik = useFormik({
     initialValues: {

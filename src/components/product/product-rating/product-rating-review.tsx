@@ -27,7 +27,10 @@ export const ProductRatingReview: FC<ProductRatingReviewProps> = (props) => {
   const { slug } = query as { slug: string };
   const queryClient = useQueryClient();
   const deleteReview = useDeleteReview(() =>
-    queryClient.invalidateQueries(["product", slug])
+    Promise.all([
+      queryClient.invalidateQueries(["product", slug]),
+      queryClient.invalidateQueries(["product", slug, "reviews"]),
+    ])
   );
 
   return (
