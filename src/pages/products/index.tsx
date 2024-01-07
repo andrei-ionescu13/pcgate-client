@@ -26,39 +26,10 @@ import { OperatingSystem } from "@/types/operating-system";
 const getProducts =
   (query: ParsedUrlQuery, config: Record<string, any> = {}) =>
   () =>
-    appFetch<{ products: Product[]; count: number }>({
+    //change
+    appFetch<any>({
       url: `/products`,
       query,
-      ...config,
-    });
-
-const listGenres =
-  (config: Record<string, any> = {}) =>
-  () =>
-    appFetch<Genre[]>({ url: "/genres", withAuth: true, ...config });
-const listPublishers =
-  (config: Record<string, any> = {}) =>
-  () =>
-    appFetch<Publisher[]>({ url: "/publishers", withAuth: true, ...config });
-const listPlatforms =
-  (config: Record<string, any> = {}) =>
-  () =>
-    appFetch<Platform[]>({ url: "/platforms", withAuth: true, ...config });
-const listDevelopers =
-  (config: Record<string, any> = {}) =>
-  () =>
-    appFetch<Developer[]>({ url: "/developers", withAuth: true, ...config });
-const listFeatures =
-  (config: Record<string, any> = {}) =>
-  () =>
-    appFetch<Feature[]>({ url: "/features", withAuth: true, ...config });
-
-const listOperatingSystems =
-  (config: Record<string, any> = {}) =>
-  () =>
-    appFetch<OperatingSystem[]>({
-      url: "/operating-systems",
-      withAuth: true,
       ...config,
     });
 
@@ -98,22 +69,6 @@ const Products: NextPageWithLayout = () => {
     getProducts(query),
     { keepPreviousData: true }
   );
-  const developersQuery = useQuery(["developers"], listDevelopers());
-  const featuresQuery = useQuery(["features"], listFeatures());
-  const genresQuery = useQuery(["genres"], listGenres());
-  const operatingSystemsQuery = useQuery(
-    ["oerating-systems"],
-    listOperatingSystems()
-  );
-  const platformsQuery = useQuery(["platforms"], listPlatforms());
-  const publishersQuery = useQuery(["publishers"], listPublishers());
-
-  const genres = genresQuery.data || [];
-  const platforms = platformsQuery.data || [];
-  const publishers = publishersQuery.data || [];
-  const developers = developersQuery.data || [];
-  const features = featuresQuery.data || [];
-  const operatingSystems = operatingSystemsQuery.data || [];
 
   const mappedQuery: Array<[string, string]> = [];
   const chipFor = [
@@ -128,7 +83,6 @@ const Products: NextPageWithLayout = () => {
   ];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  console.log(operatingSystems);
   const handleViewModeChange = () => {
     setViewMode((prev) => (prev === "grid" ? "list" : "grid"));
   };
@@ -153,8 +107,16 @@ const Products: NextPageWithLayout = () => {
       }
     });
 
-  if (!data || !genres || !platforms) return null;
-  const { products, count } = data;
+  if (!data) return null;
+  const { products, productCount, filters } = data;
+  const {
+    platforms,
+    genres,
+    publishers,
+    developers,
+    features,
+    operatingSystems,
+  } = filters;
 
   return (
     <>
@@ -342,7 +304,7 @@ const Products: NextPageWithLayout = () => {
                   )
                 )}
               </Box>
-              {Math.ceil(count / 36) !== 1 && (
+              {Math.ceil(productCount / 36) !== 1 && (
                 <Box
                   sx={{
                     display: "flex",
@@ -352,7 +314,7 @@ const Products: NextPageWithLayout = () => {
                 >
                   <PaginationQuery
                     size="large"
-                    count={Math.ceil(count / 36)}
+                    count={Math.ceil(productCount / 36)}
                     variant="outlined"
                     color="primary"
                   />
@@ -374,21 +336,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   const queryClient = new QueryClient();
 
   try {
-    await Promise.all([
-      queryClient.fetchQuery(
-        ["products", query],
-        getProducts(query, { req, res })
-      ),
-      queryClient.fetchQuery(["developers"], listDevelopers({ req, res })),
-      queryClient.fetchQuery(["features"], listFeatures({ req, res })),
-      queryClient.fetchQuery(["genres"], listGenres({ req, res })),
-      queryClient.fetchQuery(
-        ["oerating-systems"],
-        listOperatingSystems({ req, res })
-      ),
-      queryClient.fetchQuery(["platforms"], listPlatforms({ req, res })),
-      queryClient.fetchQuery(["publishers"], listPublishers({ req, res })),
-    ]);
+    await queryClient.fetchQuery(
+      ["products", query],
+      getProducts(query, { req, res })
+    );
   } catch (error) {
     console.error(error);
   }
