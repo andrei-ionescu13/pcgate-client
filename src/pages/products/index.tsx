@@ -328,28 +328,28 @@ const Products: NextPageWithLayout = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  req,
-  res,
-}) => {
-  const queryClient = new QueryClient();
+// export const getServerSideProps: GetServerSideProps = async ({
+//   query,
+//   req,
+//   res,
+// }) => {
+//   const queryClient = new QueryClient();
 
-  try {
-    await queryClient.fetchQuery(
-      ["products", query],
-      getProducts(query, { req, res })
-    );
-  } catch (error) {
-    console.error(error);
-  }
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      query,
-    },
-  };
-};
+//   try {
+//     await queryClient.fetchQuery(
+//       ["products", query],
+//       getProducts(query, { req, res })
+//     );
+//   } catch (error) {
+//     console.error(error);
+//   }
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient),
+//       query,
+//     },
+//   };
+// };
 
 export default Products;
 
