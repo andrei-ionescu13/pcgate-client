@@ -62,8 +62,8 @@ const AppWrapper = (Component: any) => {
             queries: {
               refetchOnWindowFocus: false,
               // staleTime: 3 * 60 * 1000,
-              cacheTime: 0,
               staleTime: 0,
+              cacheTime: 0,
             },
           },
         })
