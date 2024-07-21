@@ -25,18 +25,6 @@ const categories: Record<ArticleCategory, { color: string; label: string }> = {
   },
 }
 
-const ArticleCardRoot = styled(Card)({
-  position: 'relative',
-  '.image-container': {
-    transition: 'transform 350ms',
-  },
-  '&:hover': {
-    '.image-container': {
-      transform: 'scale(1.25) translateZ(0px)'
-    }
-  }
-
-});
 
 interface ArticleCardProps {
   article: Article;
@@ -47,8 +35,13 @@ export const ArticleCard: FC<ArticleCardProps> = (props) => {
   const { cover, title, slug, createdAt, category } = article;
 
   return (
-    <ArticleCardRoot elevation={0}>
-      <Box className="image-container">
+    <Card sx={{ position: 'relative' }} elevation={0}>
+      <Box sx={{
+        transition: 'transform 350ms',
+        ':hover': {
+          transform: 'scale(1.25) translateZ(0px)'
+        }
+      }}>
         <AppImage
           layout="responsive"
           priority
@@ -109,6 +102,6 @@ export const ArticleCard: FC<ArticleCardProps> = (props) => {
           {title}
         </Link>
       </Box>
-    </ArticleCardRoot >
+    </Card >
   )
 }

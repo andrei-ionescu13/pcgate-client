@@ -1,6 +1,7 @@
+import { isServer } from "@tanstack/react-query";
 import { ApiError } from "./api-error";
 import { setCookie } from "cookies-next";
-import Router from "next/router";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 const hasClient = typeof window !== "undefined";
 
@@ -8,14 +9,13 @@ const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
-const apiUrl = hasClient
-  ? `${process.env.NEXT_PUBLIC_URL}/api`
-  : process.env.NEXT_PUBLIC_API_PATH;
+const apiUrl = hasClient ? `/api` : process.env.NEXT_PUBLIC_API_PATH;
+
 const buildQueryString = (query: Record<string, any>): string => {
   const finalQuery: URLSearchParams = new URLSearchParams();
 
   Object.keys(query).forEach((key) => {
-    query[key] && finalQuery.append(key, query[key]);
+    finalQuery.append(key, query[key]);
   });
 
   return finalQuery.toString();
@@ -25,13 +25,12 @@ export const getNewAccesToken = async (
   cookies?: any,
   res?: any
 ): Promise<string> => {
-  const respose = await fetch(`${apiUrl}/auth/access-token`, {
+  const respose = await fetch(`${apiUrl}/access-token`, {
     credentials: "include",
     headers: {
       ...(!!cookies && { Cookie: cookies }),
     },
   });
-
   const data = await respose.json();
 
   if (respose.ok) {
@@ -41,8 +40,9 @@ export const getNewAccesToken = async (
   if (res) {
     res.redirect(307, "login");
   } else {
-    Router.push("/login");
+    // Router.push("/login");
   }
+
   throw new ApiError(respose.status, data.message);
 };
 
@@ -56,6 +56,7 @@ export const appFetch = async <T>({
   noContentType = false,
   query = undefined,
   withAuth = false,
+  responseType = "json",
 }: {
   req?: any;
   res?: any;
@@ -64,9 +65,16 @@ export const appFetch = async <T>({
   noContentType?: boolean;
   query?: Record<string, any>;
   withAuth?: boolean;
+  responseType?: string;
+
 }): Promise<ReturnType<T>> => {
   const { headers = {}, ...restConfig } = config;
-  console.log(apiUrl);
+  let cookieStore: ReadonlyRequestCookies | undefined;
+
+  if (isServer) {
+    const { cookies } = await import("next/headers");
+    cookieStore = cookies();
+  }
 
   const request = () =>
     fetch(`${apiUrl}${url}${query ? `?${buildQueryString(query)}` : ""}`, {
@@ -74,7 +82,7 @@ export const appFetch = async <T>({
         headers: {
           ...DEFAULT_HEADERS,
           ...headers,
-          ...(!!req?.headers.cookie && { Cookie: req.headers.cookie }),
+          ...((isServer && cookieStore) && { Cookie: cookieStore.toString() }),
         },
       }),
       ...restConfig,
@@ -82,13 +90,17 @@ export const appFetch = async <T>({
     });
 
   const handleSuccessResponse = async (response: any) => {
-    const data: any = await response.text();
+    if (responseType === "json") {
+      let data: any = await response.text();
+      data = data ? JSON.parse(data) : {};
 
-    if (response.headers.get("content-type").includes("json")) {
-      return JSON.parse(data);
+      return data;
     }
 
-    return data;
+    if (responseType === "blob") {
+      const data = await response.blob();
+      return data as ReturnType<T>;
+    }
   };
 
   const appFetch = async () => {
@@ -104,26 +116,22 @@ export const appFetch = async <T>({
 
   const appAuthFetch = async () => {
     let response = await request();
-
     if (response.ok) {
       return await handleSuccessResponse(response);
     }
 
     let data = await response.json();
-
     if (response.status !== 401) {
       throw new ApiError(response.status, data.message);
     }
 
     const newAccesToken = await getNewAccesToken(req?.headers.cookie, res);
 
-    if (req && res) {
-      setCookie("accessToken", newAccesToken, {
-        req,
-        res,
+    if (cookieStore) {
+      cookieStore.set("accessToken", newAccesToken, {
         maxAge: 60 * 6 * 24,
         httpOnly: true,
-      });
+      })
     }
 
     response = await request();
@@ -135,7 +143,7 @@ export const appFetch = async <T>({
     data = await response.json();
 
     if (response.status === 401) {
-      hasClient ? Router.push("/login") : res.push(307, "login");
+      // hasClient ? Router.push("/login") : res.push(307, "login");
     }
 
     throw new ApiError(response.status, data.message);

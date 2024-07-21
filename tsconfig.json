@@ -28,9 +28,9 @@
       ],
       "@/store/*": [
         "store/*"
-      ],
+      ]
     },
-    "target": "es5",
+    "target": "ES6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -50,13 +50,19 @@
     "noEmit": true,
     "jsx": "preserve",
     "useUnknownInCatchVariables": false,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "src",
     "temp/components",
     "temp",
-    "temp"
+    "temp",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

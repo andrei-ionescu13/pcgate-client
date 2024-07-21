@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Box, Chip, Typography } from '@mui/material';
-import type { ArticleTag } from 'pages/blog';
+import type { ArticleTag } from 'temp-pages/pages/blog';
 import { Link } from '@/components/link';
 
 interface BlogPopularTagsProps {
@@ -32,7 +32,6 @@ export const BlogPopularTags: FC<BlogPopularTagsProps> = (props) => {
             href={`/blog?tag=${tag.value}`}
             key={tag.value}
             label={tag.label}
-            onClick={() => { }}
             size="small"
             underline="none"
           />

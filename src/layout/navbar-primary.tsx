@@ -72,7 +72,7 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Search
+          {/* <Search
             sx={{
               display: {
                 md: 'flex',
@@ -83,7 +83,7 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
               ml: 5,
               mr: 2
             }}
-          />
+          /> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box
             sx={{
@@ -91,7 +91,8 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
               gap: 1.5
             }}
           >
-            {!mdUp && <SearchMobile />}
+            {/* todo change this */}
+            {/* {!mdUp && <SearchMobile />} */}
             {smUp && isAuthenticated ? (
               <>
                 <AccountPopover />

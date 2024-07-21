@@ -10,11 +10,14 @@ import { appFetch } from '@/utils/app-fetch';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import type { UserReview as UserReviewI } from '@/types/user';
 
-export const useDeleteReview = (onSuccess: () => void) => useMutation<{}, Error, string>((id) => appFetch({
-  url: `/reviews/${id}`,
-  config: { method: 'DELETE' },
-  withAuth: true
-}), { onSuccess })
+export const useDeleteReview = (onSuccess: () => void) => useMutation<{}, Error, string>({
+  mutationFn: (id) => appFetch({
+    url: `/reviews/${id}`,
+    config: { method: 'DELETE' },
+    withAuth: true
+  }),
+  onSuccess
+})
 
 interface UserReview {
   review: UserReviewI;
@@ -25,7 +28,7 @@ export const UserReview: FC<UserReview> = (props) => {
   const { review, onDelete } = props;
   const queryClient = useQueryClient();
   const [open, handleOpen, handleClose] = useOpen();
-  const deleteReview = useDeleteReview((): void => { queryClient.invalidateQueries(['user-reviews']); });
+  const deleteReview = useDeleteReview((): void => { queryClient.invalidateQueries({ queryKey: ['user-reviews'] }); });
   const { product } = review;
 
   return (
@@ -41,7 +44,7 @@ export const UserReview: FC<UserReview> = (props) => {
             }
           })
         }}
-        isLoading={deleteReview.isLoading}
+        isLoading={deleteReview.isPending}
         title="Delete review"
         content="Are you sure you want to delete this review?"
       />

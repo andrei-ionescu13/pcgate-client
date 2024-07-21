@@ -1,3 +1,4 @@
+"use client"
 import { Box, IconButton } from '@mui/material';
 import type { Article } from '@/types/articles';
 import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';

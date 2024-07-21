@@ -52,7 +52,7 @@ const initialSettings: Settings = {
 
 export const SettingsContext = createContext<SettingsContextValue>({
   settings: initialSettings,
-  saveSettings: () => {},
+  saveSettings: () => { },
   currencies:
     typeof window !== "undefined" &&
     (localStorage.getItem("languages")
@@ -73,14 +73,17 @@ export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
     language: i18n.language,
     currency: (getCookie("preferredCurrency") as string) || "USD",
   });
-  const { data: languages } = useQuery<Language[]>(
-    ["languages"],
-    listLanguages
+  const { data: languages } = useQuery<Language[]>({
+    queryKey: ["languages"],
+    queryFn: listLanguages
+  }
+
+
   );
-  const { data: currencies } = useQuery<Currency[]>(
-    ["currencies"],
-    listCurrencies
-  );
+  const { data: currencies } = useQuery<Currency[]>({
+    queryKey: ["currencies"],
+    queryFn: listCurrencies
+  });
 
   const saveSettings = (updatedSettings: Settings): void => {
     setSettings(updatedSettings);

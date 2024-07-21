@@ -1,8 +1,9 @@
 import type { FC } from 'react';
 import { Box, List, ListItem, Typography } from '@mui/material';
 import { Link } from '@/components/link';
-import type { ArticleCategory } from 'pages/blog';
 import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
+import { ArticleCategory } from '@/types/articles';
 
 interface BlogCategoriesProps {
   categories: ArticleCategory[];
@@ -10,7 +11,6 @@ interface BlogCategoriesProps {
 
 export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
   const { categories } = props;
-  const { query } = useRouter()
 
   return (
     <Box
@@ -32,7 +32,7 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
             <Box
               component="span"
               sx={{
-                color: (theme) => theme.palette.primary.main,
+                color: 'text.primary',
                 mr: 1
               }}
             >
@@ -42,9 +42,6 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
               href={category.value ? `/blog?category=${category.value}` : '/blog'}
               color="textPrimary"
               variant="body2"
-              sx={{
-                color: (category.value && query.category === category.value) ? 'primary.main' : undefined
-              }}
             >
               {category.label}
             </Link>

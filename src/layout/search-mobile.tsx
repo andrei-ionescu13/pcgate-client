@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Drawer, IconButton } from '@mui/material';

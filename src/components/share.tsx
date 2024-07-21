@@ -1,3 +1,4 @@
+"use client"
 import type { FC } from 'react';
 import { NEXT_PUBLIC_FACEBOOK_APP_ID } from '@/constants';
 import { Box } from '@mui/material';

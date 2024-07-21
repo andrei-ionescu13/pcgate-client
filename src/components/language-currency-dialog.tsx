@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import type { FC, ChangeEvent } from 'react';
-import { useRouter } from 'next/router'
 import { getCookie, setCookie } from 'cookies-next';
 import {
   Button,
@@ -19,6 +18,7 @@ import {
 } from '@mui/material';
 import { useSettings } from '@/contexts/settings-context';
 import { useTranslation } from 'next-i18next';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 const NEXT_LOCALE = "NEXT_LOCALE";
 
 interface LanguageCurrencyDialogProps {
@@ -30,7 +30,14 @@ export const LanguageCurrencyDialog: FC<LanguageCurrencyDialogProps> = (props) =
   const { open, onClose } = props;
   const router = useRouter();
   const { i18n } = useTranslation();
-  const { pathname, asPath, query } = router
+  const pathname = usePathname();
+
+  const query: any = {};
+  const searchParams = useSearchParams();
+
+  for (const [key, value] of searchParams.entries()) {
+    query[key] = value;
+  }
   const { settings, saveSettings, currencies, languages } = useSettings();
   const [selectedLanguageCode, setSelectedLanguageCode] = useState(i18n.language);
   const [selectedCurrencyCode, setSelectedCurrencyCode] = useState(settings?.currency);
@@ -47,12 +54,13 @@ export const LanguageCurrencyDialog: FC<LanguageCurrencyDialogProps> = (props) =
     setCookie('preferredCurrency', selectedCurrencyCode)
     setCookie(NEXT_LOCALE, selectedLanguageCode)
 
-    await router.replace({ pathname, query }, asPath, { locale: selectedLanguageCode })
     saveSettings({
       ...settings,
       language: selectedLanguageCode,
       currency: selectedCurrencyCode
     });
+    //todo change this
+    router.replace(`${[pathname]}?${query.toString()}`, { locale: selectedLanguageCode })
     onClose();
   };
 

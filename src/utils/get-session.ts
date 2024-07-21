@@ -1,16 +1,37 @@
 import jwtDecode from "jwt-decode";
-import { getCookies, setCookie } from 'cookies-next';
-import type { IncomingMessage, ServerResponse } from "http";
-import { getNewAccesToken } from "./app-fetch";
+import { cookies } from "next/headers";
+
+export const getNewAccesToken = async (): Promise<any> => {
+  const cookieStore = cookies()
+  const headers = {
+    Cookie: cookieStore.toString()
+  };
+
+  const respose = await fetch(
+    `${process.env.NEXT_PUBLIC_API_PATH}/access-token`,
+    {
+      headers,
+    }
+  );
+
+  if (respose.ok) {
+    const data = await respose.json();
+    return data;
+  }
+
+  return null;
+};
 
 interface Decoded {
-  userId: string;
+  adminId: string;
   iat: number;
   exp: number;
 }
 
-export const getSession = async (req: IncomingMessage, res: ServerResponse): Promise<Decoded | null> => {
-  const { accessToken, refreshToken } = getCookies({ req, res });
+export const getSession = async (): Promise<Decoded | null> => {
+  const cookieStore = cookies()
+  const accessToken = cookieStore.get('accessToken')?.value
+  const refreshToken = cookieStore.get('refreshToken')?.value
 
   if (!accessToken && !refreshToken) {
     return null;
@@ -19,20 +40,27 @@ export const getSession = async (req: IncomingMessage, res: ServerResponse): Pro
   if (!!accessToken) {
     const decoded: Decoded = jwtDecode(accessToken);
 
-    if (decoded.exp > (Date.now() / 1000)) {
-      return decoded;
+    if (decoded.exp > Date.now() / 1000) {
+      return jwtDecode(accessToken);
     }
   }
-
   if (
-    (!accessToken || (jwtDecode(accessToken) as Decoded).exp < (Date.now() / 1000))
-    && !!refreshToken && (jwtDecode(refreshToken) as Decoded).exp > (Date.now() / 1000)
+    !!refreshToken &&
+    (jwtDecode(refreshToken) as Decoded).exp > Date.now() / 1000
   ) {
-    const newAccesToken = await getNewAccesToken(req.headers.cookie);
-    setCookie('accessToken', newAccesToken, { req, res, maxAge: 60 * 60 * 1000, httpOnly: true });
+    const newAccesToken = await getNewAccesToken();
 
-    return jwtDecode(newAccesToken)
+    if (!newAccesToken) {
+      return null;
+    }
+
+    cookieStore.set("accessToken", newAccesToken, {
+      maxAge: 60 * 60 * 1000,
+      httpOnly: true,
+    });
+
+    return jwtDecode(newAccesToken);
   }
 
   return null;
-}
+};

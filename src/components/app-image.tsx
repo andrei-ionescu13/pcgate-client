@@ -1,3 +1,4 @@
+"use client"
 import type { FC } from 'react';
 import Image from 'next/image'
 import type { ImageProps, ImageLoaderProps } from 'next/image'

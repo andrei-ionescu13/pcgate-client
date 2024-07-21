@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import type { ChangeEvent, FC, FormEvent } from 'react';
-import { useRouter } from 'next/router';
 import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/system';
 import type { SxProps } from '@mui/system';
@@ -9,8 +8,9 @@ import { SearchItem } from './search-item';
 import { useFocused } from '@/hooks/use-focused';
 import { appFetch } from '@/utils/app-fetch';
 import { Product } from '@/types/product';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface SearchProps {
   sx?: SxProps;
@@ -30,10 +30,22 @@ const getProducts = (keyword: string) => () => appFetch<{ count: number, product
 
 export const Search: FC<SearchProps> = (props) => {
   const { isFocused = false, onBlur, ...rest } = props;
-  const { push, query, asPath } = useRouter();
+  const { push } = useRouter();
+  const query: any = {};
+  const searchParams = useSearchParams();
+
+  for (const [key, value] of searchParams.entries()) {
+    query[key] = value;
+  }
+  const pathname = usePathname();
   const [keyword, setKeyword] = useState<string>(query?.keyword as string || '');
   const [ref, focused, setFocused] = useFocused(isFocused);
-  const { data, isLoading } = useQuery(['products', { keyword }], getProducts(keyword), { enabled: keyword.length >= 3, keepPreviousData: !!keyword })
+  const { data, isLoading } = useQuery({
+    queryKey: ['products'],
+    queryFn: getProducts(keyword),
+    enabled: keyword.length >= 3,
+    placeholderData: !!keyword ? keepPreviousData : undefined,
+  })
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -43,10 +55,11 @@ export const Search: FC<SearchProps> = (props) => {
   };
 
   const handleSearch = (): void => {
-    push({
-      pathname: '/games',
-      query: { keyword }
-    })
+    //todo change this
+    // push({
+    //   pathname: '/games',
+    //   query: { keyword }
+    // })
     setFocused(false);
   };
 
@@ -171,7 +184,7 @@ export const Search: FC<SearchProps> = (props) => {
 
   useEffect(() => {
     setFocused(false);
-  }, [asPath])
+  }, [pathname])
 
   return (
     <SearchRoot

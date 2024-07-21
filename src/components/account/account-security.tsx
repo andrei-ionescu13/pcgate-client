@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from 'react';
 import type { FC } from 'react';
 import { Box, Button, Card, Typography, styled } from '@mui/material';

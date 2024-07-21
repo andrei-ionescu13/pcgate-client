@@ -1,3 +1,5 @@
+"use client"
+
 import type { FC } from 'react'
 import { alpha, Button as MatButton, CircularProgress, styled } from '@mui/material'
 import type { ButtonProps as MatButtonProps } from '@mui/material'

@@ -1,3 +1,4 @@
+"use client"
 import type { ChangeEvent, FC } from 'react';
 import { Box, InputBase } from '@mui/material';
 import type { InputBaseProps, InputBaseComponentProps } from '@mui/material';

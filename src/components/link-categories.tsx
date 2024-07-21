@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { useScrollTo } from "@/hooks/use-scroll-to";
-import { Box, Button, Typography, Link } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
+import { LinkCategoriesButton } from "./link-categories-button";
 
 interface LinkCategoriesProps {
   items: Array<{
@@ -11,7 +11,6 @@ interface LinkCategoriesProps {
 
 export const LinkCategories: FC<LinkCategoriesProps> = (props) => {
   const { items } = props;
-  const scrollTo = useScrollTo();
   const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const categories = [
     {
@@ -34,21 +33,7 @@ export const LinkCategories: FC<LinkCategoriesProps> = (props) => {
     <Box>
       <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 5 }}>
         {filteredCategories.map((category) => (
-          <Button
-            key={category.char}
-            color="white"
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              const el: HTMLElement | null = document.querySelector(
-                `#category_${category.char}`
-              );
-              console.log(`.category_${category.char}`);
-              el && scrollTo(el);
-            }}
-          >
-            {category.char}
-          </Button>
+          <LinkCategoriesButton key={category.char} category={category} />
         ))}
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>

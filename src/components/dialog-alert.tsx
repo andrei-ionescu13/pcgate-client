@@ -42,7 +42,7 @@ export const DialogAlert: FC<DialogAlertProps> = (props) => {
             color="textSecondary"
             variant="body2"
           >
-            {content}Delete review
+            {content}
           </Typography>
         ))}
       </DialogContent>
