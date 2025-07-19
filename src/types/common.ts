@@ -1,4 +1,4 @@
-import type { Product } from "./product";
+import type { Product } from './product';
 
 export interface Asset {
   asset_id: string;
@@ -71,6 +71,10 @@ export interface Platform {
 export interface Coupon {
   _id: string;
   code: string;
-  type: "amount" | "percentage";
+  type: 'amount' | 'percentage';
   value: number;
+  endDate?: string | null;
+  products?: Product[];
+  productSelection: 'general' | 'selected';
+  status: 'active' | 'expired' | 'used';
 }

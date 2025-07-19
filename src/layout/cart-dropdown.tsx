@@ -1,11 +1,11 @@
-import type { FC, ElementType } from 'react';
-import { Badge, Box, Button, Card, Divider, List, ListItem, Typography } from '@mui/material';
-import type { ListItemProps } from '@mui/material';
-import { Link } from '@/components/link';
-import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
 import { useSettings } from '@/contexts/settings-context';
+import { Link } from '@/i18n/navigation';
+import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
 import { useStoreSelector } from '@/store/use-store-selector';
 import type { CartLineItem } from '@/types/cart';
+import type { ListItemProps } from '@mui/material';
+import { Badge, Button, Card, Divider, List, ListItem } from '@mui/material';
+import type { ElementType, FC } from 'react';
 
 interface CartDropdownItemProps extends ListItemProps {
   component?: ElementType;
@@ -26,42 +26,21 @@ const CartDropdownItem: FC<CartDropdownItemProps> = (props) => {
         p: 1,
         '&:hover': {
           backgroundColor: 'background.neutral',
-        }
+        },
       }}
-      href={`/games/${product.slug}`}
+      href={`/products/${product.slug}`}
       underline="none"
       {...props}
     >
-      <Typography
-        color="textPrimary"
-        sx={{ justifySelf: 'start' }}
-        variant="body3"
-      >
-        {product.title}
-      </Typography>
-      <Box sx={{ flexGrow: 1 }} />
-      <Typography
-        color="textPrimary"
-        variant="caption"
-      >
-        x
-        {quantity}
-      </Typography>
-      <Box
-        sx={{
-          minWidth: 40,
-          display: 'flex',
-          justifyContent: 'flex-end'
-        }}
-      >
-        <Typography
-          color="primary"
-          variant="caption"
-        >
+      <p className="body3 justify-self-start">{product.title}</p>
+      <div className="flex-1" />
+      <p className="caption">x{quantity}</p>
+      <div className="flex min-w-10 justify-end">
+        <p className="caption text-primary">
           {settings.currency?.symbol}
           {finalPrice}
-        </Typography>
-      </Box>
+        </p>
+      </div>
     </ListItem>
   );
 };
@@ -70,22 +49,9 @@ export const CartDropdown: FC = () => {
   const cart = useStoreSelector((state) => state.cart);
 
   return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        alignSelf: 'stretch',
-        display: 'flex',
-        position: 'relative',
-        zIndex: 999999,
-        '&:hover': {
-          '& > div': {
-            display: 'block'
-          }
-        }
-      }}
-    >
+    <div className="group relative z-10 flex items-center self-stretch">
       <Link
-        href='/cart'
+        href="/cart"
         underline="none"
       >
         <Badge
@@ -94,46 +60,29 @@ export const CartDropdown: FC = () => {
           sx={{
             '& .MuiBadge-badge': {
               backgroundColor: '#fff',
-              color: '#000'
-            }
+              color: '#000',
+            },
           }}
         >
-          <Box
-            sx={{
-              alignItems: 'center',
-              backgroundColor: '#1E4582',
-              borderRadius: 2,
-              color: '#fff',
-              cursor: 'pointer',
-              display: 'flex',
-              p: 1
-            }}
-          >
+          <div className="flex cursor-pointer items-center rounded-lg bg-[#1E4582] p-2 text-[#FFF]">
             <ShoppingCartIcon
               fontSize="small"
               sx={{ color: 'inherit' }}
             />
-          </Box>
+          </div>
         </Badge>
       </Link>
-      {(cart.items.length > 0) && (
+      {cart.items.length > 0 && (
         <Card
+          className="z-20 hidden group-hover:block"
           sx={{
-            display: 'none',
             position: 'absolute',
             right: 0,
             top: 36,
-            width: 280
+            width: 280,
           }}
         >
-          <Typography
-            align="center"
-            color="textPrimary"
-            sx={{ m: 1 }}
-            variant="subtitle2"
-          >
-            Latest products added
-          </Typography>
+          <p className="subtitle2 mr-2 text-center">Latest products added</p>
           <Divider />
           <List disablePadding>
             {cart.items.map((item) => (
@@ -144,30 +93,13 @@ export const CartDropdown: FC = () => {
               />
             ))}
           </List>
-          <Box
-            sx={{
-              alignItems: 'center',
-              display: 'flex',
-              px: 1,
-              py: 1
-            }}
-          >
-            <Typography
-              color="textPrimary"
-              variant="subtitle2"
-            >
-              TOTAL:
-            </Typography>
-            <Box sx={{ flexGrow: 1 }} />
-            <Typography
-              color="textPrimary"
-              variant="subtitle2"
-            >
-              {cart.totalPrice}
-            </Typography>
-          </Box>
+          <div className="flex items-center p-2">
+            <p className="subtitle2">TOTAL:</p>
+            <div className="flex-1" />
+            <p className="subtitle2">{cart.totalPrice}</p>
+          </div>
           <Divider />
-          <Box sx={{ p: 1 }}>
+          <div className="p-2">
             <Button
               color="primary"
               component={Link}
@@ -177,9 +109,9 @@ export const CartDropdown: FC = () => {
             >
               View Cart
             </Button>
-          </Box>
+          </div>
         </Card>
       )}
-    </Box>
+    </div>
   );
 };

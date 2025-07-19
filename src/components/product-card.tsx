@@ -1,12 +1,13 @@
-import type { FC } from "react";
-import { Box, Card, Divider, Typography } from "@mui/material";
-import { Link } from "./link";
-import { ProductDiscount } from "./product-discount";
-import { WishlistButton } from "../layout/wishlist-button";
-import type { Product } from "@/types/product";
-import { AppImage } from "./app-image";
-import { AddButton } from "./add-button";
-import { useFormatCurrency } from "@/hooks/use-format-currency";
+'use client';
+import { useFormatCurrency } from '@/hooks/use-format-currency';
+import { Link } from '@/i18n/navigation';
+import type { Product } from '@/types/product';
+import { Card, Divider } from '@mui/material';
+import type { FC } from 'react';
+import { WishlistButton } from '../layout/wishlist-button';
+import { AddButton } from './add-button';
+import { AppImage } from './app-image';
+import { ProductDiscount } from './product-discount';
 
 interface ProductCardProps {
   loading?: boolean;
@@ -20,77 +21,54 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
   return (
     <Card
       sx={{
-        backgroundColor: "background.paper",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "initial",
-        position: "relative",
-        textDecoration: "none",
-        "& img": {
-          maxWidth: "100%",
+        backgroundColor: 'background.paper',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'initial',
+        position: 'relative',
+        textDecoration: 'none',
+        '& img': {
+          maxWidth: '100%',
           borderTopLeftRadius: (theme) => theme.shape.borderRadius,
           borderTopRightRadius: (theme) => theme.shape.borderRadius,
         },
       }}
     >
-      <Box
-        sx={{
-          position: "absolute",
-          top: 8,
-          right: 8,
-          zIndex: 999,
-        }}
-      >
+      <div className="absolute top-4 right-4 z-50">
         <WishlistButton productId={product._id} />
-      </Box>
+      </div>
       <Link href={`/products/${product.slug}`}>
-        <AppImage
-          layout="responsive"
-          width={16}
-          height={9}
-          priority
-          src={product.cover.public_id}
-          alt={product.title}
-          sizes="
+        <div className="relative aspect-video">
+          <AppImage
+            fill
+            priority
+            src={product.cover.public_id}
+            alt={product.title}
+            sizes="
                 (min-width: 1200px) 400px,
                 (min-width: 900px) 33vw,
                 (min-width: 600px) 50vw
                 "
-        />
+          />
+        </div>
       </Link>
-      <Box
-        sx={{
-          p: 1,
-          alignItems: "center",
-          justifyContent: "space-between",
-          display: "flex",
-          minHeight: 62,
-        }}
-      >
+      <div className="flex min-h-[62px] flex-col items-start justify-between gap-4 p-2 sm:flex-row">
         <Link
           color="inherit"
           href={`/products/${product.slug}`}
           sx={{
-            WebkitBoxOrient: "vertical",
+            WebkitBoxOrient: 'vertical',
             WebkitLineClamp: 2,
-            overflow: "hidden",
-            wordBreak: "break-all",
-            display: {
-              sm: "-webkit-box",
-              xs: "none",
-            },
+            overflow: 'hidden',
+            wordBreak: 'break-all',
+            display: '-webkit-box',
           }}
           underline="none"
           variant="body2"
         >
           {product.title}
         </Link>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <div className="flex items-center">
           {product.originalPrice && (
             <ProductDiscount
               sx={{ mr: 1 }}
@@ -99,40 +77,19 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
               price={product.price}
             />
           )}
-          <Box
-            sx={{
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
+          <div className="grid place-items-center">
             {product.originalPrice && (
-              <Typography
-                color="textSecondary"
-                sx={{ textDecoration: "line-through" }}
-                variant="caption"
-              >
+              <p className="text-shadow-text-secondary caption line-through">
                 {formatCurrency(product.originalPrice)}
-              </Typography>
+              </p>
             )}
-            <Typography
-              color="textPrimary"
-              variant="body2"
-              sx={{ fontWeight: 500 }}
-            >
-              {formatCurrency(product.price)}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+            <p className="subtitle2">{formatCurrency(product.price)}</p>
+          </div>
+        </div>
+      </div>
       <Divider />
-      <Box
-        sx={{
-          p: 1,
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Box sx={{ width: "48px", position: "relative", pb: 5 }}>
+      <div className="flex items-center p-2">
+        <div className="relative flex aspect-square w-full max-w-10">
           <AppImage
             priority
             src={product.platform.logo.public_id}
@@ -141,13 +98,12 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
                 (min-width: 1200px) 400px,
                 (min-width: 900px) 33vw,
                 (min-width: 600px) 50vw"
-            layout="fill"
-            objectFit="contain"
+            fill
           />
-        </Box>
-        <Box sx={{ flexGrow: 1 }} />
+        </div>
+        <div className="flex-1" />
         <AddButton productId={product._id}>Add</AddButton>
-      </Box>
+      </div>
     </Card>
   );
 };

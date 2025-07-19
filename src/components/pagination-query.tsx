@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
-import type { FC, ChangeEvent } from 'react';
-import { Pagination as MuiPagination, styled } from '@mui/material';
-import { PaginationProps as MuiPaginationProps } from '@mui/material';
+import {
+  Pagination as MuiPagination,
+  PaginationProps as MuiPaginationProps,
+  styled,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
+import type { ChangeEvent, FC } from 'react';
+import { useEffect, useState } from 'react';
 
-interface PaginationQueryProps extends MuiPaginationProps {
-}
+interface PaginationQueryProps extends MuiPaginationProps {}
 
-const PaginationQueryRoot = styled(MuiPagination)(({ theme }) => ({}))
+const PaginationQueryRoot = styled(MuiPagination)(({ theme }) => ({}));
 
 const initializePage = (query: ParsedUrlQuery): number => {
   try {
@@ -22,36 +24,38 @@ const initializePage = (query: ParsedUrlQuery): number => {
   } catch (error) {
     return 1;
   }
-}
+};
 
 export const PaginationQuery: FC<PaginationQueryProps> = (props) => {
   const { ...rest } = props;
   const { pathname, query, push } = useRouter();
-  const [page, setPage] = useState(initializePage(query))
+  const [page, setPage] = useState(initializePage(query));
 
   const handleChange = (event: ChangeEvent<unknown>, value: number) => {
     const newQuery = {
       ...query,
-      page: value !== 1 ? value : []
+      page: value !== 1 ? value : [],
     };
 
-    push({
-      pathname: pathname,
-      query: newQuery
-    },
+    push(
+      {
+        pathname: pathname,
+        query: newQuery,
+      },
       undefined,
-      { shallow: true });
-    window.scrollTo(0, 0)
-  }
+      { shallow: true }
+    );
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     const newPage = initializePage(query);
-    setPage(newPage)
-  }, [query])
+    setPage(newPage);
+  }, [query]);
 
   return (
     <PaginationQueryRoot
-      size='large'
+      size="large"
       count={10}
       variant="outlined"
       color="primary"
@@ -59,5 +63,5 @@ export const PaginationQuery: FC<PaginationQueryProps> = (props) => {
       onChange={handleChange}
       {...rest}
     />
-  )
-}
+  );
+};

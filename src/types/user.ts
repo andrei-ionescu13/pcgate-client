@@ -1,6 +1,6 @@
-import type { Cart } from "./cart";
-import type { Product } from "./product";
-import type { Coupon, Review } from "./common";
+import type { Cart } from './cart';
+import type { Coupon, Review } from './common';
+import type { Product } from './product';
 
 export interface User {
   _id: string;
@@ -15,13 +15,11 @@ export interface UserReview extends Review {
   product: Product;
 }
 
-
 type UserCouponSelection = 'selected' | 'general';
 type UserCouponStatus = 'active' | 'expired' | 'used';
 
 export interface UserCoupon extends Coupon {
   userSelection: Selection;
-  products: Product[] | null;
   productSelection: UserCouponSelection;
   endDate: string | null;
   status: UserCouponStatus;

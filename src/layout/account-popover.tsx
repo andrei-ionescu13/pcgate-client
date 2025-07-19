@@ -1,15 +1,22 @@
-import { useState, useRef } from 'react';
-import type { FC } from 'react';
-import { useRouter } from 'next/router';
-import { Avatar, Box, List, ListItemButton, Popover, Skeleton } from '@mui/material';
-import { styled } from '@mui/system';
-import type { SxProps } from '@mui/system';
-import { Link } from '@/components/link';
+'use client';
+
 import { useAuth } from '@/contexts/auth-context';
-import { AppImage } from '@/components/app-image';
-import Image from 'next/image';
-import { useMutation } from '@tanstack/react-query';
+import { Link, useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/utils/api-error';
+import {
+  Avatar,
+  Box,
+  List,
+  ListItemButton,
+  Popover,
+  Skeleton,
+} from '@mui/material';
+import type { SxProps } from '@mui/system';
+import { styled } from '@mui/system';
+import { useMutation } from '@tanstack/react-query';
+import Image from 'next/image';
+import type { FC } from 'react';
+import { useRef, useState } from 'react';
 
 interface AccountPopoverProps {
   sx?: SxProps;
@@ -18,32 +25,32 @@ interface AccountPopoverProps {
 const links = [
   {
     href: '/account',
-    label: 'Settings'
+    label: 'Settings',
   },
   {
     href: '/wishlist',
-    label: 'Wishlist'
+    label: 'Wishlist',
   },
   {
     href: '/account/orders',
-    label: 'Orders'
+    label: 'Orders',
   },
   {
     href: '/account/library',
-    label: 'Library'
-  }
+    label: 'Library',
+  },
 ];
 
 const AccountPopoverRoot = styled(Box)(() => ({
   alignItems: 'center',
   color: '#fff',
   cursor: 'pointer',
-  display: 'flex'
+  display: 'flex',
 }));
 
 export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   const { user, logout } = useAuth();
-  const mutation = useMutation<void, ApiError>(logout);
+  const mutation = useMutation<void, ApiError>({ mutationFn: logout });
   const anchorRef = useRef<Element | null>(null);
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
@@ -57,7 +64,12 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   };
 
   const handleLogout = () => {
-    mutation.mutate(undefined, { onSuccess: () => { router.push('/') } })
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push('/');
+        router.refresh();
+      },
+    });
   };
 
   return (
@@ -75,34 +87,33 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             }}
           >
             <Image
-              alt=""
-              priority
+              unoptimized
+              fill
+              alt="avatar"
               src={user.avatar}
-              layout='fill'
-              objectFit="cover"
             />
           </Avatar>
-        ) :
+        ) : (
           <Skeleton
             variant="circular"
             width={36}
             height={36}
           />
-        }
+        )}
       </AccountPopoverRoot>
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         onClose={handleClose}
         open={open}
         PaperProps={{
           sx: {
             maxWidth: 160,
-            width: '100%'
-          }
+            width: '100%',
+          },
         }}
       >
         <List>

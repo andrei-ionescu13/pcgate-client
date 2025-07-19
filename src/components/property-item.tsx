@@ -1,5 +1,6 @@
+import { cn } from '@/utils/cn';
+import { Box, ListItem } from '@mui/material';
 import type { FC, ReactNode } from 'react';
-import { Typography, ListItem } from '@mui/material';
 
 interface PropertyItemProps {
   align?: 'horizontal' | 'vertical';
@@ -18,22 +19,17 @@ export const PropertyItem: FC<PropertyItemProps> = (props) => {
         flexDirection: align === 'horizontal' ? 'row' : 'column',
       }}
     >
-      <Typography
-        color="textSecondary"
-        sx={{ width: align === 'horizontal' ? 120 : 'auto' }}
-        variant="body2"
+      <p
+        className={cn(
+          'text-text-secondary border-y',
+          align === 'horizontal' ? 'min-w-[120px]' : 'min-w-auto'
+        )}
       >
         {label}
-      </Typography>
-      {typeof content === 'string'
-        ? (<Typography
-          color="textPrimary"
-          variant="body2"
-        >
-          {content}
-        </Typography>)
-        : content
-      }
+      </p>
+      <Box sx={{ typography: 'body1' }}>
+        {typeof content === 'string' ? <p>{content}</p> : content}
+      </Box>
     </ListItem>
   );
 };

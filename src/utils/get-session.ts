@@ -1,25 +1,18 @@
-import jwtDecode from "jwt-decode";
-import { cookies } from "next/headers";
+import jwtDecode from 'jwt-decode';
+import { cookies, headers } from 'next/headers';
 
-export const getNewAccesToken = async (): Promise<any> => {
-  const cookieStore = cookies()
-  const headers = {
-    Cookie: cookieStore.toString()
-  };
+const parseCookies = (rawCookies: string | null) => {
+  const pairs = rawCookies?.split(';');
+  const setCookies: any = {};
 
-  const respose = await fetch(
-    `${process.env.NEXT_PUBLIC_API_PATH}/access-token`,
-    {
-      headers,
+  if (pairs) {
+    for (var i = 0; i < pairs.length; i++) {
+      var nameValue = pairs[i].split('=');
+      setCookies[nameValue[0].trim()] = nameValue[1];
     }
-  );
-
-  if (respose.ok) {
-    const data = await respose.json();
-    return data;
   }
 
-  return null;
+  return setCookies;
 };
 
 interface Decoded {
@@ -29,37 +22,18 @@ interface Decoded {
 }
 
 export const getSession = async (): Promise<Decoded | null> => {
-  const cookieStore = cookies()
-  const accessToken = cookieStore.get('accessToken')?.value
-  const refreshToken = cookieStore.get('refreshToken')?.value
+  const cookieStore = await cookies();
+  const headerStore = await headers();
+  const setCookies: any = parseCookies(headerStore.get('set-cookie'));
+  const accessToken =
+    cookieStore.get('accessToken')?.value || setCookies?.accessToken;
 
-  if (!accessToken && !refreshToken) {
-    return null;
-  }
-
-  if (!!accessToken) {
+  if (accessToken) {
     const decoded: Decoded = jwtDecode(accessToken);
 
     if (decoded.exp > Date.now() / 1000) {
       return jwtDecode(accessToken);
     }
-  }
-  if (
-    !!refreshToken &&
-    (jwtDecode(refreshToken) as Decoded).exp > Date.now() / 1000
-  ) {
-    const newAccesToken = await getNewAccesToken();
-
-    if (!newAccesToken) {
-      return null;
-    }
-
-    cookieStore.set("accessToken", newAccesToken, {
-      maxAge: 60 * 60 * 1000,
-      httpOnly: true,
-    });
-
-    return jwtDecode(newAccesToken);
   }
 
   return null;

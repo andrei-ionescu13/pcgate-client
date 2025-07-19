@@ -1,12 +1,11 @@
-import { isServer } from "@tanstack/react-query";
-import { ApiError } from "./api-error";
-import { setCookie } from "cookies-next";
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { isServer } from '@tanstack/react-query';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import { ApiError } from './api-error';
 
-const hasClient = typeof window !== "undefined";
+const hasClient = typeof window !== 'undefined';
 
 const DEFAULT_HEADERS = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
 };
 
 const apiUrl = hasClient ? `/api` : process.env.NEXT_PUBLIC_API_PATH;
@@ -15,7 +14,7 @@ const buildQueryString = (query: Record<string, any>): string => {
   const finalQuery: URLSearchParams = new URLSearchParams();
 
   Object.keys(query).forEach((key) => {
-    finalQuery.append(key, query[key]);
+    query[key] && finalQuery.append(key, query[key]);
   });
 
   return finalQuery.toString();
@@ -26,7 +25,7 @@ export const getNewAccesToken = async (
   res?: any
 ): Promise<string> => {
   const respose = await fetch(`${apiUrl}/access-token`, {
-    credentials: "include",
+    credentials: 'include',
     headers: {
       ...(!!cookies && { Cookie: cookies }),
     },
@@ -37,12 +36,7 @@ export const getNewAccesToken = async (
     return data;
   }
 
-  if (res) {
-    res.redirect(307, "login");
-  } else {
-    // Router.push("/login");
-  }
-
+  res.redirect(307, 'login');
   throw new ApiError(respose.status, data.message);
 };
 
@@ -56,7 +50,6 @@ export const appFetch = async <T>({
   noContentType = false,
   query = undefined,
   withAuth = false,
-  responseType = "json",
 }: {
   req?: any;
   res?: any;
@@ -66,41 +59,37 @@ export const appFetch = async <T>({
   query?: Record<string, any>;
   withAuth?: boolean;
   responseType?: string;
-
 }): Promise<ReturnType<T>> => {
   const { headers = {}, ...restConfig } = config;
   let cookieStore: ReadonlyRequestCookies | undefined;
 
   if (isServer) {
-    const { cookies } = await import("next/headers");
-    cookieStore = cookies();
+    const { cookies } = await import('next/headers');
+    cookieStore = await cookies();
   }
 
   const request = () =>
-    fetch(`${apiUrl}${url}${query ? `?${buildQueryString(query)}` : ""}`, {
+    fetch(`${apiUrl}${url}${query ? `?${buildQueryString(query)}` : ''}`, {
       ...(!noContentType && {
         headers: {
           ...DEFAULT_HEADERS,
           ...headers,
-          ...((isServer && cookieStore) && { Cookie: cookieStore.toString() }),
+          ...(isServer && cookieStore && { Cookie: cookieStore.toString() }),
         },
       }),
       ...restConfig,
-      credentials: "include",
+      cache: 'no-store',
+      credentials: 'include',
     });
 
   const handleSuccessResponse = async (response: any) => {
-    if (responseType === "json") {
-      let data: any = await response.text();
-      data = data ? JSON.parse(data) : {};
+    const data: any = await response.text();
 
-      return data;
+    if (response.headers.get('content-type').includes('json')) {
+      return JSON.parse(data);
     }
 
-    if (responseType === "blob") {
-      const data = await response.blob();
-      return data as ReturnType<T>;
-    }
+    return data;
   };
 
   const appFetch = async () => {
@@ -111,16 +100,19 @@ export const appFetch = async <T>({
     }
 
     const data = await response.json();
+    console.log(response);
     throw new ApiError(response.status, data.message);
   };
 
   const appAuthFetch = async () => {
     let response = await request();
+
     if (response.ok) {
       return await handleSuccessResponse(response);
     }
 
     let data = await response.json();
+
     if (response.status !== 401) {
       throw new ApiError(response.status, data.message);
     }
@@ -128,10 +120,10 @@ export const appFetch = async <T>({
     const newAccesToken = await getNewAccesToken(req?.headers.cookie, res);
 
     if (cookieStore) {
-      cookieStore.set("accessToken", newAccesToken, {
+      cookieStore.set('accessToken', newAccesToken, {
         maxAge: 60 * 6 * 24,
         httpOnly: true,
-      })
+      });
     }
 
     response = await request();

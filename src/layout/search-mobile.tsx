@@ -1,14 +1,14 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from 'react';
-import type { FC } from 'react';
-import { Drawer, IconButton } from '@mui/material';
-import { Search } from 'layout/search';
 import { Search as SearchIcon } from '@/icons/search';
-import { useRouter } from 'next/router';
+import { Drawer, IconButton } from '@mui/material';
+import { SearchProducts } from 'layout/search-poducts';
+import { usePathname } from 'next/navigation';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SearchMobile: FC = () => {
-  const { asPath } = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -21,7 +21,7 @@ export const SearchMobile: FC = () => {
 
   useEffect(() => {
     setOpen(false);
-  }, [asPath])
+  }, [pathname]);
 
   return (
     <>
@@ -37,11 +37,11 @@ export const SearchMobile: FC = () => {
         open={open}
         PaperProps={{
           sx: {
-            p: 1
-          }
+            p: 1,
+          },
         }}
       >
-        <Search
+        <SearchProducts
           isFocused
           onBlur={handleClose}
         />

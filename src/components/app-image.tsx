@@ -23,12 +23,15 @@ const myLoader = ({ src, width, quality }: ImageLoaderProps): string => {
   return image.toURL()
 }
 
-export const AppImage: FC<ImageProps> = (props) => {
+interface AppImageProps extends ImageProps {
+  alt: string
+}
+
+export const AppImage: FC<AppImageProps> = (props) => {
 
   return (
     <Image
       loader={myLoader}
-      quality={75}
       {...props}
     />
   )

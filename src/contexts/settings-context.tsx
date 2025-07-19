@@ -1,9 +1,10 @@
+"use client"
 import { createContext, useContext, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { appFetch } from "@/utils/app-fetch";
 import { getCookie } from "cookies-next";
-import { useTranslation } from "next-i18next";
+import { useLocale } from 'next-intl';
 
 export interface Currency {
   name: string;
@@ -17,7 +18,7 @@ export interface Language {
   nativeName: string;
 }
 
-const listLanguages = () =>
+export const listLanguages = () =>
   appFetch<Language[]>({
     url: "/languages",
   });
@@ -42,6 +43,7 @@ export interface SettingsContextValue {
 
 interface SettingsProviderProps {
   children?: ReactNode;
+  currency?: string;
 }
 
 const initialSettings: Settings = {
@@ -66,13 +68,15 @@ export const SettingsContext = createContext<SettingsContextValue>({
 });
 
 export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
-  const { children } = props;
-  const { i18n } = useTranslation();
+  const { children, currency } = props;
+  const queryClient = useQueryClient()
+  const language = useLocale();
   const [settings, setSettings] = useState<Settings>({
     ...initialSettings,
-    language: i18n.language,
-    currency: (getCookie("preferredCurrency") as string) || "USD",
+    language: language,
+    currency: currency || 'USD'
   });
+
   const { data: languages } = useQuery<Language[]>({
     queryKey: ["languages"],
     queryFn: listLanguages
@@ -88,6 +92,23 @@ export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
   const saveSettings = (updatedSettings: Settings): void => {
     setSettings(updatedSettings);
   };
+
+
+  useEffect(() => {
+    queryClient.invalidateQueries(
+      {
+        queryKey: ['products'],
+        refetchType: 'active',
+      },
+    )
+    queryClient.invalidateQueries(
+      {
+        queryKey: ['cart'],
+        refetchType: 'active',
+      },
+    )
+  }, [settings.currency])
+
 
   return (
     <SettingsContext.Provider

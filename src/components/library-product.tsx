@@ -1,33 +1,34 @@
-import { FC, MouseEvent, useEffect, useState } from "react";
-import { Box, Card, styled, Typography } from "@mui/material";
-import { ContentCopyOutlined as ContentCopyIcon } from "@mui/icons-material";
-import { Link } from "@/components/link";
-import { Steam as SteamIcon } from "@/icons/steam";
-import type { Product } from "@/types/product";
-import { AppImage } from "@/components/app-image";
-import { Button } from "./button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "@/utils/api-error";
-import { appFetch } from "@/utils/app-fetch";
-import { useRouter } from "next/router";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import type { ProductKey } from "@/types/common";
+'use client';
+
+import { AppImage } from '@/components/app-image';
+import { Link } from '@/i18n/navigation';
+import { Steam as SteamIcon } from '@/icons/steam';
+import type { ProductKey } from '@/types/common';
+import type { Product } from '@/types/product';
+import { ApiError } from '@/utils/api-error';
+import { appFetch } from '@/utils/app-fetch';
+import { ContentCopyOutlined as ContentCopyIcon } from '@mui/icons-material';
+import { Box, Card, styled } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { useMutation } from '@tanstack/react-query';
+import { FC, MouseEvent, useState } from 'react';
+import { Button } from './button';
 
 interface ProductKeyProps {
   value: string;
 }
 
 const ProductKeyRoot = styled(Box)(({ theme }) => ({
-  justifyContent: "center",
-  display: "flex",
-  [theme.breakpoints.up("xs")]: {
-    flexDirection: "column",
-    width: "100%",
+  justifyContent: 'center',
+  display: 'flex',
+  [theme.breakpoints.up('xs')]: {
+    flexDirection: 'column',
+    width: '100%',
   },
-  [theme.breakpoints.up("sm")]: {
-    flexDirection: "row",
-    width: "inherit",
+  [theme.breakpoints.up('sm')]: {
+    flexDirection: 'row',
+    width: 'inherit',
   },
 }));
 
@@ -35,7 +36,7 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
   const { value } = props;
   const [hasCopied, setHasCopied] = useState(false);
 
-  const handleCopyToClipboard = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(value);
     setHasCopied(true);
   };
@@ -44,7 +45,7 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
     <ProductKeyRoot>
       <Box
         sx={{
-          backgroundColor: "background.default",
+          backgroundColor: 'background.default',
           borderTopLeftRadius: (theme) => theme.shape.borderRadius,
           borderTopRightRadius: (theme) => ({
             sm: 0,
@@ -61,22 +62,15 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
             xs: 1,
           },
           px: 1,
-          display: "flex",
+          display: 'flex',
           minWidth: 210,
-          alignItems: "center",
+          alignItems: 'center',
         }}
       >
-        <Typography
-          align="center"
-          color="textPrimary"
-          component="p"
-          variant="body2"
-        >
-          {value}
-        </Typography>
+        <p className="body2 text-center">{value}</p>
         <Box sx={{ flex: 1 }} />
         <Tooltip
-          title={hasCopied ? "Copied" : "Copy"}
+          title={hasCopied ? 'Copied' : 'Copy'}
           placement="top"
           TransitionProps={{
             onExited: () => {
@@ -84,7 +78,10 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
             },
           }}
         >
-          <IconButton size="small" onClick={handleCopyToClipboard}>
+          <IconButton
+            size="small"
+            onClick={handleCopyToClipboard}
+          >
             <ContentCopyIcon fontSize="small" />
           </IconButton>
         </Tooltip>
@@ -100,9 +97,9 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
           borderBottomLeftRadius: {
             sm: 0,
           },
-          boxShadow: "none",
-          "&:hover": {
-            boxShadow: "none",
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
           },
         }}
         target="_blank"
@@ -115,33 +112,31 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
 };
 
 export const useRevealKey = () =>
-  useMutation<any, ApiError, string>((keyId) =>
-    appFetch({
-      url: `/keys/reveal/${keyId}`,
-      withAuth: true,
-      config: {
-        method: "POST",
-      },
-    })
-  );
+  useMutation<any, ApiError, string>({
+    mutationFn: (keyId) =>
+      appFetch({
+        url: `/keys/reveal/${keyId}`,
+        withAuth: true,
+        config: {
+          method: 'POST',
+        },
+      }),
+  });
 
 interface LibraryProductProps {
   product: Product;
   productKey: ProductKey;
-  onActivateKey?: any;
 }
 
 export const LibraryProduct: FC<LibraryProductProps> = (props) => {
-  const { query } = useRouter();
-  const { id } = query as { id: string };
-  const { product, productKey, onActivateKey } = props;
-  const queryClient = useQueryClient();
+  const { product, productKey } = props;
   const revealKey = useRevealKey();
+  const [productKeyValue, setProductKeyValue] = useState(productKey.value);
 
   const handleRevealKey = (event: MouseEvent<HTMLButtonElement>) => {
     revealKey.mutate(productKey._id, {
       onSuccess: (data, variables, context) => {
-        onActivateKey && onActivateKey(data, product, productKey);
+        setProductKeyValue(data);
       },
     });
   };
@@ -150,16 +145,16 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
     <Card
       elevation={0}
       sx={{
-        backgroundColor: "background.neutral",
-        display: "flex",
+        backgroundColor: 'background.neutral',
+        display: 'flex',
         alignItems: {
-          sm: "center",
-          xs: "flex-start",
+          sm: 'center',
+          xs: 'flex-start',
         },
-        position: "relative",
+        position: 'relative',
         flexDirection: {
-          sm: "row",
-          xs: "column",
+          sm: 'row',
+          xs: 'column',
         },
         p: 2,
         pb: {
@@ -171,13 +166,13 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
       <Box
         sx={{
           display: {
-            md: "block",
-            xs: "none",
+            md: 'block',
+            xs: 'none',
           },
           width: 220,
           borderRadius: 1,
-          position: "relative",
-          overflow: "hidden",
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
         <AppImage
@@ -203,25 +198,25 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
         }}
       >
         <Link
-          href={`/games/${product.slug}`}
-          sx={{ color: "#fff" }}
+          href={`/products/${product.slug}`}
+          sx={{ color: '#fff' }}
           underline="none"
           variant="body2"
         >
           {product.title}
         </Link>
         <Box sx={{ mt: 1 }}>
-          <SteamIcon sx={{ color: "#fff" }} />
+          <SteamIcon sx={{ color: '#fff' }} />
         </Box>
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      {productKey.value ? (
-        <ProductKey value={productKey.value} />
+      {productKeyValue ? (
+        <ProductKey value={productKeyValue} />
       ) : (
         <Button
           color="primary"
           variant="contained"
-          isLoading={revealKey.isLoading}
+          isLoading={revealKey.isPending}
           onClick={handleRevealKey}
         >
           Reveal
@@ -232,7 +227,7 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
         color="textSecondary"
         href="https://help.steampowered.com/en/faqs/view/2A12-9D79-C3D7-F870"
         sx={{
-          position: "absolute",
+          position: 'absolute',
           right: 8,
           bottom: 8,
         }}

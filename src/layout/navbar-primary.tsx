@@ -1,37 +1,27 @@
+'use client';
+
+import { Button } from '@/components/button';
+import { Container } from '@/components/container';
+import { useAuth } from '@/contexts/auth-context';
+import { Link } from '@/i18n/navigation';
+import { Menu as MenuIcon } from '@/icons/menu';
+import { IconButton, Toolbar } from '@mui/material';
 import type { FC } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Toolbar,
-  useMediaQuery
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { AccountPopover } from './account-popover';
-import { Link } from '@/components/link';
 import { Logo } from './logo';
 import { SearchMobile } from './search-mobile';
-import { Search } from './search';
-import { Menu as MenuIcon } from '@/icons/menu';
-import { SwitchThemeButton } from './switch-theme-button';
-import { WishlistLink } from './wishlist-link';
-import { CartDropdown } from './cart-dropdown';
-import { useAuth } from '@/contexts/auth-context';
+import { SearchProducts } from './search-poducts';
 
 interface NavbarPrimaryProps {
-  smUp: boolean;
   onOpenSidebar: () => void;
 }
 
 export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
   const { isAuthenticated } = useAuth();
-  const { smUp, onOpenSidebar } = props;
-  const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
+  const { onOpenSidebar } = props;
 
   return (
-    <Box>
+    <div>
       <Container maxWidth="lg">
         <Toolbar
           disableGutters
@@ -39,8 +29,8 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
             display: 'flex',
             alignItems: 'center',
             minHeight: {
-              xs: 56
-            }
+              xs: 56,
+            },
           }}
         >
           <Link
@@ -48,78 +38,80 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
             sx={{
               display: {
                 sm: 'block',
-                xs: 'none'
-              }
+                xs: 'none',
+              },
             }}
           >
-            <Box sx={{ display: 'flex' }}>
+            <div className="flex">
               <Logo
                 sx={{
                   height: 33,
                   width: 166,
                 }}
               />
-            </Box>
+            </div>
           </Link>
           <IconButton
             onClick={onOpenSidebar}
             sx={{
               color: '#fff',
               display: {
-                sm: 'none'
-              }
+                sm: 'none',
+              },
             }}
           >
             <MenuIcon />
           </IconButton>
-          {/* <Search
+          <SearchProducts
             sx={{
               display: {
                 md: 'flex',
-                xs: 'none'
+                xs: 'none',
               },
               width: '100%',
               maxWidth: 600,
               ml: 5,
-              mr: 2
+              mr: 2,
             }}
-          /> */}
-          <Box sx={{ flexGrow: 1 }} />
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 1.5
-            }}
-          >
+          />
+          <div className="flex-1" />
+          <div className="flex gap-3">
             {/* todo change this */}
-            {/* {!mdUp && <SearchMobile />} */}
-            {smUp && isAuthenticated ? (
+            <div className="md:hidden">
+              <SearchMobile />
+            </div>
+            {isAuthenticated ? (
               <>
                 <AccountPopover />
               </>
             ) : (
               <>
                 <Button
-                  component={Link}
-                  href="/register"
+                  asChild
                   variant="outlined"
-                  color="white"
                 >
-                  Register
+                  <Link href="/register">Register</Link>
                 </Button>
                 <Button
+                  asChild
+                  color="primary"
+                  variant="contained"
+                >
+                  <Link href="/login">Login</Link>
+                </Button>
+                {/* <Button
                   component={Link}
                   href="/login"
                   color="primary"
                   variant="contained"
                 >
                   Login
-                </Button>
+                </Button> */}
               </>
             )}
-          </Box>
+          </div>
         </Toolbar>
       </Container>
-    </Box>
+    </div>
   );
 };

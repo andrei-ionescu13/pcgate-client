@@ -2,40 +2,19 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/contexts/*": [
-        "contexts/*"
-      ],
-      "@/hooks/*": [
-        "hooks/*"
-      ],
-      "@/types/*": [
-        "types/*"
-      ],
-      "@/utils/*": [
-        "utils/*"
-      ],
-      "@/icons/*": [
-        "icons/*"
-      ],
-      "@/constants": [
-        "constants"
-      ],
-      "@/api/*": [
-        "api/*"
-      ],
-      "@/store/*": [
-        "store/*"
-      ]
+      "@/components/*": ["components/*"],
+      "@/contexts/*": ["contexts/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"],
+      "@/icons/*": ["icons/*"],
+      "@/constants": ["constants"],
+      "@/api/*": ["api/*"],
+      "@/store/*": ["store/*"],
+      "@/i18n/*": ["i18n/*"]
     },
     "target": "ES6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -57,14 +36,6 @@
       }
     ]
   },
-  "include": [
-    "src",
-    "temp/components",
-    "temp",
-    "temp",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "temp/components", "temp", "temp", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

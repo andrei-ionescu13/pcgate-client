@@ -1,28 +1,23 @@
-import type { FC, ReactNode } from 'react';
+import { Link, usePathname } from '@/i18n/navigation';
+import { cn } from '@/utils/cn';
 import type { SxProps } from '@mui/system';
-import { styled } from '@mui/system';
-import { deepmerge } from '@mui/utils';
-import { Link } from '@/components/link';
-import { useRouter } from 'next/router';
-import type { LinkProps } from '@mui/material/Link';
-import { usePathname } from 'next/navigation';
+import type { ComponentProps, FC } from 'react';
 
-interface NavLinkProps extends LinkProps {
-  dropdown?: ReactNode;
+interface NavLinkProps extends ComponentProps<typeof Link> {
   href: string;
-  sx?: SxProps;
-  activeStyles?: SxProps
+  activeStyles?: SxProps;
+  activeClassName: string;
 }
 
 export const NavLink: FC<NavLinkProps> = (props) => {
-  const { href, activeStyles = {}, sx, ...rest } = props;
+  const { href, className, activeClassName, ...rest } = props;
   const pathname = usePathname();
   const isActive = pathname == href;
 
   return (
     <Link
       href={href}
-      sx={deepmerge(sx, isActive ? activeStyles : {})}
+      className={cn(className, isActive && activeClassName)}
       {...rest}
     />
   );

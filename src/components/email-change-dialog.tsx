@@ -1,8 +1,4 @@
-import type { FC } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -11,6 +7,9 @@ import {
   Divider,
   TextField,
 } from '@mui/material';
+import { useFormik } from 'formik';
+import type { FC } from 'react';
+import * as Yup from 'yup';
 
 interface EmailChangeDialogProps {
   open: boolean;
@@ -22,7 +21,7 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      submit: null
+      submit: null,
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().max(255).email().required('Email is required'),
@@ -37,7 +36,7 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
-    }
+    },
   });
 
   return (
@@ -46,12 +45,10 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
       onClose={onClose}
       open={open}
     >
-      <DialogTitle>
-        Change Email
-      </DialogTitle>
+      <DialogTitle>Change Email</DialogTitle>
       <Divider />
       <DialogContent>
-        <Box sx={{ mb: 2 }}>
+        <div className="mb-4">
           <TextField
             error={Boolean(formik.touched.email && formik.errors.email)}
             fullWidth
@@ -64,7 +61,7 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
             type="email"
             value={formik.values.email}
           />
-        </Box>
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
@@ -76,7 +73,9 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
         </Button>
         <Button
           color="primary"
-          onClick={() => { formik.handleSubmit(); }}
+          onClick={() => {
+            formik.handleSubmit();
+          }}
           variant="contained"
         >
           Change

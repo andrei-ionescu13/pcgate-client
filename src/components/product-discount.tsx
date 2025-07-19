@@ -1,8 +1,11 @@
-import type { FC } from 'react';
-import { Box, Typography } from '@mui/material';
+//todo make this a server component
+'use client';
+
 import type { BoxProps } from '@mui/material';
-import { styled } from '@mui/system';
+import { Box } from '@mui/material';
 import type { SxProps } from '@mui/system';
+import { styled } from '@mui/system';
+import type { FC } from 'react';
 
 type Variant = 'small' | 'medium' | 'large';
 
@@ -17,31 +20,30 @@ interface ProductDiscountProps {
   price: number;
 }
 
-const ProductDiscountRoot = styled(({ variant, ...props }: ProductDiscountRootProps) => (
-  <Box {...props} />
-))<ProductDiscountRootProps>(
-  ({ theme, variant }) => ({
-    alignItems: 'center',
-    backgroundColor: theme.palette.success.main,
-    borderRadius: 16,
-    color: '#fff',
-    display: 'flex',
-    ...variant === 'small' && ({
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-      height: 24,
-    }),
-    ...variant === 'medium' && ({
-      paddingLeft: theme.spacing(1.5),
-      paddingRight: theme.spacing(1.5),
-      height: 24,
-    }),
-    ...variant === 'large' && ({
-      paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
-      height: 24,
-    })
-  }));
+const ProductDiscountRoot = styled(
+  ({ variant, ...props }: ProductDiscountRootProps) => <Box {...props} />
+)<ProductDiscountRootProps>(({ theme, variant }) => ({
+  alignItems: 'center',
+  backgroundColor: theme.palette.success.main,
+  borderRadius: 16,
+  color: '#fff',
+  display: 'flex',
+  ...(variant === 'small' && {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    height: 24,
+  }),
+  ...(variant === 'medium' && {
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+    height: 24,
+  }),
+  ...(variant === 'large' && {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    height: 24,
+  }),
+}));
 
 export const ProductDiscount: FC<ProductDiscountProps> = (props) => {
   const { variant = 'medium', initialPrice, price, ...rest } = props;
@@ -51,14 +53,9 @@ export const ProductDiscount: FC<ProductDiscountProps> = (props) => {
       variant={variant}
       {...rest}
     >
-      <Typography
-        color="inherit"
-        variant="body3"
-      >
-        -
-        {Math.floor((initialPrice - price) * 100 / initialPrice)}
-        %
-      </Typography>
+      <p className="body3">
+        -{Math.floor(((initialPrice - price) * 100) / initialPrice)}%
+      </p>
     </ProductDiscountRoot>
   );
 };

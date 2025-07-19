@@ -1,20 +1,19 @@
-"use client"
-import type { FC } from 'react';
+'use client';
 import { NEXT_PUBLIC_FACEBOOK_APP_ID } from '@/constants';
-import { Box } from '@mui/material';
+import type { FC } from 'react';
 import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterShareButton,
-  TwitterIcon,
   EmailIcon,
   EmailShareButton,
-  FacebookMessengerShareButton,
+  FacebookIcon,
   FacebookMessengerIcon,
-  RedditShareButton,
+  FacebookMessengerShareButton,
+  FacebookShareButton,
   RedditIcon,
+  RedditShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
   WhatsappShareButton,
-  WhatsappIcon
 } from 'react-share';
 
 interface ShareProps {
@@ -25,17 +24,10 @@ interface ShareProps {
 
 export const Share: FC<ShareProps> = (props) => {
   const { url, size = 32, borderRadius = 16 } = props;
-  const iconProps = { size, borderRadius }
+  const iconProps = { size, borderRadius };
 
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridAutoFlow: 'column',
-        gap: 0.5,
-        justifyContent: 'start'
-      }}
-    >
+    <div className="grid grid-flow-col justify-start gap-1">
       <FacebookShareButton url={url}>
         <FacebookIcon {...iconProps} />
       </FacebookShareButton>
@@ -59,6 +51,6 @@ export const Share: FC<ShareProps> = (props) => {
       <WhatsappShareButton url={url}>
         <WhatsappIcon {...iconProps} />
       </WhatsappShareButton>
-    </Box>
-  )
-}
+    </div>
+  );
+};

@@ -1,5 +1,5 @@
-import { Fragment, type FC } from "react";
-import { Link } from "./link";
+import { Link } from '@/i18n/navigation';
+import { type FC } from 'react';
 
 interface LinkListProps {
   items: Array<{
@@ -12,15 +12,18 @@ export const LinkList: FC<LinkListProps> = (props) => {
   const { items } = props;
 
   return (
-    <>
+    <div className="flex flex-wrap">
       {items.map((item, index) => (
-        <Fragment key={item.label}>
-          <Link href={item.href} color="textPrimary">
+        <div key={item.label}>
+          <Link
+            href={item.href}
+            color="textPrimary"
+          >
             {item.label}
           </Link>
           {items.length > index + 1 && <>, &nbsp;</>}
-        </Fragment>
+        </div>
       ))}
-    </>
+    </div>
   );
 };

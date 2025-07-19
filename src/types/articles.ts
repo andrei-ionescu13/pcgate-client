@@ -1,4 +1,4 @@
-import type { Asset } from "./common";
+import type { Asset } from './common';
 
 export interface ArticleMeta {
   description: string;
@@ -15,7 +15,15 @@ export interface ArticleGeneral {
 }
 
 export type ArticleStatus = 'published' | 'draft' | 'archived';
-export type ArticleCategory = 'news' | 'games' | 'reviews';
+
+export interface ArticleCategory {
+  name: string;
+  slug: string;
+}
+export interface ArticleTag {
+  name: string;
+  slug: string;
+}
 
 export interface Article extends ArticleMeta, ArticleGeneral {
   _id: string;
@@ -24,5 +32,5 @@ export interface Article extends ArticleMeta, ArticleGeneral {
   meta: ArticleMeta;
   createdAt: Date;
   updatedAt?: Date;
+  tags: ArticleTag[];
 }
-

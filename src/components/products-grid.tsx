@@ -1,8 +1,9 @@
-import { Box } from "@mui/material";
-import type { FC } from "react";
-import { ProductCard } from "./product-card";
-import { ProductCardLine } from "./product-card-line";
-import { Product } from "@/types/product";
+import { Product } from '@/types/product';
+import { cn } from '@/utils/cn';
+import type { FC } from 'react';
+import { DataOverlay } from './data-overlay';
+import { ProductCard } from './product-card';
+import { ProductCardLine } from './product-card-line';
 
 interface ProductsGridProps {
   products: Product[];
@@ -11,41 +12,31 @@ interface ProductsGridProps {
 }
 
 export const ProductsGrid: FC<ProductsGridProps> = (props) => {
-  const { products, viewMode = "grid", isLoading } = props;
+  const { products, viewMode = 'grid', isLoading } = props;
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: () =>
-          viewMode === "grid"
-            ? {
-                lg: "repeat(3, 1fr)",
-                sm: "repeat(2, 1fr)",
-                xs: "1fr",
-              }
-            : "1fr",
-        gap: 2,
-        filter: isLoading ? "blur(4px) saturate(100%)" : undefined,
-        position: "relative",
-      }}
-    >
-      {isLoading && (
-        <Box
-          sx={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 999,
-          }}
-        />
+    <DataOverlay
+      isBlured={isLoading}
+      className={cn(
+        'grid gap-2',
+        viewMode === 'grid'
+          ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+          : 'grid-cols-1'
       )}
+    >
       {products.map((product) =>
-        viewMode === "grid" ? (
-          <ProductCard key={product._id} product={product} />
+        viewMode === 'grid' ? (
+          <ProductCard
+            key={product._id}
+            product={product}
+          />
         ) : (
-          <ProductCardLine key={product._id} product={product} />
+          <ProductCardLine
+            key={product._id}
+            product={product}
+          />
         )
       )}
-    </Box>
+    </DataOverlay>
   );
 };

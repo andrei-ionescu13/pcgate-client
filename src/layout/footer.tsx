@@ -1,59 +1,55 @@
-import { useState } from 'react';
-import type { FC } from 'react';
-import { Box, Button, Container } from '@mui/material';
-import { Link } from '@/components/link';
-import { Logo } from './logo';
+import { Container } from '@/components/container';
 import { LanguageCurrencyDialog } from '@/components/language-currency-dialog';
-import { useRouter } from 'next/router';
+import { Link } from '@/i18n/navigation';
+import { Button } from '@mui/material';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { Logo } from './logo';
 
-export const Footer: FC = (props) => {
+export const Footer: FC = () => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   return (
     <>
-      <Box sx={{
-        backgroundColor: '#12171E',
-        py: 3,
-        minHeight: 120
-      }}
-      >
+      <div className="min-h-[120px] bg-[#12171E] py-6">
         <Container
           maxWidth="lg"
-          sx={{
-            alignItems: 'center',
-            display: 'flex'
-          }}
+          className="flex items-center"
         >
           <Link href="/">
-            <Box sx={{ display: 'flex' }}>
+            <div className="flex">
               <Logo
                 sx={{
                   height: {
                     md: 33,
-                    xs: 16.5
+                    xs: 16.5,
                   },
                   width: {
                     md: 166,
-                    xs: 83
-                  }
+                    xs: 83,
+                  },
                 }}
               />
-            </Box>
+            </div>
           </Link>
-          <Box sx={{ flexGrow: 1 }} />
+          <div className="flex-1" />
           <Button
-            onClick={() => { setDialogOpen(true); }}
+            onClick={() => {
+              setDialogOpen(true);
+            }}
             color="white"
             variant="outlined"
           >
             Language/Currency
           </Button>
         </Container>
-      </Box>
+      </div>
       {dialogOpen && (
         <LanguageCurrencyDialog
           open
-          onClose={() => { setDialogOpen(false); }}
+          onClose={() => {
+            setDialogOpen(false);
+          }}
         />
       )}
     </>

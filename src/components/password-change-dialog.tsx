@@ -1,8 +1,4 @@
-import type { FC } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -11,6 +7,9 @@ import {
   Divider,
   TextField,
 } from '@mui/material';
+import { useFormik } from 'formik';
+import type { FC } from 'react';
+import * as Yup from 'yup';
 
 interface PasswordChangeDialogProps {
   open: boolean;
@@ -24,10 +23,13 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
       confirmNewPassword: '',
       newPassword: '',
       password: '',
-      submit: null
+      submit: null,
     },
     validationSchema: Yup.object().shape({
-      confirmNewPassword: Yup.string().max(255).oneOf([Yup.ref('newPassword')], 'Passwords must match').required('Confirm new password is required'),
+      confirmNewPassword: Yup.string()
+        .max(255)
+        .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+        .required('Confirm new password is required'),
       newPassword: Yup.string().max(255).required('New password is required'),
       password: Yup.string().max(255).required('Old password is required'),
     }),
@@ -41,7 +43,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
-    }
+    },
   });
 
   return (
@@ -50,12 +52,10 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
       onClose={onClose}
       open={open}
     >
-      <DialogTitle>
-        Change Password
-      </DialogTitle>
+      <DialogTitle>Change Password</DialogTitle>
       <Divider />
       <DialogContent>
-        <Box sx={{ mb: 2 }}>
+        <div className="mb-4">
           <TextField
             error={Boolean(formik.touched.password && formik.errors.password)}
             fullWidth
@@ -68,10 +68,12 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
             value={formik.values.password}
             onBlur={formik.handleBlur}
           />
-        </Box>
-        <Box sx={{ mb: 2 }}>
+        </div>
+        <div className="mb-4">
           <TextField
-            error={Boolean(formik.touched.newPassword && formik.errors.newPassword)}
+            error={Boolean(
+              formik.touched.newPassword && formik.errors.newPassword
+            )}
             fullWidth
             helperText={formik.touched.newPassword && formik.errors.newPassword}
             label="New Password"
@@ -82,12 +84,18 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
             value={formik.values.newPassword}
             onBlur={formik.handleBlur}
           />
-        </Box>
-        <Box sx={{ mb: 2 }}>
+        </div>
+        <div className="mb-4">
           <TextField
-            error={Boolean(formik.touched.confirmNewPassword && formik.errors.confirmNewPassword)}
+            error={Boolean(
+              formik.touched.confirmNewPassword &&
+                formik.errors.confirmNewPassword
+            )}
             fullWidth
-            helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
+            helperText={
+              formik.touched.confirmNewPassword &&
+              formik.errors.confirmNewPassword
+            }
             label="Confirm Password"
             name="confirmNewPassword"
             onChange={formik.handleChange}
@@ -96,7 +104,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
             value={formik.values.confirmNewPassword}
             onBlur={formik.handleBlur}
           />
-        </Box>
+        </div>
       </DialogContent>
       <DialogActions>
         <Button
@@ -108,7 +116,9 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
         </Button>
         <Button
           color="primary"
-          onClick={() => { formik.handleSubmit(); }}
+          onClick={() => {
+            formik.handleSubmit();
+          }}
           variant="contained"
         >
           Change

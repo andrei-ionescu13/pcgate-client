@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 
 export const useOpen = (initialOpen = false): [boolean, () => void, () => void] => {

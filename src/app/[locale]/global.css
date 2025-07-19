@@ -1,0 +1,238 @@
+@import 'tailwindcss';
+
+@theme {
+  --h-0.25: 0.0625rem;
+
+  --breakpoint-*: initial;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1536px;
+
+  --container-sm: 600px;
+  --container-md: 900px;
+  --container-lg: 1200px;
+  --container-xl: 1536px;
+
+  --text-color-*: initial;
+
+  --color-*: initial;
+  --color-divider: #919eab3d;
+  --color-paper: #212b36;
+  --color-primary: #fa541c;
+  --color-default: #161c24;
+  --color-neutral: #919eab1f;
+
+  --color-primary-lighter: #fee9d1;
+  --color-primary-light: #fdab76;
+  --color-primary: #fa541c;
+  --color-primary-dark: #b3200e;
+  --color-primary-darker: #770508;
+
+  --color-info-lighter: #cbfefc;
+  --color-info-light: #63e8f9;
+  --color-info: #00b1ed;
+  --color-info-dark: #0067aa;
+  --color-info-darker: #003471;
+
+  --color-success-lighter: #cdfcd1;
+  --color-success-light: #69f290;
+  --color-success: #0cd66e;
+  --color-success-dark: #069a6b;
+  --color-success-darker: #02665b;
+
+  --color-secondary-lighter: #d2fcf4;
+  --color-secondary-light: #77f0ed;
+  --color-secondary: #22b8cf;
+  --color-secondary-dark: #116e95;
+  --color-secondary-darker: #063963;
+
+  --color-warning-lighter: #fff8d1;
+  --color-warning-light: #ffe475;
+  --color-warning: #ffc81a;
+  --color-warning-dark: #b7860d;
+  --color-warning-darker: #7a5204;
+
+  --color-error-lighter: #ffe7d9;
+  --color-error-light: #ffa48d;
+  --color-error: #ff4842;
+  --color-error-dark: #b72136;
+  --color-error-darker: #7a0c2e;
+
+  --color-grey-100: #f9fafb;
+  --color-grey-200: #f4f6f8;
+  --color-grey-300: #dfe3e8;
+  --color-grey-400: #c4cdd5;
+  --color-grey-500: #919eab;
+  --color-grey-600: #637381;
+  --color-grey-700: #454f5b;
+  --color-grey-800: #212b36;
+  --color-grey-900: #161c24;
+
+  --color-dark-grey-light: #919eab;
+  --color-dark-grey: rgba(145, 158, 171, 0.08);
+  --color-dark-grey-dark: rgba(145, 158, 171, 0.24);
+
+  --color-white: rgb(255 255 255);
+  --color-text-primary: #fff;
+  --color-text-secondary: #919eab;
+  --color-text-disabled: #637381;
+
+  --background-image-*: initial;
+  --background-image-article: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgb(0, 0, 0) 90%
+  );
+  --background-image-auth-image: url('https://cdn.akamai.steamstatic.com/steam/apps/1817070/ss_dfba6f2477bfa42be69ddfdffbd421d3943d20bf.1920x1080.jpg?t=1667406675');
+  --background-image-auth-image-gradient: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgb(0, 0, 0) 75%
+  );
+
+  --flex-2: 2 2 0%;
+
+  --font-barlow: Barlow, sans-serif;
+  --font-poppins: Poppins, sans-serif;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+.h1,
+h1 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 1.25;
+}
+
+.h2,
+h2 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.33;
+}
+
+.h3,
+h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.5;
+}
+
+.h4,
+h4 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.h5,
+h5 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.h6,
+h6 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.subtitle1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.subtitle2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.85;
+}
+
+.subtitle3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1.84;
+}
+
+.body1,
+html {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.body2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.85;
+}
+
+.body3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.84;
+}
+
+.caption {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+}
+
+.overline {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.66;
+}
+
+html {
+  box-sizing: border-box;
+  color: var(--color-text-primary);
+}
+
+button {
+  cursor: pointer;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.swiper-wrapper {
+  box-sizing: border-box !important;
+}
