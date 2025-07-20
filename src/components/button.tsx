@@ -68,7 +68,10 @@ export const Button: FC<ButtonProps> = (props) => {
 
   return (
     <Comp
-      className={cn('text-white', button({ variant, color, size, className }))}
+      className={cn(
+        'inline-flex items-center justify-center text-white',
+        button({ variant, color, size, className })
+      )}
       disabled={disabled || isLoading}
       {...rest}
     >
@@ -76,14 +79,7 @@ export const Button: FC<ButtonProps> = (props) => {
         children
       ) : (
         <Fragment>
-          <span
-            className={cn(
-              'inline-flex flex-1 justify-center text-center',
-              isLoading && 'invisible'
-            )}
-          >
-            {children}
-          </span>
+          {children}
           {isLoading && (
             <span className="absolute inset-0 z-10 inline-flex items-center justify-center">
               <CircularProgress

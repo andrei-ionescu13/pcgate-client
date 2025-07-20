@@ -1,7 +1,6 @@
 import {
   Pagination as MuiPagination,
   PaginationProps as MuiPaginationProps,
-  styled,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
@@ -9,8 +8,6 @@ import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 
 interface PaginationQueryProps extends MuiPaginationProps {}
-
-const PaginationQueryRoot = styled(MuiPagination)(({ theme }) => ({}));
 
 const initializePage = (query: ParsedUrlQuery): number => {
   try {
@@ -54,7 +51,7 @@ export const PaginationQuery: FC<PaginationQueryProps> = (props) => {
   }, [query]);
 
   return (
-    <PaginationQueryRoot
+    <MuiPagination
       size="large"
       count={10}
       variant="outlined"

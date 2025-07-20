@@ -1,12 +1,13 @@
 'use client';
 import { Button } from '@/components/button';
+import { InputBase } from '@/components/input-base';
 import { X as XIcon } from '@/icons/x';
 import { setCart } from '@/store/slices/cart';
 import { useAppDispatch } from '@/store/use-store-dispatch';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
-import { Card, InputBase } from '@mui/material';
+import { Card } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ChangeEvent, FC } from 'react';
@@ -82,24 +83,10 @@ export const CartCoupon: FC<CartCouponProps> = (props) => {
             });
           }}
         >
-          <div className="flex">
+          <div className="bg-default flex rounded-lg p-0.5">
             <InputBase
-              inputProps={{
-                onChange: handleCodeChange,
-                sx: {
-                  fontSize: 14,
-                  px: 1.5,
-                  py: 1,
-                },
-                value: code,
-              }}
+              className="flex-1 rounded-r-none"
               placeholder="Enter coupon code"
-              sx={{
-                backgroundColor: 'background.default',
-                flex: 1,
-                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-              }}
             />
             <Button
               color="primary"

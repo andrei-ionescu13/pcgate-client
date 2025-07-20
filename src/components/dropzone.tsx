@@ -1,35 +1,10 @@
 import { cn } from '@/utils/cn';
-import { CircularProgress, styled } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import Image from 'next/image';
 import type { FC } from 'react';
 import { useState } from 'react';
 import type { FileWithPath } from 'react-dropzone';
 import { useDropzone } from 'react-dropzone';
-
-const DropzoneRoot = styled('div')(({ theme }) => ({
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: theme.spacing(1),
-  borderWidth: 1,
-  borderRadius: 8,
-  borderColor:
-    theme.palette.mode === 'dark'
-      ? 'rgba(255, 255, 255, 0.23)'
-      : 'rgba(0, 0, 0, 0.23)',
-  borderStyle: 'dashed',
-  backgroundColor:
-    theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#F5F5F5',
-  color: '#bdbdbd',
-  outline: 'none',
-  transition: 'border .24s ease-in-out',
-  cursor: 'pointer',
-  '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : '#EBEBEB',
-  },
-}));
 
 export interface DropzoneFile extends FileWithPath {
   preview: string;
@@ -88,8 +63,11 @@ export const Dropzone: FC<DropzoneProps> = (props) => {
   });
 
   return (
-    <DropzoneRoot
-      sx={{ borderColor: isFocused ? '#fff' : undefined }}
+    <div
+      className={cn(
+        'border-divider flex flex-1 cursor-pointer flex-col items-center rounded-lg border border-dashed bg-[rgba(255,255,255,0.2)] p-2 transition-all duration-200 hover:bg-[rgba(255,255,255,0.12)]',
+        isFocused && 'border-white'
+      )}
       {...getRootProps()}
     >
       <input {...getInputProps()} />
@@ -117,6 +95,6 @@ export const Dropzone: FC<DropzoneProps> = (props) => {
       ) : (
         <p className="py-20">{placeholder}</p>
       )}
-    </DropzoneRoot>
+    </div>
   );
 };

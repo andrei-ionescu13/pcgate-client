@@ -1,26 +1,20 @@
 import { useFocused } from '@/hooks/use-focused';
 import { Product } from '@/types/product';
 import { appFetch } from '@/utils/app-fetch';
+import { cn } from '@/utils/cn';
 import { Button, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import type { SxProps } from '@mui/system';
-import { styled } from '@mui/system';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import type { ChangeEvent, FC, FormEvent } from 'react';
+import type { ChangeEvent, ComponentProps, FC, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
-import { SearchInput } from '../components/search-input';
+import { Search } from '../components/search-input';
 import { SearchItem } from './search-item';
 
-interface SearchProductsProps {
-  sx?: SxProps;
+interface SearchProductsProps extends ComponentProps<'div'> {
   isFocused?: boolean;
   onBlur?: any;
 }
-
-const SearchRoot = styled('div')({
-  position: 'relative',
-});
 
 const getProducts = (keyword: string) => () =>
   appFetch<{ count: number; products: Product[] }>({
@@ -30,7 +24,7 @@ const getProducts = (keyword: string) => () =>
   });
 
 export const SearchProducts: FC<SearchProductsProps> = (props) => {
-  const { ...rest } = props;
+  const { className, ...rest } = props;
   const { push } = useRouter();
   const query: any = {};
   const searchParams = useSearchParams();
@@ -131,12 +125,14 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
 
     return (
       <div>
-        {products.map((product) => (
-          <SearchItem
-            key={product._id}
-            product={product}
-          />
-        ))}
+        <div className="divide-divider divide-y">
+          {products.map((product) => (
+            <SearchItem
+              key={product._id}
+              product={product}
+            />
+          ))}
+        </div>
         {count > 5 && (
           <div className="block cursor-pointer bg-[rgba(0,0,0,0.16)] p-3 hover:bg-[rgba(0,0,0,0.28)]">
             <p
@@ -151,8 +147,11 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
     );
   };
 
+  const showProductsContainer =
+    focused && (previousData?.products || data?.products);
+
   const getContent = () => {
-    if (focused && (previousData?.products || data?.products)) {
+    if (showProductsContainer) {
       return (
         <div className="bg-paper top-10 right-0 left-0 z-20 md:absolute">
           {getDropdownContent()}
@@ -170,15 +169,16 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
   }, [pathname]);
 
   return (
-    <SearchRoot
-      {...rest}
+    <div
+      className={cn('relative', className)}
       ref={ref}
+      {...rest}
     >
       <form
         onSubmit={handleSubmit}
         style={{ width: '100%' }}
       >
-        <SearchInput
+        <Search
           inputProps={{
             onFocus: () => {
               setFocused(true);
@@ -186,17 +186,10 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
           }}
           onChange={handleQueryChange}
           value={keyword}
-          sx={{
-            ...(focused &&
-              ((keyword && data?.products && mdUp) ||
-                (!mdUp && data?.products?.length && !isRefetching)) && {
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-              }),
-          }}
+          className={showProductsContainer ? 'rounded-b-none' : ''}
         />
       </form>
       {getContent()}
-    </SearchRoot>
+    </div>
   );
 };

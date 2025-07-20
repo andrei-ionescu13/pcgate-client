@@ -1,5 +1,6 @@
 'use client';
 
+import { InputBase } from '@/components/input-base';
 import type { CardProps } from '@mui/material';
 import {
   ButtonBase,
@@ -9,7 +10,6 @@ import {
   Chip,
   FormControlLabel,
   FormGroup,
-  InputBase,
   styled,
 } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
@@ -135,19 +135,7 @@ export const FilterCardCheckbox: FC<FilterCardCheckboxProps> = (props) => {
         {items.length > limit && (
           <div className="mb-2">
             <InputBase
-              sx={{
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-                borderRadius: 1,
-                px: 1.5,
-                fontSize: 14,
-                fontWeight: 'normal',
-                '& input': {
-                  color: (theme) => theme.palette.text.primary,
-                  '&::placeholder': {
-                    color: (theme) => theme.palette.text.disabled,
-                  },
-                },
-              }}
+              className="border-divider rounded-lg border py-0.5"
               placeholder="Search..."
               value={keyword}
               onChange={handleKeywordChange}

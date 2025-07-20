@@ -1,6 +1,7 @@
+import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
 import type { ProductReview } from '@/types/product';
-import { Avatar, Rating } from '@mui/material';
+import { Rating } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';

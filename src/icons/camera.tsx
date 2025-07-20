@@ -1,13 +1,15 @@
-import { createSvgIcon } from '@mui/material/utils';
+import { ComponentProps, FC } from 'react';
 
-export const Camera = createSvgIcon(
+export const Camera: FC<ComponentProps<'svg'>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className="w-6 h-6"
+    height={24}
+    width={24}
+    {...props}
   >
     <path
       strokeLinecap="round"
@@ -19,6 +21,5 @@ export const Camera = createSvgIcon(
       strokeLinejoin="round"
       d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
     />
-  </svg>,
-  'Camera'
+  </svg>
 );

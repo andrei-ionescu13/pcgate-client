@@ -3,40 +3,24 @@
 import { Button } from '@/components/button';
 import { Link } from '@/i18n/navigation';
 import type { Order as OrderI } from '@/types/orders';
+import { cn } from '@/utils/cn';
 import { List, ListItem } from '@mui/material';
-import type { SxProps } from '@mui/system';
-import { styled } from '@mui/system';
 import { format } from 'date-fns';
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 
-interface OrderProps {
+interface OrderProps extends ComponentProps<'div'> {
   order: OrderI;
-  sx?: SxProps;
 }
 
-const OrderRoot = styled('div')(({ theme }) => ({
-  display: 'flex',
-  paddingBottom: theme.spacing(1),
-  paddingTop: theme.spacing(1),
-  '& > div': {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column',
-    '& > div': {
-      paddingBottom: theme.spacing(0.5),
-      paddingTop: theme.spacing(0.5),
-    },
-  },
-}));
-
 export const Order: FC<OrderProps> = (props) => {
-  const { order, ...rest } = props;
+  const { order, className, ...rest } = props;
 
   return (
-    <OrderRoot
-      className="text-text-secondary"
+    <div
+      className={cn(
+        'text-text-secondary flex flex-col py-2 md:flex-row [&>div]:px-4 [&>div]:py-1 md:[&>div]:py-0',
+        className
+      )}
       {...rest}
     >
       <div className="order-1 flex-1">
@@ -81,6 +65,6 @@ export const Order: FC<OrderProps> = (props) => {
           <Link href="/account/orders/${order._id}">View order</Link>
         </Button>
       </div>
-    </OrderRoot>
+    </div>
   );
 };

@@ -1,12 +1,13 @@
 'use client';
 
+import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
 import { useAuth } from '@/contexts/auth-context';
 import { useOpen } from '@/hooks/use-open';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Camera as CameraIcon } from '@/icons/camera';
 import { cn } from '@/utils/cn';
-import { Avatar, List, Skeleton } from '@mui/material';
+import { List, Skeleton } from '@mui/material';
 import { AvatarDialog } from 'layout/avatar-dialog';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -45,17 +46,12 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
     <div>
       {open && <AvatarDialog onClose={handleClose} />}
       <div className="grid place-items-center p-4">
-        <Button
-          className="relative"
-          onClick={handleOpen}
-        >
-          {user?.avatar ? (
-            <Avatar
-              sx={{
-                width: 50,
-                height: 50,
-              }}
-            >
+        {user?.avatar ? (
+          <button
+            className="relative inline-flex"
+            onClick={handleOpen}
+          >
+            <Avatar size="large">
               <Image
                 alt=""
                 priority
@@ -64,24 +60,24 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
                 objectFit="cover"
               />
             </Avatar>
-          ) : (
-            <Skeleton
-              variant="circular"
-              width={50}
-              height={50}
+            <CameraIcon
+              color="primary"
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                width: 16,
+                height: 16,
+              }}
             />
-          )}
-          <CameraIcon
-            color="primary"
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              width: 16,
-              height: 16,
-            }}
+          </button>
+        ) : (
+          <Skeleton
+            variant="circular"
+            width={48}
+            height={48}
           />
-        </Button>
+        )}
         <p className="caption mt-1 text-center">{decoded?.email}</p>
       </div>
       <div>

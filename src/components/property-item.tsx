@@ -21,7 +21,7 @@ export const PropertyItem: FC<PropertyItemProps> = (props) => {
     >
       <p
         className={cn(
-          'text-text-secondary border-y',
+          'text-text-secondary body2',
           align === 'horizontal' ? 'min-w-[120px]' : 'min-w-auto'
         )}
       >

@@ -1,10 +1,11 @@
-import { createSvgIcon } from '@mui/material/utils';
+import { ComponentProps, FC } from 'react';
 
-export const Google = createSvgIcon(
+export const Google: FC<ComponentProps<'svg'>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 48 48"
+    {...props}
   >
     <defs>
       <path
@@ -38,6 +39,5 @@ export const Google = createSvgIcon(
       fill="#4285F4"
       d="M48 48L17 24l-4-3 35-10z"
     />
-  </svg>,
-  'Google'
+  </svg>
 );

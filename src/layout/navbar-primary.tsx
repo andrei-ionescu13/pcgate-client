@@ -35,20 +35,10 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
         >
           <Link
             href="/"
-            sx={{
-              display: {
-                sm: 'block',
-                xs: 'none',
-              },
-            }}
+            className="hidden sm:inline"
           >
             <div className="flex">
-              <Logo
-                sx={{
-                  height: 33,
-                  width: 166,
-                }}
-              />
+              <Logo />
             </div>
           </Link>
           <IconButton
@@ -62,18 +52,9 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <SearchProducts
-            sx={{
-              display: {
-                md: 'flex',
-                xs: 'none',
-              },
-              width: '100%',
-              maxWidth: 600,
-              ml: 5,
-              mr: 2,
-            }}
-          />
+          <div className="mr-4 ml-10 hidden w-full max-w-sm md:block">
+            <SearchProducts />
+          </div>
           <div className="flex-1" />
           <div className="flex gap-3">
             {/* todo change this */}
@@ -99,14 +80,6 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
                 >
                   <Link href="/login">Login</Link>
                 </Button>
-                {/* <Button
-                  component={Link}
-                  href="/login"
-                  color="primary"
-                  variant="contained"
-                >
-                  Login
-                </Button> */}
               </>
             )}
           </div>

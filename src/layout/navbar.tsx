@@ -1,6 +1,5 @@
 'use client';
 
-import { AppBar } from '@mui/material';
 import type { FC } from 'react';
 import { NavbarPrimary } from './navbar-primary';
 import { NavbarSecondary } from './navbar-secondary';
@@ -13,14 +12,9 @@ export const Navbar: FC<NavbarProps> = (props) => {
   const { onOpenSidebar } = props;
 
   return (
-    <AppBar
-      sx={{
-        backgroundColor: '#12171E',
-        backgroundImage: 'initial',
-      }}
-    >
+    <header className="shadow-header fixed top-0 right-0 left-0 z-[1100] flex flex-col bg-[#12171E]">
       <NavbarPrimary onOpenSidebar={onOpenSidebar} />
       <NavbarSecondary />
-    </AppBar>
+    </header>
   );
 };

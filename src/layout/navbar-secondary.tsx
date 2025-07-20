@@ -1,6 +1,6 @@
 import { Container } from '@/components/container';
 import { useAuth } from '@/contexts/auth-context';
-import { List, Toolbar } from '@mui/material';
+import { List } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import type { FC } from 'react';
 import { NavLink } from '../components/nav-link';
@@ -34,17 +34,7 @@ export const NavbarSecondary: FC = () => {
   return (
     <div className="hidden sm:block">
       <Container maxWidth="lg">
-        <Toolbar
-          disableGutters
-          sx={{
-            alignItems: 'center',
-            color: '#fff',
-            display: 'flex',
-            minHeight: {
-              xs: 56,
-            },
-          }}
-        >
+        <div className="flex h-14 items-center text-white">
           <List
             disablePadding
             sx={{
@@ -70,7 +60,7 @@ export const NavbarSecondary: FC = () => {
               <CartDropdown />
             </div>
           )}
-        </Toolbar>
+        </div>
       </Container>
     </div>
   );

@@ -65,9 +65,7 @@ export const AddButton: FC<AddButtonProps> = (props) => {
       isLoading={addToCart.isPending}
       {...rest}
     >
-      <span>
-        <ShoppingCart />
-      </span>
+      <ShoppingCart />
       Add
     </Button>
   );

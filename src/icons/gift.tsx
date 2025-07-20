@@ -1,12 +1,13 @@
-"use client"
-import { createSvgIcon } from '@mui/material/utils';
+import { ComponentProps, FC } from 'react';
 
-export const Gift = createSvgIcon(
+export const Gift: FC<ComponentProps<'svg'>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
+    height={24}
+    width={24}
     viewBox="0 0 20 20"
     fill="currentColor"
+    {...props}
   >
     <path
       fillRule="evenodd"
@@ -14,6 +15,5 @@ export const Gift = createSvgIcon(
       clipRule="evenodd"
     />
     <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
-  </svg>,
-  'Gift'
+  </svg>
 );

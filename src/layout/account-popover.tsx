@@ -1,18 +1,11 @@
 'use client';
 
+import { Avatar } from '@/components/avatar';
 import { useAuth } from '@/contexts/auth-context';
 import { Link, useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/utils/api-error';
-import {
-  Avatar,
-  Box,
-  List,
-  ListItemButton,
-  Popover,
-  Skeleton,
-} from '@mui/material';
+import { List, ListItemButton, Popover, Skeleton } from '@mui/material';
 import type { SxProps } from '@mui/system';
-import { styled } from '@mui/system';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -41,17 +34,10 @@ const links = [
   },
 ];
 
-const AccountPopoverRoot = styled(Box)(() => ({
-  alignItems: 'center',
-  color: '#fff',
-  cursor: 'pointer',
-  display: 'flex',
-}));
-
 export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   const { user, logout } = useAuth();
   const mutation = useMutation<void, ApiError>({ mutationFn: logout });
-  const anchorRef = useRef<Element | null>(null);
+  const anchorRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -74,25 +60,21 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
 
   return (
     <>
-      <AccountPopoverRoot
-        onClick={handleOpen}
-        ref={anchorRef}
-        {...props}
-      >
+      <div {...props}>
         {user?.avatar ? (
-          <Avatar
-            sx={{
-              width: 36,
-              height: 36,
-            }}
+          <button
+            onClick={handleOpen}
+            ref={anchorRef}
           >
-            <Image
-              unoptimized
-              fill
-              alt="avatar"
-              src={user.avatar}
-            />
-          </Avatar>
+            <Avatar>
+              <Image
+                unoptimized
+                fill
+                alt="avatar"
+                src={user.avatar}
+              />
+            </Avatar>
+          </button>
         ) : (
           <Skeleton
             variant="circular"
@@ -100,7 +82,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             height={36}
           />
         )}
-      </AccountPopoverRoot>
+      </div>
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{

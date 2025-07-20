@@ -1,10 +1,12 @@
+import { Badge } from '@/components/badge';
+import { Card } from '@/components/card';
 import { useSettings } from '@/contexts/settings-context';
 import { Link } from '@/i18n/navigation';
 import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
 import { useStoreSelector } from '@/store/use-store-selector';
 import type { CartLineItem } from '@/types/cart';
 import type { ListItemProps } from '@mui/material';
-import { Badge, Button, Card, Divider, List, ListItem } from '@mui/material';
+import { Button, Divider, List, ListItem } from '@mui/material';
 import type { ElementType, FC } from 'react';
 
 interface CartDropdownItemProps extends ListItemProps {
@@ -50,20 +52,8 @@ export const CartDropdown: FC = () => {
 
   return (
     <div className="group relative z-10 flex items-center self-stretch">
-      <Link
-        href="/cart"
-        underline="none"
-      >
-        <Badge
-          badgeContent={cart.itemCount}
-          showZero
-          sx={{
-            '& .MuiBadge-badge': {
-              backgroundColor: '#fff',
-              color: '#000',
-            },
-          }}
-        >
+      <Link href="/cart">
+        <Badge content={cart.itemCount}>
           <div className="flex cursor-pointer items-center rounded-lg bg-[#1E4582] p-2 text-[#FFF]">
             <ShoppingCartIcon
               fontSize="small"
@@ -73,16 +63,10 @@ export const CartDropdown: FC = () => {
         </Badge>
       </Link>
       {cart.items.length > 0 && (
-        <Card
-          className="z-20 hidden group-hover:block"
-          sx={{
-            position: 'absolute',
-            right: 0,
-            top: 36,
-            width: 280,
-          }}
-        >
-          <p className="subtitle2 mr-2 text-center">Latest products added</p>
+        <Card className="absolute top-9 right-0 z-20 hidden w-[280px] group-hover:block">
+          <p className="subtitle2 my-2 mr-2 text-center">
+            Latest products added
+          </p>
           <Divider />
           <List disablePadding>
             {cart.items.map((item) => (

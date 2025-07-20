@@ -18,11 +18,11 @@
   --text-color-*: initial;
 
   --color-*: initial;
-  --color-divider: #919eab3d;
-  --color-paper: #212b36;
-  --color-primary: #fa541c;
+
   --color-default: #161c24;
-  --color-neutral: #919eab1f;
+  --color-paper: #212b36;
+  --color-neutral: rgba(145, 158, 171, 0.12);
+  --color-divider: rgba(145, 158, 171, 0.25);
 
   --color-primary-lighter: #fee9d1;
   --color-primary-light: #fdab76;
@@ -75,6 +75,7 @@
   --color-dark-grey-dark: rgba(145, 158, 171, 0.24);
 
   --color-white: rgb(255 255 255);
+  --color-black: rgb(0, 0, 0);
   --color-text-primary: #fff;
   --color-text-secondary: #919eab;
   --color-text-disabled: #637381;
@@ -94,6 +95,10 @@
 
   --font-barlow: Barlow, sans-serif;
   --font-poppins: Poppins, sans-serif;
+
+  --shadow-header: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0px 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 /*
@@ -111,6 +116,14 @@
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
   }
 }
 

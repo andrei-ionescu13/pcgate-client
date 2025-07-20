@@ -1,16 +1,10 @@
 //todo cleanup/refactor
 'use client';
 
+import { InputBase } from '@/components/input-base';
 import { ChevronRight } from '@/icons/chevron-right';
 import type { CardProps } from '@mui/material';
-import {
-  Button,
-  Card,
-  CardContent,
-  InputBase,
-  Slider,
-  styled,
-} from '@mui/material';
+import { Button, Card, CardContent, Slider, styled } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { useSearchParams } from 'next/navigation';
 import type { ChangeEvent, FC } from 'react';
@@ -199,58 +193,18 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
         <div className="flex gap-1">
           <InputBase
             type="number"
-            sx={{
-              border: (theme) => `1px solid ${theme.palette.divider}`,
-              borderRadius: 1,
-              px: 1.5,
-              fontSize: 14,
-              fontWeight: 'normal',
-              '& input': {
-                color: (theme) => theme.palette.text.primary,
-                py: 0.5,
-                '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
-                  margin: 0,
-                  appearance: 'none',
-                },
-                '&[type=number]': {
-                  appearance: 'textfield',
-                },
-                '&::placeholder': {
-                  color: (theme) => theme.palette.text.disabled,
-                },
-              },
-            }}
             placeholder="Min"
             value={inputMin}
             onChange={handleMinChange}
+            className="border-divider max-w-12 rounded-lg border py-0.5"
           />
           <p className="text-text-secondary align-middle">-</p>
           <InputBase
             type="number"
-            sx={{
-              border: (theme) => `1px solid ${theme.palette.divider}`,
-              borderRadius: 1,
-              px: 1.5,
-              fontSize: 14,
-              fontWeight: 'normal',
-              '& input': {
-                color: (theme) => theme.palette.text.primary,
-                py: 0.5,
-                '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
-                  margin: 0,
-                  appearance: 'none',
-                },
-                '&[type=number]': {
-                  appearance: 'textfield',
-                },
-                '&::placeholder': {
-                  color: (theme) => theme.palette.text.disabled,
-                },
-              },
-            }}
             placeholder="Max"
             value={inputMax}
             onChange={handleMaxChange}
+            className="border-divider max-w-12 rounded-lg border py-0.5"
           />
           <Button
             sx={{ py: 0.5, px: 1, minWidth: 'fit-content' }}

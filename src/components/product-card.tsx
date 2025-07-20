@@ -2,11 +2,12 @@
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
-import { Card, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 import type { FC } from 'react';
 import { WishlistButton } from '../layout/wishlist-button';
 import { AddButton } from './add-button';
 import { AppImage } from './app-image';
+import { Card } from './card';
 import { ProductDiscount } from './product-discount';
 
 interface ProductCardProps {
@@ -19,21 +20,7 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
   const { product } = props;
 
   return (
-    <Card
-      sx={{
-        backgroundColor: 'background.paper',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'initial',
-        position: 'relative',
-        textDecoration: 'none',
-        '& img': {
-          maxWidth: '100%',
-          borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-          borderTopRightRadius: (theme) => theme.shape.borderRadius,
-        },
-      }}
-    >
+    <Card>
       <div className="absolute top-4 right-4 z-50">
         <WishlistButton productId={product._id} />
       </div>
@@ -56,13 +43,6 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
         <Link
           color="inherit"
           href={`/products/${product.slug}`}
-          sx={{
-            WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 2,
-            overflow: 'hidden',
-            wordBreak: 'break-all',
-            display: '-webkit-box',
-          }}
           underline="none"
           variant="body2"
         >

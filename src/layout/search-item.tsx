@@ -3,41 +3,29 @@ import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import { Steam as SteamIcon } from '@/icons/steam';
 import { Product } from '@/types/product';
-import type { SxProps } from '@mui/system';
-import { styled } from '@mui/system';
-import type { FC } from 'react';
+import { cn } from '@/utils/cn';
+import type { ComponentProps, FC } from 'react';
 import { ProductDiscount } from '../components/product-discount';
 
-interface SearchItemProps {
+interface SearchItemProps extends Omit<ComponentProps<typeof Link>, 'href'> {
   product: Product;
-  sx?: SxProps;
 }
 
-const SearchItemRoot = styled(Link)(({ theme }) => ({
-  alignItems: 'center',
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  display: 'flex',
-  paddingRight: theme.spacing(2),
-  '& + &': {
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.16)',
-    textDecoration: 'none',
-  },
-}));
-
 export const SearchItem: FC<SearchItemProps> = (props) => {
-  const { product } = props;
+  const { product, className, ...rest } = props;
   const formatCurrency = useFormatCurrency();
 
   return (
-    <SearchItemRoot
+    <Link
+      className={cn(
+        'bg-paper flex items-center pr-4 hover:bg-[rgba(0,0,0,0.16)]',
+        className
+      )}
       color="inherit"
       href={`/products/${product.slug}`}
+      {...rest}
     >
-      <div className="relative aspect-video w-full max-w-[120px]">
+      <div className="relative aspect-video w-full max-w-[160px]">
         <AppImage
           priority
           src={product.cover.public_id}
@@ -72,6 +60,6 @@ export const SearchItem: FC<SearchItemProps> = (props) => {
           </p>
         </div>
       </div>
-    </SearchItemRoot>
+    </Link>
   );
 };
