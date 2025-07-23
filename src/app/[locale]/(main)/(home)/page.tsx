@@ -30,8 +30,14 @@ const listNewReleases = () =>
   });
 
 export default async function Home() {
-  const deals = await listCollections();
-  const newReleases = await listNewReleases();
+  let deals;
+  let newReleases;
+  try {
+    deals = await listCollections();
+    newReleases = await listNewReleases();
+  } catch (error) {
+    console.log(error);
+  }
 
   return (
     <div className="pb-10 md:pt-10">
