@@ -6,8 +6,6 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
   isServer,
@@ -81,10 +79,8 @@ const Providers: FC<ProvidersProps> = (props) => {
                   <ThemeProvider theme={theme}>
                     <Toaster richColors />
                     <ReactQueryDevtools initialIsOpen={false} />
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <CssBaseline />
-                      {children}
-                    </LocalizationProvider>
+                    <CssBaseline />
+                    {children}
                   </ThemeProvider>
                 </SettingsProvider>
               </AuthProvider>
