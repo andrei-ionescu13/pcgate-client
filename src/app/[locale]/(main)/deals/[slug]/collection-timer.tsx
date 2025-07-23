@@ -1,8 +1,8 @@
 'use client';
+import { Card } from '@/components/card';
 import { useCountdown } from '@/hooks/use-countdown';
 import { useRouter } from '@/i18n/navigation';
 import { Meta } from '@/types/common';
-import { Card } from '@mui/material';
 import type { FC } from 'react';
 
 interface DealI {
@@ -39,14 +39,7 @@ export const CollectionTimer: FC<CollectionTimerProps> = (props) => {
           className="grid place-items-center"
           key={item.label}
         >
-          <Card
-            sx={{
-              background: (theme) => theme.palette.primary.main,
-              minWidth: 68,
-              display: 'grid',
-              placeItems: 'center',
-            }}
-          >
+          <Card className="bg-primary grid min-w-16 place-items-center">
             <h3>{item.value}</h3>
           </Card>
           <p className="subtitle2">{item.label}</p>

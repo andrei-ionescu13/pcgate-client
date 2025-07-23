@@ -1,8 +1,9 @@
+import { Card } from '@/components/card';
 import { CopyTextButton } from '@/components/copy-text-button';
 import { Link } from '@/i18n/navigation';
 import { Coupon as CouponI } from '@/types/common';
 import { cn } from '@/utils/cn';
-import { Button, Card } from '@mui/material';
+import { Button } from '@mui/material';
 import { format } from 'date-fns';
 import type { FC } from 'react';
 import { Fragment } from 'react';
@@ -17,10 +18,8 @@ export const Coupon: FC<CouponProps> = (props) => {
 
   return (
     <Card
-      sx={{
-        backgroundColor: 'background.default',
-        p: 1,
-      }}
+      className="p-2"
+      color="default"
     >
       <div className="flex content-center">
         <p className="subtitle1">{promoCode.code}</p>

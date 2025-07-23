@@ -1,6 +1,6 @@
 import { AppImage } from '@/components/app-image';
 import { Container } from '@/components/container';
-import { Box } from '@mui/material';
+import { cn } from '@/utils/cn';
 import { getDeal, listDealProducts } from './api';
 import { CollectionProducts } from './collection-products';
 import { CollectionTimer } from './collection-timer';
@@ -11,24 +11,12 @@ const Deal = async ({ params }: { params: { slug: string } }) => {
   const initialProducts = await listDealProducts(slug, 0);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: 'background.default',
-        position: 'relative',
-        overflow: 'hidden',
-        py: 5,
-        minHeight: '100vh',
-      }}
-    >
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          overflow: 'hidden',
-          zindex: 0,
-          height: '100vh',
-          filter: deal.hasExpired ? 'grayscale(80%)' : undefined,
-        }}
+    <div className="relative min-h-screen overflow-hidden py-10">
+      <div
+        className={cn(
+          'absolute inset-0 h-screen overflow-hidden',
+          deal.hasExpired && 'grayscale-75'
+        )}
       >
         <AppImage
           fill
@@ -37,18 +25,8 @@ const Deal = async ({ params }: { params: { slug: string } }) => {
           alt=""
           className="object-cover"
         />
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            background: `
-            linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, #161C24 100%),
-            linear-gradient(270deg, rgba(0, 0, 0, 0) 50%, #161C24 100%),
-            linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #161C24 100%)
-            `,
-          }}
-        />
-      </Box>
+        <div className="bg-deal absolute inset-0" />
+      </div>
       <Container
         maxWidth="lg"
         className="relative z-10"
@@ -67,7 +45,7 @@ const Deal = async ({ params }: { params: { slug: string } }) => {
           )}
         </div>
       </Container>
-    </Box>
+    </div>
   );
 };
 

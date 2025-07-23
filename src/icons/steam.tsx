@@ -1,7 +1,11 @@
 import { ComponentProps, FC } from 'react';
 
 export const Steam: FC<ComponentProps<'svg'>> = (props) => (
-  <svg {...props}>
+  <svg
+    height={24}
+    width={24}
+    {...props}
+  >
     <circle
       cx="15.5"
       cy="9.5"

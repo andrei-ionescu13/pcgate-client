@@ -1,5 +1,5 @@
 import type { DialogProps } from '@mui/material';
-import { Dialog, DialogActions } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { Button } from './button';
 
@@ -34,13 +34,12 @@ export const DialogAlert: FC<DialogAlertProps> = (props) => {
       {...rest}
     >
       <div className="px-4 pt-4">
-        <h2 className="h3">{title}</h2>
+        <h2 className="h4">{title}</h2>
       </div>
       <div className="flex-1 px-4 py-5">
-        {children ||
-          (content && <p className="text-text-secondary">{content}</p>)}
+        {children || <p className="text-text-secondary">{content}</p>}
       </div>
-      <DialogActions sx={{ p: 2 }}>
+      <div className="flex justify-end gap-2 p-4">
         <Button onClick={onClose}>Cancel</Button>
         <Button
           autoFocus
@@ -51,7 +50,7 @@ export const DialogAlert: FC<DialogAlertProps> = (props) => {
         >
           Confirm
         </Button>
-      </DialogActions>
+      </div>
     </Dialog>
   );
 };

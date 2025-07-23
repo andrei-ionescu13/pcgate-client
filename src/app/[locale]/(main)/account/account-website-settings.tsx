@@ -1,8 +1,9 @@
 'use client';
 
+import { Button } from '@/components/button';
+import { Card } from '@/components/card';
 import { LanguageCurrencyDialog } from '@/components/language-currency-dialog';
 import { useSettings } from '@/contexts/settings-context';
-import { Button, Card } from '@mui/material';
 import type { FC } from 'react';
 import { useState } from 'react';
 
@@ -30,13 +31,8 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (
       <div {...props}>
         <h5 className="mb-3">Website Settings</h5>
         <Card
-          sx={{
-            backgroundColor: 'background.default',
-            p: 2,
-            '& > div:not(:last-child)': {
-              mb: 4,
-            },
-          }}
+          color="default"
+          className="flex flex-col gap-8 p-4"
         >
           <div className="items-center sm:flex">
             <div>
@@ -46,13 +42,7 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (
               <p className="body2">Change this</p>
             </div>
             <div className="flex-1" />
-            <Button
-              color="white"
-              onClick={handleOpenDialog}
-              variant="text"
-            >
-              Change Language
-            </Button>
+            <Button onClick={handleOpenDialog}>Change Language</Button>
           </div>
           <div className="items-center sm:flex">
             <div>

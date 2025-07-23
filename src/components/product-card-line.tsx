@@ -1,10 +1,10 @@
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
-import { Card } from '@mui/material';
 import type { FC } from 'react';
 import { AddButton } from './add-button';
 import { AppImage } from './app-image';
+import { Card } from './card';
 import { ProductDiscount } from './product-discount';
 
 interface ProductCardLineProps {
@@ -18,16 +18,7 @@ export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
   const formatCurrency = useFormatCurrency();
 
   return (
-    <Card
-      sx={{
-        backgroundColor: 'background.paper',
-        display: 'flex',
-        overflow: 'hidden',
-        position: 'relative',
-        textDecoration: 'none',
-        p: 1,
-      }}
-    >
+    <Card className="relative flex overflow-hidden p-2">
       <div className="w-2/6 max-w-56 min-w-24">
         <Link
           href={`/products/${product.slug}`}
@@ -51,8 +42,7 @@ export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
         <Link
           color="inherit"
           href={`/products/${product.slug}`}
-          underline="none"
-          variant="body1"
+          className="body1"
         >
           {product.title}
         </Link>
@@ -61,7 +51,7 @@ export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
           <div className="flex flex-1 items-center">
             {product.originalPrice && (
               <ProductDiscount
-                sx={{ mr: 1 }}
+                className="mt-2"
                 variant="small"
                 initialPrice={product.originalPrice}
                 price={product.price}

@@ -1,8 +1,8 @@
-import type { FC } from 'react';
-import { IconButton } from '@mui/material';
+import { IconButton } from '@/components/icon-button';
+import { useSettings } from '@/contexts/settings-context';
 import { Moon as MoonIcon } from '@/icons/moon';
 import { Sun as SunIcon } from '@/icons/sun';
-import { useSettings } from '@/contexts/settings-context';
+import type { FC } from 'react';
 
 export const SwitchThemeButton: FC = () => {
   const { settings, saveSettings } = useSettings();
@@ -10,15 +10,12 @@ export const SwitchThemeButton: FC = () => {
   const handleSwitchTheme = () => {
     saveSettings({
       ...settings,
-      theme: settings.theme === 'light' ? 'dark' : 'light'
+      theme: settings.theme === 'light' ? 'dark' : 'light',
     });
   };
 
   return (
-    <IconButton
-      sx={{ color: '#fff' }}
-      onClick={handleSwitchTheme}
-    >
+    <IconButton onClick={handleSwitchTheme}>
       {settings.theme === 'dark' ? <MoonIcon /> : <SunIcon />}
     </IconButton>
   );

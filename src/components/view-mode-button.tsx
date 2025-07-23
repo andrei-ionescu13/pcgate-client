@@ -1,9 +1,9 @@
-import type { FC, MouseEvent } from 'react';
-import { Button } from '@mui/material';
 import {
   GridView as GridViewIcon,
-  ViewHeadline as ViewHeadlineIcon
+  ViewHeadline as ViewHeadlineIcon,
 } from '@mui/icons-material';
+import type { FC, MouseEvent } from 'react';
+import { Button } from './button';
 
 interface ViewModeButtonProps {
   viewMode: 'grid' | 'list';
@@ -11,19 +11,15 @@ interface ViewModeButtonProps {
 }
 
 export const ViewModeButton: FC<ViewModeButtonProps> = (props) => {
-  const { viewMode, onViewModeChange } = props
+  const { viewMode, onViewModeChange } = props;
 
   return (
     <Button
-      color="white"
       variant="outlined"
       onClick={onViewModeChange}
-      sx={{
-        p: 0.75,
-        minWidth: 'auto'
-      }}
+      className="min-w-auto p-1.5"
     >
       {viewMode === 'grid' ? <GridViewIcon /> : <ViewHeadlineIcon />}
     </Button>
-  )
-}
+  );
+};

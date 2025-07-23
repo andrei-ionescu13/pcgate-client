@@ -1,6 +1,5 @@
 import { Link } from '@/i18n/navigation';
 import { ArticleCategory } from '@/types/articles';
-import { List, ListItem } from '@mui/material';
 import type { FC } from 'react';
 
 interface BlogCategoriesProps {
@@ -24,12 +23,9 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
   return (
     <div className="mt-8 mb-4">
       <h4>Categories</h4>
-      <List>
+      <ul className="py-1">
         {mappedCategories.map((category) => (
-          <ListItem
-            disablePadding
-            key={category.value}
-          >
+          <li key={category.value}>
             <span className="mr-2">●</span>
             <Link
               href={
@@ -39,9 +35,9 @@ export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
             >
               {category.label}
             </Link>
-          </ListItem>
+          </li>
         ))}
-      </List>
+      </ul>
     </div>
   );
 };

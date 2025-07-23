@@ -1,11 +1,12 @@
 'use client';
 import { AppImage } from '@/components/app-image';
+import { Card } from '@/components/card';
 import { DialogAlert } from '@/components/dialog-alert';
 import { useOpen } from '@/hooks/use-open';
 import { Link } from '@/i18n/navigation';
 import { Steam as SteamIcon } from '@/icons/steam';
 import type { UserReview as UserReviewI } from '@/types/user';
-import { Button, Card, Rating } from '@mui/material';
+import { Button, Rating } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import type { FC } from 'react';
@@ -42,16 +43,8 @@ export const Review: FC<UserReview> = (props) => {
         content="Are you sure you want to delete this review?"
       />
       <Card
-        elevation={0}
-        sx={{
-          backgroundColor: 'background.neutral',
-          display: 'grid',
-          gap: 2,
-          p: {
-            sm: 2,
-            xs: 1,
-          },
-        }}
+        className="grid gap-4 p-2 sm:p-4"
+        color="neutral"
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="w-full overflow-hidden rounded-lg sm:max-w-56">
@@ -73,14 +66,12 @@ export const Review: FC<UserReview> = (props) => {
           <div>
             <Link
               href={`/products/${product.slug}`}
-              sx={{ color: '#fff' }}
-              underline="none"
-              variant="body2"
+              className="body2"
             >
               {product.title}
             </Link>
             <div className="mt-2">
-              <SteamIcon sx={{ color: '#fff' }} />
+              <SteamIcon />
             </div>
           </div>
         </div>

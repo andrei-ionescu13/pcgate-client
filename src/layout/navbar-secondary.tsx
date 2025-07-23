@@ -1,6 +1,5 @@
 import { Container } from '@/components/container';
 import { useAuth } from '@/contexts/auth-context';
-import { List } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import type { FC } from 'react';
 import { NavLink } from '../components/nav-link';
@@ -35,24 +34,19 @@ export const NavbarSecondary: FC = () => {
     <div className="hidden sm:block">
       <Container maxWidth="lg">
         <div className="flex h-14 items-center text-white">
-          <List
-            disablePadding
-            sx={{
-              display: 'flex',
-              position: 'static',
-            }}
-          >
+          <ul className="static flex">
             {links.map((link) => (
-              <NavLink
-                href={link.href}
-                key={link.href}
-                className="hover:text-primary mr-2"
-                activeClassName="text-primary"
-              >
-                {t(link.translation)}
-              </NavLink>
+              <li key={link.href}>
+                <NavLink
+                  href={link.href}
+                  className="hover:text-primary mr-2"
+                  activeClassName="text-primary"
+                >
+                  {t(link.translation)}
+                </NavLink>
+              </li>
             ))}
-          </List>
+          </ul>
           <div className="flex-1" />
           {isAuthenticated && (
             <div className="flex gap-3">

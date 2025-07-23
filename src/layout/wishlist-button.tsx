@@ -1,5 +1,6 @@
 'use client';
 
+import { IconButton } from '@/components/icon-button';
 import { useRouter } from '@/i18n/navigation';
 import { Heart as HeartIcon } from '@/icons/heart';
 import { HeartOutlined as HeartOutlinedIcon } from '@/icons/heart-outlined';
@@ -10,7 +11,7 @@ import {
 import { useStoreSelector } from '@/store/use-store-selector';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
-import { IconButton } from '@mui/material';
+import { cn } from '@/utils/cn';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { FC, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
@@ -84,23 +85,14 @@ export const WishlistButton: FC<WishlistButtonProps> = (props) => {
     isWishlisted ? handleRemoveFromWishlist() : handleAddToWishlist();
   };
 
+  const isPending = addToWishlist.isPending || removeFromWishlist.isPending;
+
   return (
     <IconButton
       onClick={handleClick}
       size="small"
-      sx={{
-        mt: -0.5,
-        alignSelf: 'flex-start',
-        color: (theme) =>
-          isWishlisted
-            ? 'error.dark'
-            : theme.palette.mode === 'light'
-              ? 'text.secondary'
-              : 'text.primary',
-        '& :hover': {
-          color: !isWishlisted ? '#fff' : undefined,
-        },
-      }}
+      className={cn('-mt-1', isWishlisted && 'text-error-dark')}
+      disabled={isPending}
     >
       {isWishlisted ? <HeartIcon /> : <HeartOutlinedIcon />}
     </IconButton>

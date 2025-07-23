@@ -1,7 +1,6 @@
 import { AppImage } from '@/components/app-image';
 import { Link } from '@/i18n/navigation';
 import type { Article } from '@/types/articles';
-import { List, ListItem } from '@mui/material';
 import { format } from 'date-fns';
 import type { FC } from 'react';
 
@@ -15,12 +14,9 @@ export const BlogPopularArticles: FC<BlogPopularArticlesProps> = (props) => {
   return (
     <div>
       <h4>Popular articles</h4>
-      <List>
+      <ul className="flex flex-col gap-2">
         {articles.map((article) => (
-          <ListItem
-            key={article._id}
-            disableGutters
-          >
+          <li key={article._id}>
             <div className="flex w-full gap-3">
               <div className="relative aspect-video min-w-32 overflow-hidden rounded-lg">
                 <AppImage
@@ -50,9 +46,9 @@ export const BlogPopularArticles: FC<BlogPopularArticlesProps> = (props) => {
                 </div>
               </div>
             </div>
-          </ListItem>
+          </li>
         ))}
-      </List>
+      </ul>
     </div>
   );
 };

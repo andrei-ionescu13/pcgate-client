@@ -1,9 +1,9 @@
 'use client';
+import { IconButton } from '@/components/icon-button';
 import { useIsMounted } from '@/hooks/use-is-mounted';
 import { useTimeout } from '@/hooks/use-timeout';
 import { Minus as MinusIcon } from '@/icons/minus';
 import { Plus as PlusIcon } from '@/icons/plus';
-import { IconButton } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 
 interface CartItemQuantityProps {
@@ -41,21 +41,21 @@ export const CartItemQuantity: FC<CartItemQuantityProps> = (props) => {
   useEffect(() => {
     setQuantity(quantityProp);
   }, [quantityProp]);
-
+  console.log(quantity);
   return (
     <div className="flex items-center gap-1">
       <IconButton
-        sx={{ visibility: hideButtons ? 'hidden' : undefined }}
+        className={hideButtons ? 'hidden' : ''}
         size="small"
         // disabled={isLoading}
         onClick={handleRemove}
-        disabled={quantity === 1}
+        disabled={quantity <= 1}
       >
         <MinusIcon fontSize="small" />
       </IconButton>
       <p>{quantity}</p>
       <IconButton
-        sx={{ visibility: hideButtons ? 'hidden' : undefined }}
+        className={hideButtons ? 'hidden' : ''}
         size="small"
         disabled={quantity >= maxQuantity}
         onClick={handleAdd}

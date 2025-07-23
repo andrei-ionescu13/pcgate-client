@@ -1,5 +1,4 @@
 import { PropertyItem } from '@/components/property-item';
-import { List } from '@mui/material';
 import { format } from 'date-fns';
 import Head from 'next/head';
 import { LibraryProduct } from '../../../../../../components/library-product';
@@ -22,9 +21,9 @@ const Order = async (props: OrderProps) => {
         <title>Order</title>
       </Head>
       <div>
-        <h4 className="mb-10">Order Details</h4>
+        <h4 className="md:mb-10">Order Details</h4>
         <div className="hidden md:block">
-          <div className="subtitle1 flex bg-[#1E4582] py-4 text-[#FFF] first-of-type:flex-2">
+          <div className="subtitle1 bg-primary flex py-4 text-[#FFF] first-of-type:flex-2">
             <div className="flex-2 px-4">
               <p>Order Number</p>
             </div>
@@ -38,7 +37,7 @@ const Order = async (props: OrderProps) => {
               <p>Total</p>
             </div>
           </div>
-          <div className="bg-default text-secondary body1 flex py-2">
+          <div className="bg-default text-text-secondary body1 flex py-2">
             <div className="flex-2 px-4">
               <p>{order._id}</p>
             </div>
@@ -56,13 +55,7 @@ const Order = async (props: OrderProps) => {
             </div>
           </div>
         </div>
-        <List
-          sx={{
-            display: {
-              md: 'none',
-            },
-          }}
-        >
+        <ul className="md:hidden">
           <PropertyItem
             content={order._id}
             label="Order number"
@@ -83,9 +76,9 @@ const Order = async (props: OrderProps) => {
             label="Total"
             align={'horizontal'}
           />
-        </List>
-        <h5 className="my-10">Order Items</h5>
-        <div className="mt-10 flex flex-col gap-4">
+        </ul>
+        <h5 className="mt-10 mb-5">Order Items</h5>
+        <div className="flex flex-col gap-4">
           {order.lineItems.map((item) =>
             item.keys.map((key) => (
               <LibraryProduct

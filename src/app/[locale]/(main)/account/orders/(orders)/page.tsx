@@ -12,7 +12,7 @@ type OrdersProps = {
 const Orders = async (props: OrdersProps) => {
   const { searchParams } = props;
   const data = await searchOrders(searchParams);
-  console.log(data);
+
   return (
     <>
       <Head>

@@ -1,17 +1,10 @@
 import { Button } from '@/components/button';
+import { Card } from '@/components/card';
 import { Link } from '@/i18n/navigation';
-import { Card } from '@mui/material';
 import type { FC } from 'react';
 
 export const CartEmpty: FC = () => (
-  <Card
-    elevation={0}
-    sx={{
-      display: 'grid',
-      p: 4,
-      placeItems: 'center',
-    }}
-  >
+  <Card className="grid place-items-center p-8">
     <p className="h6">Your cart is currently empty</p>
     <Button
       asChild

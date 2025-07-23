@@ -20,24 +20,18 @@ const buildQueryString = (query: Record<string, any>): string => {
   return finalQuery.toString();
 };
 
-export const getNewAccesToken = async (
-  cookies?: any,
-  res?: any
-): Promise<string> => {
-  const respose = await fetch(`${apiUrl}/access-token`, {
-    credentials: 'include',
-    headers: {
-      ...(!!cookies && { Cookie: cookies }),
-    },
+const refreshAccessToken = async () => {
+  const res = await fetch('/api/refresh-token', {
+    method: 'POST',
+    credentials: 'include', // Required to send cookies
   });
-  const data = await respose.json();
 
-  if (respose.ok) {
-    return data;
+  if (!res.ok) {
+    window.location.href = '/login'; // or use next/navigation's useRouter
+    throw new Error('Unable to refresh token');
   }
 
-  res.redirect(307, 'login');
-  throw new ApiError(respose.status, data.message);
+  return res.json();
 };
 
 type ReturnType<T> = T extends Blob ? Blob : T;
@@ -100,7 +94,7 @@ export const appFetch = async <T>({
     }
 
     const data = await response.json();
-    console.log(response);
+
     throw new ApiError(response.status, data.message);
   };
 
@@ -117,14 +111,7 @@ export const appFetch = async <T>({
       throw new ApiError(response.status, data.message);
     }
 
-    const newAccesToken = await getNewAccesToken(req?.headers.cookie, res);
-
-    if (cookieStore) {
-      cookieStore.set('accessToken', newAccesToken, {
-        maxAge: 60 * 6 * 24,
-        httpOnly: true,
-      });
-    }
+    await refreshAccessToken();
 
     response = await request();
 
@@ -133,10 +120,6 @@ export const appFetch = async <T>({
     }
 
     data = await response.json();
-
-    if (response.status === 401) {
-      // hasClient ? Router.push("/login") : res.push(307, "login");
-    }
 
     throw new ApiError(response.status, data.message);
   };

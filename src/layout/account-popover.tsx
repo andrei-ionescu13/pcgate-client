@@ -1,10 +1,13 @@
 'use client';
 
 import { Avatar } from '@/components/avatar';
+import { Divider } from '@/components/divider';
+import { ListButton } from '@/components/dropdown-button';
+import { Skeleton } from '@/components/skeleton';
 import { useAuth } from '@/contexts/auth-context';
 import { Link, useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/utils/api-error';
-import { List, ListItemButton, Popover, Skeleton } from '@mui/material';
+import { Popover } from '@mui/material';
 import type { SxProps } from '@mui/system';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -78,8 +81,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
         ) : (
           <Skeleton
             variant="circular"
-            width={36}
-            height={36}
+            className="h-9 w-9"
           />
         )}
       </div>
@@ -98,23 +100,17 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
           },
         }}
       >
-        <List>
+        <ul>
           {links.map((link) => (
-            <ListItemButton
-              component={Link}
-              href={link.href}
-              key={link.href}
-            >
-              {link.label}
-            </ListItemButton>
+            <li key={link.href}>
+              <ListButton asChild>
+                <Link href={link.href}>{link.label}</Link>
+              </ListButton>
+            </li>
           ))}
-          <ListItemButton
-            onClick={handleLogout}
-            sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
-          >
-            Logout
-          </ListItemButton>
-        </List>
+        </ul>
+        <Divider />
+        <ListButton onClick={handleLogout}>Logout</ListButton>
       </Popover>
     </>
   );

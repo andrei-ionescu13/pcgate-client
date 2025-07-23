@@ -1,5 +1,7 @@
 'use client';
 import { Button } from '@/components/button';
+import { Card } from '@/components/card';
+import { IconButton } from '@/components/icon-button';
 import { InputBase } from '@/components/input-base';
 import { X as XIcon } from '@/icons/x';
 import { setCart } from '@/store/slices/cart';
@@ -7,8 +9,6 @@ import { useAppDispatch } from '@/store/use-store-dispatch';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
-import { Card } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -61,10 +61,7 @@ export const CartCoupon: FC<CartCouponProps> = (props) => {
   }, [promoCodeApplied]);
 
   return (
-    <Card
-      sx={{ p: 2 }}
-      elevation={0}
-    >
+    <Card className="p-4">
       <h5>Coupon</h5>
       <p className="body2 text-text-secondary mb-2">Do you have a coupon?</p>
       {!isApplied ? (
@@ -85,6 +82,7 @@ export const CartCoupon: FC<CartCouponProps> = (props) => {
         >
           <div className="bg-default flex rounded-lg p-0.5">
             <InputBase
+              onChange={handleCodeChange}
               className="flex-1 rounded-r-none"
               placeholder="Enter coupon code"
             />

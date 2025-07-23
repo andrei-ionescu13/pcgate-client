@@ -2,12 +2,12 @@
 
 import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
+import { Skeleton } from '@/components/skeleton';
 import { useAuth } from '@/contexts/auth-context';
 import { useOpen } from '@/hooks/use-open';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Camera as CameraIcon } from '@/icons/camera';
 import { cn } from '@/utils/cn';
-import { List, Skeleton } from '@mui/material';
 import { AvatarDialog } from 'layout/avatar-dialog';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -60,28 +60,18 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
                 objectFit="cover"
               />
             </Avatar>
-            <CameraIcon
-              color="primary"
-              sx={{
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                width: 16,
-                height: 16,
-              }}
-            />
+            <CameraIcon className="h4 text-primary absolute right-0 bottom-0 w-4" />
           </button>
         ) : (
           <Skeleton
             variant="circular"
-            width={48}
-            height={48}
+            className="h-12 w-12"
           />
         )}
         <p className="caption mt-1 text-center">{decoded?.email}</p>
       </div>
       <div>
-        <List>
+        <ul>
           {links.map((link) => {
             const isActive = pathname == link.href;
             const activeClassName =
@@ -93,7 +83,7 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
                   asChild
                   size="large"
                   className={cn(
-                    'w-full rounded-none pl-2',
+                    'w-full justify-start rounded-none pl-4 text-left',
                     isActive && activeClassName
                   )}
                 >
@@ -102,7 +92,7 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
               </li>
             );
           })}
-        </List>
+        </ul>
       </div>
     </div>
   );

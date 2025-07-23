@@ -1,17 +1,13 @@
 'use client';
 import { Button } from '@/components/button';
 import { GoogleAuthButton } from '@/components/google-auth-button';
+import { IconButton } from '@/components/icon-button';
 import { useAuth } from '@/contexts/auth-context';
 import { Link, useRouter } from '@/i18n/navigation';
 import { Eye as EyeIcon } from '@/icons/eye';
 import { EyeSlash as EyeSlashIcon } from '@/icons/eye-slash';
 import { ApiError } from '@/utils/api-error';
-import {
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from '@mui/material';
+import { FormHelperText, InputAdornment, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import { AuthLayout } from 'layout/auth/AuthLayout';
@@ -118,11 +114,14 @@ export default function Login() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      color="secondary"
                       onClick={handleShowPasswordChange}
                       size="small"
                     >
-                      {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+                      {showPassword ? (
+                        <EyeSlashIcon className="text-secondary" />
+                      ) : (
+                        <EyeIcon className="text-secondary" />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 ),

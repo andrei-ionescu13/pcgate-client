@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/button';
 import { Container } from '@/components/container';
+import { IconButton } from '@/components/icon-button';
 import { useAuth } from '@/contexts/auth-context';
 import { Link } from '@/i18n/navigation';
 import { Menu as MenuIcon } from '@/icons/menu';
-import { IconButton, Toolbar } from '@mui/material';
 import type { FC } from 'react';
 import { AccountPopover } from './account-popover';
 import { Logo } from './logo';
@@ -23,16 +23,7 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
   return (
     <div>
       <Container maxWidth="lg">
-        <Toolbar
-          disableGutters
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            minHeight: {
-              xs: 56,
-            },
-          }}
-        >
+        <div className="flex h-14 items-center">
           <Link
             href="/"
             className="hidden sm:inline"
@@ -43,12 +34,7 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
           </Link>
           <IconButton
             onClick={onOpenSidebar}
-            sx={{
-              color: '#fff',
-              display: {
-                sm: 'none',
-              },
-            }}
+            className="sm:hidden"
           >
             <MenuIcon />
           </IconButton>
@@ -83,7 +69,7 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
               </>
             )}
           </div>
-        </Toolbar>
+        </div>
       </Container>
     </div>
   );

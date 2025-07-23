@@ -1,8 +1,10 @@
 'use client';
 
+import { Button } from '@/components/button';
+import { Card } from '@/components/card';
 import { Container } from '@/components/container';
 import { Menu as MenuIcon } from '@/icons/menu';
-import { Button, Card, Drawer } from '@mui/material';
+import { Drawer } from '@mui/material';
 import type { FC, MouseEvent, ReactNode } from 'react';
 import { useState } from 'react';
 import { AccountSidebar } from './account-sidebar';
@@ -54,35 +56,14 @@ const AccountLayout: FC<AccountLayoutProps> = (props) => {
           className="h-full"
         >
           <Button
+            color={'paper'}
             onClick={handleOpenDrawer}
-            color="darkGrey"
-            fullWidth
-            variant="contained"
-            size="large"
-            sx={{
-              justifyContent: 'flex-start',
-              mb: 2,
-              display: {
-                lg: 'none',
-                xs: 'inline-flex',
-              },
-            }}
+            className="mb-4 inline-flex w-full justify-start lg:hidden"
           >
-            <MenuIcon sx={{ mr: 2 }} />
+            <MenuIcon className="mr-4" />
             Account menu
           </Button>
-          <Card
-            sx={{
-              backgroundColor: 'background.paper',
-              position: 'relative',
-              display: 'grid',
-              height: '100%',
-              gridTemplateColumns: {
-                lg: '240px 1fr',
-                xs: '1fr',
-              },
-            }}
-          >
+          <Card className="relative grid h-full grid-cols-1 lg:grid-cols-[240px_1fr]">
             <div className="border-r-divider sticky top-0 hidden border-r lg:block">
               <AccountSidebar />
             </div>

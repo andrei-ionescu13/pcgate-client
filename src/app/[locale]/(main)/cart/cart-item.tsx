@@ -1,4 +1,6 @@
 'use client';
+import { Card } from '@/components/card';
+import { IconButton } from '@/components/icon-button';
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import { Steam as SteamIcon } from '@/icons/steam';
@@ -8,7 +10,6 @@ import { Cart, CartLineItem } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
-import { Card, IconButton } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
@@ -75,30 +76,19 @@ export const CartItem: FC<CartItemProps> = (props) => {
 
   return (
     <Card
-      elevation={0}
-      sx={{
-        alignItems: 'center',
-        backgroundColor: 'background.paper',
-        display: 'flex',
-        p: 1,
-        position: 'relative',
-        opacity:
-          removeFromCart.isPending || updateQuantity.isPending
-            ? 0.4
-            : undefined,
-      }}
+      color="paper"
+      className={cn(
+        'relative flex items-center p-2',
+        (removeFromCart.isPending || updateQuantity.isPending) && 'opacity-40'
+      )}
     >
       {removeFromCart.isPending ||
         (updateQuantity.isPending && <div className="absolute inset-0 z-50" />)}
       <Link
-        sx={{
-          display: 'block',
-          width: 140,
-          borderRadius: 1,
-          position: 'relative',
-          overflow: 'hidden',
-          filter: item.isUnavailable ? 'grayscale(80%)' : undefined,
-        }}
+        className={cn(
+          'relative block w-[140px] overflow-hidden rounded-lg',
+          item.isUnavailable && 'grayscale-75'
+        )}
         href={`/products/${product.slug}`}
       >
         <div className="relative aspect-video">
@@ -113,8 +103,7 @@ export const CartItem: FC<CartItemProps> = (props) => {
         <Link
           color="textPrimary"
           href={`/products/${product.slug}`}
-          underline="none"
-          variant="body2"
+          className="body2"
         >
           {product.title}
         </Link>
@@ -142,7 +131,7 @@ export const CartItem: FC<CartItemProps> = (props) => {
               )}
               <p
                 className={cn(
-                  'h6 text-center',
+                  'subtitle1 text-center',
                   item.promoCodeIsApplied ? 'text-success' : 'text-primary'
                 )}
               >
@@ -153,10 +142,9 @@ export const CartItem: FC<CartItemProps> = (props) => {
         )}
         <IconButton
           size="small"
-          // disabled={isLoading}
           onClick={handleRemoveFromCart}
         >
-          <XIcon fontSize="small" />
+          <XIcon />
         </IconButton>
       </div>
     </Card>

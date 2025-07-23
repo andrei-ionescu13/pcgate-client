@@ -1,5 +1,7 @@
 'use client';
 import { Button } from '@/components/button';
+import { Card } from '@/components/card';
+import { Divider } from '@/components/divider';
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { useRouter } from '@/i18n/navigation';
 import { Gift as GiftIcon } from '@/icons/gift';
@@ -7,7 +9,7 @@ import { useAppDispatch } from '@/store/use-store-dispatch';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
-import { Card, Checkbox, Divider, FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { FC } from 'react';
 
@@ -52,10 +54,7 @@ export const CartSummary: FC<CartSummaryProps> = (props) => {
   };
 
   return (
-    <Card
-      sx={{ p: 2 }}
-      elevation={0}
-    >
+    <Card className="p-4">
       <h5 className="mb-3">Cart Summary</h5>
       <div className="body2 text-text-secondary flex items-center">
         <p>Full Price:</p>
@@ -67,7 +66,7 @@ export const CartSummary: FC<CartSummaryProps> = (props) => {
         <div className="flex-1" />
         <p className="text-success">{formatCurrency(cart.totalDiscount)}</p>
       </div>
-      <Divider sx={{ my: 1 }} />
+      <Divider className="my-2" />
       <div className="subtitle1 flex items-center">
         <p className="text-text-secondary">TOTAL</p>
         <div className="flex-1" />

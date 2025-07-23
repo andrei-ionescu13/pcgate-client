@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import type { FC } from 'react';
 
 interface ProductLabelProps {
@@ -12,22 +11,14 @@ export const ProductLabel: FC<ProductLabelProps> = () => {
         <div className="px-1 py-0.5">
           <p className="caption text-white uppercase">Star Deal</p>
         </div>
-        <Box
-          sx={{
-            clipPath: 'polygon(0 0, 100% 0, 1px 100%, 0 100%)',
-            backgroundColor: 'info.main',
-            ml: '-1px',
-            width: 20,
-          }}
+        <div
+          className="bg-info -ml-[1px] w-5"
+          style={{ clipPath: 'polygon(0 0, 100% 0, 1px 100%, 0 100%)' }}
         />
       </div>
-      <Box
-        sx={{
-          clipPath: 'polygon(0 0, 100% 100%, 100% 0)',
-          width: 5,
-          height: 5,
-          backgroundColor: 'info.dark',
-        }}
+      <div
+        className="bg-info-dark h-[5px] w-[5px]"
+        style={{ clipPath: 'polygon(0 0, 100% 100%, 100% 0)' }}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { Container } from '@/components/container';
-import { ProductsSwipper } from '@/components/products-swipper';
+import { ProductsSwiper } from '@/components/products-swiper';
 import { Slideshow } from '@/components/slideshow';
 import { Asset, Meta } from '@/types/common';
 import { Product } from '@/types/product';
@@ -46,7 +46,7 @@ export default async function Home() {
       <Container maxWidth="lg">
         <div className="pt-16">
           <h4 className="mb-3">Top Sellers</h4>
-          <ProductsSwipper products={newReleases} />
+          <ProductsSwiper products={newReleases} />
         </div>
         {/* <BrowseSection /> */}
       </Container>

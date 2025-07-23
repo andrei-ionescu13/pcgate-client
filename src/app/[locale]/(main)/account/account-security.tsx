@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/button';
+import { Card } from '@/components/card';
 import { EmailChangeDialog } from '@/components/email-change-dialog';
 import { PasswordChangeDialog } from '@/components/password-change-dialog';
 import { useAuth } from '@/contexts/auth-context';
 import { Link } from '@/i18n/navigation';
-import { Card } from '@mui/material';
 import { useState } from 'react';
 
 export const AccountSecurity = () => {
@@ -19,13 +19,8 @@ export const AccountSecurity = () => {
       <div>
         <h5 className="mb-3">Account Security</h5>
         <Card
-          sx={{
-            backgroundColor: 'background.default',
-            p: 2,
-            '& > div:not(:last-child)': {
-              mb: 4,
-            },
-          }}
+          className="flex flex-col gap-8 p-4"
+          color="default"
         >
           <div className="items-center sm:flex">
             <div>

@@ -1,12 +1,8 @@
+import { ListButton } from '@/components/dropdown-button';
+import { IconButton } from '@/components/icon-button';
 import { Link } from '@/i18n/navigation';
 import { X } from '@/icons/x';
-import {
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-} from '@mui/material';
+import { Drawer, List } from '@mui/material';
 import type { FC } from 'react';
 import { Logo } from './logo';
 
@@ -54,33 +50,22 @@ export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
     >
       <div>
         <div className="bg-default flex min-h-14 items-center px-4">
-          <Logo sx={{ width: 56 }} />
+          <Logo className="w-16" />
           <div className="flex-1" />
-          <IconButton
-            size="small"
-            onClick={() => onClose()}
-          >
-            <X fontSize="small" />
+          <IconButton onClick={() => onClose()}>
+            <X />
           </IconButton>
         </div>
         <List disablePadding>
           {links.map((link) => (
-            <ListItemButton
+            <ListButton
               key={link.href}
-              component={Link}
-              href={link.href}
-              sx={{ py: 0.5 }}
               onClick={() => {
                 onClose();
               }}
             >
-              <ListItemText
-                primary={link.translation}
-                primaryTypographyProps={{
-                  variant: 'body2',
-                }}
-              />
-            </ListItemButton>
+              <Link href={link.href}>{link.translation}</Link>
+            </ListButton>
           ))}
         </List>
       </div>

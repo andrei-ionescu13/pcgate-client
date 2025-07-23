@@ -1,6 +1,6 @@
-import { Link } from '@/components/link';
-import { Button } from '@mui/material';
+import { Link } from '@/i18n/navigation';
 import type { FC } from 'react';
+import { Button } from './button';
 
 const items = [
   {
@@ -72,21 +72,12 @@ export const BrowseSection: FC = () => (
       {items.map((item) => (
         <Button
           color="primary"
-          component={Link}
-          fullWidth
-          href={item.href}
           key={item.label}
           size="large"
-          sx={{
-            fontSize: {
-              sm: 14,
-              xs: 12,
-            },
-            px: 0,
-          }}
+          className="w-full px-0"
           variant="outlined"
         >
-          {item.label}
+          <Link href={item.href}>{item.label}</Link>
         </Button>
       ))}
     </div>

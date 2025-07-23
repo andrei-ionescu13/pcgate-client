@@ -1,11 +1,12 @@
 'use client';
 
+import { Button } from '@/components/button';
 import { Container } from '@/components/container';
 import { PaginationParam } from '@/components/pagination-param';
 import { SortByPopoverQuery } from '@/components/sort-by-popover-query';
 import { ViewModeButton } from '@/components/view-mode-button';
 import { AdjustmentsHorizontal as AdjustmentsHorizontalIcon } from '@/icons/adjustments-horizontal';
-import { Button, Drawer } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { useSearchProducts } from 'app/[locale]/(main)/api-calls-hooks';
 import Head from 'next/head';
 import { useSearchParams } from 'next/navigation';
@@ -148,15 +149,9 @@ export const ProductsContent = ({ initialData }) => {
             <div className="grid w-full gap-2">
               <div className="flex w-full gap-2">
                 <Button
-                  color="white"
                   variant="outlined"
                   onClick={handleOpenDrawer}
-                  sx={{
-                    display: {
-                      md: 'none',
-                      xs: 'inline-flex',
-                    },
-                  }}
+                  className="md:hidden"
                 >
                   <p className="body2 mr-2">Filters</p>
                   <AdjustmentsHorizontalIcon />

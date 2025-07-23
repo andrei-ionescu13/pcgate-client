@@ -1,7 +1,7 @@
 import { AppImage } from '@/components/app-image';
+import { Card } from '@/components/card';
 import { Link } from '@/i18n/navigation';
 import type { Article } from '@/types/articles';
-import { Card } from '@mui/material';
 import { format } from 'date-fns';
 import type { FC } from 'react';
 
@@ -14,11 +14,7 @@ export const ArticleCard: FC<ArticleCardProps> = (props) => {
   const { cover, title, slug, createdAt, category } = article;
 
   return (
-    <Card
-      sx={{ position: 'relative' }}
-      elevation={0}
-      className="group"
-    >
+    <Card className="group relative">
       <div className="relative aspect-video transition-all duration-300 group-hover:scale-125">
         <AppImage
           fill

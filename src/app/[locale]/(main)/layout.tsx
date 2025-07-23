@@ -13,9 +13,9 @@ export default function MainLayout({
   const [openSidebar, handleOpenSidebar, handleCloseSidebar] = useOpen();
 
   return (
-    <div className="flex w-full">
+    <div className="flex h-full w-full">
       <Navbar onOpenSidebar={handleOpenSidebar} />
-      <div className="flex h-full w-full flex-1 flex-col pt-14 sm:pt-28">
+      <div className="flex flex-1 flex-col pt-14 sm:pt-28">
         <div className="flex flex-1 flex-col">{children}</div>
         <Footer />
       </div>

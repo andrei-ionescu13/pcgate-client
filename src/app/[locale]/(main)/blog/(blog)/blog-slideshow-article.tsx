@@ -1,7 +1,7 @@
 import { AppImage } from '@/components/app-image';
+import { Card } from '@/components/card';
 import { Link } from '@/i18n/navigation';
 import type { Article } from '@/types/articles';
-import { Card } from '@mui/material';
 import { format } from 'date-fns';
 import type { FC } from 'react';
 
@@ -13,7 +13,7 @@ export const BlogSlideshowArticle: FC<BlogSlideshowArticleProps> = (props) => {
   const { article } = props;
 
   return (
-    <Card sx={{ borderRadius: 0 }}>
+    <Card>
       <div className="grid md:grid-cols-[8fr_4fr]">
         <div className="relative flex aspect-video">
           <AppImage

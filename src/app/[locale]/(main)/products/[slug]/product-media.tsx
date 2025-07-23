@@ -2,7 +2,6 @@
 
 import { AppImage } from '@/components/app-image';
 import { Youtube as YoutubeIcon } from '@/icons/youtube';
-import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
 import type { FC } from 'react';
@@ -59,7 +58,7 @@ export const ProductMedia: FC<ProductMediaProps> = (props) => {
         {selectedSlide.type === 'video' ? (
           <div className="relative h-0 pb-[56.25%]">
             <iframe
-              className="absolute bottom-0 top-0 h-full w-full"
+              className="absolute top-0 bottom-0 h-full w-full"
               frameBorder="0"
               height="426"
               src={`https://www.youtube.com/embed/${extractVideoID(selectedSlide.url)}/`}
@@ -80,17 +79,7 @@ export const ProductMedia: FC<ProductMediaProps> = (props) => {
         )}
       </div>
       {isMounted ? (
-        <Box
-          sx={{
-            minWidth: 0,
-            '& .swiper-button-next, & .swiper-button-prev': {
-              color: '#fff',
-              width: 'auto',
-              height: 'auto',
-              fontSize: 8,
-            },
-          }}
-        >
+        <div className="min-w-0 [&_.swiper-button-next]:h-auto [&_.swiper-button-next]:w-auto [&_.swiper-button-next]:text-[8px] [&_.swiper-button-next]:text-white [&_.swiper-button-prev]:h-auto [&_.swiper-button-prev]:w-auto [&_.swiper-button-prev]:text-[8px] [&_.swiper-button-prev]:text-white">
           <Swiper
             modules={[Pagination, Navigation]}
             breakpoints={{
@@ -142,7 +131,7 @@ export const ProductMedia: FC<ProductMediaProps> = (props) => {
               </SwiperSlide>
             ))}
           </Swiper>
-        </Box>
+        </div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5">
           <div className="relative aspect-video" />

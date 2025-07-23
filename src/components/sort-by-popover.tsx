@@ -1,9 +1,11 @@
 import { useOpen } from '@/hooks/use-open';
 import { ChevronDown as ChevronDownIcon } from '@/icons/chevron-down';
-import { Button, List, ListItemButton, Popover } from '@mui/material';
+import { cn } from '@/utils/cn';
+import { Button, Popover } from '@mui/material';
 import type { SxProps } from '@mui/system';
 import type { FC } from 'react';
 import { useRef } from 'react';
+import { ListButton } from './dropdown-button';
 
 export interface SortByPopoverItem {
   value: string;
@@ -40,10 +42,7 @@ export const SortByPopover: FC<SortByPopoverProps> = (props) => {
         >
           <p className="body2 mr-2">{itemSelected?.label}</p>
           <ChevronDownIcon
-            sx={{
-              transform: open ? 'rotate(180deg)' : undefined,
-              transition: 'transform 200ms',
-            }}
+            className={cn('transition-all duration-200', open && 'rotate-180')}
           />
         </Button>
       </div>
@@ -62,18 +61,19 @@ export const SortByPopover: FC<SortByPopoverProps> = (props) => {
           },
         }}
       >
-        <List>
+        <ul>
           {items.map((item) => (
-            <ListItemButton
-              key={item.value}
-              onClick={() => {
-                handleChange(item.value);
-              }}
-            >
-              {item.label}
-            </ListItemButton>
+            <li key={item.value}>
+              <ListButton
+                onClick={() => {
+                  handleChange(item.value);
+                }}
+              >
+                {item.label}
+              </ListButton>
+            </li>
           ))}
-        </List>
+        </ul>
       </Popover>
     </>
   );

@@ -23,9 +23,7 @@ export const Search: FC<SearchProps> = (props) => {
   return (
     <InputBase
       className={cn('w-full bg-[rgb(28,33,41)]', className)}
-      endAdornment={
-        <SearchIcon sx={{ color: (theme) => theme.palette.text.secondary }} />
-      }
+      endAdornment={<SearchIcon className="text-text-secondary" />}
       value={value}
       placeholder={placeholder}
       {...rest}

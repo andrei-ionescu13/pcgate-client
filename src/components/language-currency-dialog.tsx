@@ -1,19 +1,12 @@
 import { useSettings } from '@/contexts/settings-context';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  MenuItem,
-  TextField,
-} from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import { setCookie } from 'cookies-next';
 import { useParams, useSearchParams } from 'next/navigation';
 import type { ChangeEvent, FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import { DialogAlert } from './dialog-alert';
+
 const NEXT_LOCALE = 'NEXT_LOCALE';
 
 interface LanguageCurrencyDialogProps {
@@ -28,6 +21,8 @@ export const LanguageCurrencyDialog: FC<LanguageCurrencyDialogProps> = (
   const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+  const [refreshTriggered, setRefreshTriggered] = useState(false);
 
   const query: any = {};
   const searchParams = useSearchParams();
@@ -51,89 +46,83 @@ export const LanguageCurrencyDialog: FC<LanguageCurrencyDialogProps> = (
     setSelectedCurrencyCode(event.target.value);
   };
 
-  const handleSaveSettings = async () => {
+  const handleSaveSettings = () => {
     setCookie('currency', selectedCurrencyCode);
     setCookie(NEXT_LOCALE, selectedLanguageCode);
 
-    saveSettings({
-      ...settings,
-      language: selectedLanguageCode,
-      currency: selectedCurrencyCode,
-    });
     router.replace(pathname, { locale: selectedLanguageCode });
-    router.refresh();
-    onClose();
+
+    setRefreshTriggered(true);
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
+  useEffect(() => {
+    if (refreshTriggered && !isPending) {
+      saveSettings({
+        ...settings,
+        language: selectedLanguageCode,
+        currency: selectedCurrencyCode,
+      });
+
+      onClose();
+      setRefreshTriggered(false);
+    }
+  }, [isPending, refreshTriggered, onClose]);
+
   return (
-    <Dialog
+    <DialogAlert
       fullWidth
       onClose={onClose}
       open={open}
       disableRestoreFocus
+      title="Language and Currency"
+      onSubmit={handleSaveSettings}
+      isLoading={isPending}
     >
-      <DialogTitle>Language and Currency</DialogTitle>
-      <Divider />
-      <DialogContent>
-        <div className="flex flex-col gap-6">
-          <TextField
-            select
-            id="language"
-            name="language"
-            label="Language"
-            value={selectedLanguageCode}
-            fullWidth
-            size="small"
-            onChange={handleLanguageChange}
-            variant="filled"
-          >
-            {languages?.map((option) => (
-              <MenuItem
-                key={option.code}
-                value={option.code}
-              >
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            id="currency"
-            name="currency"
-            label="Currency"
-            value={selectedCurrencyCode}
-            fullWidth
-            size="small"
-            onChange={handleCurrencyChange}
-            variant="filled"
-          >
-            {currencies?.map((option) => (
-              <MenuItem
-                key={option.code}
-                value={option.code}
-              >
-                {option.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color="white"
-          onClick={onClose}
-          variant="outlined"
+      <div className="flex flex-col gap-6">
+        <TextField
+          select
+          id="language"
+          name="language"
+          label="Language"
+          value={selectedLanguageCode}
+          fullWidth
+          size="small"
+          onChange={handleLanguageChange}
+          variant="filled"
         >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={handleSaveSettings}
+          {languages?.map((option) => (
+            <MenuItem
+              key={option.code}
+              value={option.code}
+            >
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          select
+          id="currency"
+          name="currency"
+          label="Currency"
+          value={selectedCurrencyCode}
+          fullWidth
+          size="small"
+          onChange={handleCurrencyChange}
+          variant="filled"
         >
-          Change
-        </Button>
-      </DialogActions>
-    </Dialog>
+          {currencies?.map((option) => (
+            <MenuItem
+              key={option.code}
+              value={option.code}
+            >
+              {option.name}
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
+    </DialogAlert>
   );
 };

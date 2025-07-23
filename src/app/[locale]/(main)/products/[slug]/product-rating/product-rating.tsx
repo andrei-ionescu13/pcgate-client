@@ -1,15 +1,13 @@
 'use client';
 
+import { Button } from '@/components/button';
+import { Card } from '@/components/card';
+import { Divider } from '@/components/divider';
+import { Progress } from '@/components/progress';
 import { useScrollTo } from '@/hooks/use-scroll-to';
 import { Pencil as PencilIcon } from '@/icons/pencil';
 import type { Product } from '@/types/product';
-import {
-  Button,
-  Card,
-  CircularProgress,
-  Divider,
-  LinearProgress,
-} from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useListProductReviews } from '../api-hooks';
@@ -59,8 +57,7 @@ export const ProductRating: FC<ProductRatingProps> = (props) => {
             >
               <p className="subtitle2">{`${key} Star`}</p>
               <div className="flex-1">
-                <LinearProgress
-                  variant="determinate"
+                <Progress
                   value={
                     reviews?.length
                       ? (product.rating.distribution[
@@ -70,13 +67,6 @@ export const ProductRating: FC<ProductRatingProps> = (props) => {
                         100
                       : 0
                   }
-                  sx={{
-                    borderRadius: 0.75,
-                    height: 5,
-                    '& .MuiLinearProgress-bar': {
-                      borderRadius: 0.75,
-                    },
-                  }}
                 />
               </div>
               <p className="body2 text-right">
@@ -94,7 +84,6 @@ export const ProductRating: FC<ProductRatingProps> = (props) => {
             color="primary"
             variant="outlined"
             size="large"
-            sx={{ gap: 0.5 }}
             onClick={handleOpenForm}
           >
             <PencilIcon />

@@ -9,6 +9,7 @@ export const Plus: FC<ComponentProps<'svg'>> = (props) => (
     stroke="currentColor"
     height={24}
     width={24}
+    {...props}
   >
     <path
       strokeLinecap="round"

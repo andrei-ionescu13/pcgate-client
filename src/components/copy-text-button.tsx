@@ -1,8 +1,9 @@
 'use client';
 
 import { ContentCopyOutlined as ContentCopyIcon } from '@mui/icons-material';
-import { IconButton, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { useState, type FC } from 'react';
+import { IconButton } from './icon-button';
 
 interface CopyTextButtonProps {
   text: string;

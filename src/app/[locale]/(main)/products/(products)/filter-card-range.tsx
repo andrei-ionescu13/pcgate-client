@@ -1,14 +1,15 @@
 //todo cleanup/refactor
 'use client';
 
+import { Button } from '@/components/button';
 import { InputBase } from '@/components/input-base';
 import { ChevronRight } from '@/icons/chevron-right';
 import type { CardProps } from '@mui/material';
-import { Button, Card, CardContent, Slider, styled } from '@mui/material';
-import Chip from '@mui/material/Chip';
+import { Slider } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import type { ChangeEvent, FC } from 'react';
 import { MouseEvent, useEffect, useState } from 'react';
+import { FilterCard } from './filter-card';
 
 interface FilterCardProps extends CardProps {
   title: string;
@@ -35,10 +36,6 @@ const initializeRange = (
     return [min, max];
   }
 };
-
-const FilterCardRangeRoot = styled(Card)(({ theme }) => ({
-  boxShadow: `0px 0px 0px 2px ${theme.palette.background.neutral}`,
-}));
 
 function valuetext(value: number) {
   return `${value}312`;
@@ -137,85 +134,50 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
     setInputMax(range[1]);
   }, [range]);
 
+  const showClearButton = !!queryMin || !!queryMax;
+
   return (
-    <FilterCardRangeRoot
-      elevation={0}
-      {...rest}
+    <FilterCard
+      title={title}
+      field={field}
+      onClear={showClearButton ? handleClear : undefined}
     >
-      <div className="bg-neutral flex items-center px-4 py-2">
-        <p className="subtitle1">{title}</p>
-        <div className="flex-1" />
-        {(!!queryMin || !!queryMax) && (
-          <Chip
-            label="Clear"
-            variant="outlined"
-            size="small"
-            onClick={handleClear}
-          />
-        )}
+      <div className="px-3 pt-8 pb-4">
+        <Slider
+          disableSwap
+          color="secondary"
+          value={range}
+          onChange={handleRangeChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          min={minOption}
+          max={maxOption}
+        />
       </div>
-      <CardContent
-        sx={{
-          py: 1,
-          maxHeight: 360,
-          overflow: 'auto',
-          '&::-webkit-scrollbar': {
-            width: '3px',
-            backgroundColor: 'background.neutral',
-          },
-
-          '&::-webkit-scrollbar-track': {
-            borderRadius: '10px',
-          },
-
-          '&::-webkit-scrollbar-thumb': {
-            background: (theme) => theme.palette.grey[500],
-            borderRadius: '10px',
-          },
-
-          '&::-webkit-scrollbar-thumb:hover': {
-            background: 'rgb(255, 251, 251)',
-          },
-        }}
-      >
-        <div className="px-3 pt-8 pb-4">
-          <Slider
-            disableSwap
-            color="secondary"
-            value={range}
-            onChange={handleRangeChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            min={minOption}
-            max={maxOption}
-          />
-        </div>
-        <div className="flex gap-1">
-          <InputBase
-            type="number"
-            placeholder="Min"
-            value={inputMin}
-            onChange={handleMinChange}
-            className="border-divider max-w-12 rounded-lg border py-0.5"
-          />
-          <p className="text-text-secondary align-middle">-</p>
-          <InputBase
-            type="number"
-            placeholder="Max"
-            value={inputMax}
-            onChange={handleMaxChange}
-            className="border-divider max-w-12 rounded-lg border py-0.5"
-          />
-          <Button
-            sx={{ py: 0.5, px: 1, minWidth: 'fit-content' }}
-            color="darkGrey"
-            variant="contained"
-            onClick={handleClick}
-          >
-            <ChevronRight fontSize="small" />
-          </Button>
-        </div>
-      </CardContent>
-    </FilterCardRangeRoot>
+      <div className="flex gap-1">
+        <InputBase
+          type="number"
+          placeholder="Min"
+          value={inputMin}
+          onChange={handleMinChange}
+          className="border-divider max-w-12 rounded-lg border py-0.5"
+        />
+        <p className="text-text-secondary align-middle">-</p>
+        <InputBase
+          type="number"
+          placeholder="Max"
+          value={inputMax}
+          onChange={handleMaxChange}
+          className="border-divider max-w-12 rounded-lg border py-0.5"
+        />
+        <Button
+          className="bg-dark-grey hover:bg-dark-grey-dark min-w-fit py-1"
+          variant="contained"
+          onClick={handleClick}
+        >
+          <ChevronRight fontSize="small" />
+        </Button>
+      </div>
+    </FilterCard>
   );
 };

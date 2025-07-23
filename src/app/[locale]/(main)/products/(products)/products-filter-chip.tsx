@@ -1,4 +1,4 @@
-import { ButtonBase } from '@mui/material';
+import { Button } from '@/components/button';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 
@@ -20,25 +20,15 @@ export const ProductsFilterChip: FC<ProductsFilterChipProps> = (props) => {
   };
 
   return (
-    <ButtonBase
+    <Button
+      variant="contained"
+      color="neutral"
       onClick={handleClick}
-      sx={{
-        alignItems: 'flex-start',
-        display: 'flex',
-        flexDirection: 'column',
-        background: (theme) => theme.palette.background.neutral,
-        width: 'fit-content',
-        borderRadius: 1,
-        px: 1,
-        py: 0.5,
-        cursor: 'pointer',
-        '&:hover': {
-          background: (theme) => theme.palette.action.focus,
-        },
-      }}
+      className="flex-col items-start gap-0 rounded-xl"
+      size="small"
     >
       <p className="text-text-secondary caption leading-1">{field}</p>
       <p className="subtitle3 leading-0">{value}</p>
-    </ButtonBase>
+    </Button>
   );
 };

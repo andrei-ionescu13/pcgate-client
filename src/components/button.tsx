@@ -16,6 +16,8 @@ const button = cva(
       color: {
         primary: '',
         secondary: '',
+        neutral: '',
+        paper: 'bg-paper hover:bg-white/5',
       },
       size: {
         small: 'px-2.5 py-1',
@@ -35,6 +37,17 @@ const button = cva(
         color: 'secondary',
         class:
           'bg-secondary not-disabled:hover:bg-secondary-darker disabled:bg-secondary/50',
+      },
+      {
+        variant: 'contained',
+        color: 'neutral',
+        class: 'bg-neutral not-disabled:hover:bg-[rgba(145,158,171,0.24)]',
+      },
+      {
+        variant: 'outlined',
+        color: 'primary',
+        class:
+          'border border-primary text-primary hover:border-primary not-disabled:hover:bg-[rgba(250,84,28,0.04)]',
       },
     ],
     defaultVariants: {
@@ -79,7 +92,13 @@ export const Button: FC<ButtonProps> = (props) => {
         children
       ) : (
         <Fragment>
-          {children}
+          {isLoading ? (
+            <span className="invisible inline-flex items-center gap-2">
+              {children}
+            </span>
+          ) : (
+            children
+          )}
           {isLoading && (
             <span className="absolute inset-0 z-10 inline-flex items-center justify-center">
               <CircularProgress

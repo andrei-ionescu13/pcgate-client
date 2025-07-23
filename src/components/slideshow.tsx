@@ -7,8 +7,7 @@ import { Box } from '@mui/material';
 import type { FC } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AppImage } from './app-image';
 import { Button } from './button';
@@ -48,9 +47,6 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
           fontSize: 8,
           position: 'absolute',
         },
-        '& .swiper-pagination-bullet-active': {
-          backgroundColor: '#fff',
-        },
         '& .swiper-button-lock': {
           display: 'none',
         },
@@ -58,7 +54,7 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
     >
       <Swiper
         enabled={slides.length > 1}
-        modules={[Autoplay, Pagination, Navigation]}
+        modules={[Autoplay, Navigation]}
         autoplay={{
           delay: 8000,
           disableOnInteraction: true,
@@ -68,11 +64,8 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
           nextEl: '.slideshow-swiper-button-next',
           prevEl: '.slideshow-swiper-button-prev',
         }}
-        pagination={{
-          clickable: true,
-        }}
       >
-        <Button className="slideshow-swiper-button-prev absolute top-0 bottom-0 left-0 z-20 rounded-r-none px-1.5">
+        <Button className="slideshow-swiper-button-prev absolute top-0 bottom-0 left-0 z-20 rounded-r-none px-3">
           <ChevronLeftIcon fontSize="large" />
         </Button>
         {slides.map((slide) => (
@@ -96,7 +89,7 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
             </Link>
           </SwiperSlide>
         ))}
-        <Button className="slideshow-swiper-button-next absolute top-0 right-0 bottom-0 z-20 rounded-l-none px-1.5">
+        <Button className="slideshow-swiper-button-next absolute top-0 right-0 bottom-0 z-20 rounded-l-none px-3">
           <ChevronRightIcon fontSize="large" />
         </Button>
       </Swiper>

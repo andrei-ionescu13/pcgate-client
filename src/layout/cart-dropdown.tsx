@@ -1,16 +1,15 @@
 import { Badge } from '@/components/badge';
+import { Button } from '@/components/button';
 import { Card } from '@/components/card';
+import { Divider } from '@/components/divider';
 import { useSettings } from '@/contexts/settings-context';
 import { Link } from '@/i18n/navigation';
 import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
 import { useStoreSelector } from '@/store/use-store-selector';
 import type { CartLineItem } from '@/types/cart';
-import type { ListItemProps } from '@mui/material';
-import { Button, Divider, List, ListItem } from '@mui/material';
-import type { ElementType, FC } from 'react';
+import type { FC } from 'react';
 
-interface CartDropdownItemProps extends ListItemProps {
-  component?: ElementType;
+interface CartDropdownItemProps {
   item: CartLineItem;
 }
 
@@ -20,30 +19,23 @@ const CartDropdownItem: FC<CartDropdownItemProps> = (props) => {
   const { settings } = useSettings();
 
   return (
-    <ListItem
-      component={Link}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        p: 1,
-        '&:hover': {
-          backgroundColor: 'background.neutral',
-        },
-      }}
-      href={`/products/${product.slug}`}
-      underline="none"
-      {...props}
-    >
-      <p className="body3 justify-self-start">{product.title}</p>
-      <div className="flex-1" />
-      <p className="caption">x{quantity}</p>
-      <div className="flex min-w-10 justify-end">
-        <p className="caption text-primary">
-          {settings.currency?.symbol}
-          {finalPrice}
-        </p>
-      </div>
-    </ListItem>
+    <li>
+      <Link
+        className="hover:bg-neutral inline-flex w-full items-center p-2"
+        href={`/products/${product.slug}`}
+        {...props}
+      >
+        <p className="body3 justify-self-start">{product.title}</p>
+        <div className="flex-1" />
+        <p className="caption">x{quantity}</p>
+        <div className="flex min-w-10 justify-end">
+          <p className="caption text-primary">
+            {settings.currency?.symbol}
+            {finalPrice}
+          </p>
+        </div>
+      </Link>
+    </li>
   );
 };
 
@@ -55,10 +47,7 @@ export const CartDropdown: FC = () => {
       <Link href="/cart">
         <Badge content={cart.itemCount}>
           <div className="flex cursor-pointer items-center rounded-lg bg-[#1E4582] p-2 text-[#FFF]">
-            <ShoppingCartIcon
-              fontSize="small"
-              sx={{ color: 'inherit' }}
-            />
+            <ShoppingCartIcon />
           </div>
         </Badge>
       </Link>
@@ -68,15 +57,14 @@ export const CartDropdown: FC = () => {
             Latest products added
           </p>
           <Divider />
-          <List disablePadding>
+          <ul>
             {cart.items.map((item) => (
               <CartDropdownItem
-                divider
                 key={item._id}
                 item={item}
               />
             ))}
-          </List>
+          </ul>
           <div className="flex items-center p-2">
             <p className="subtitle2">TOTAL:</p>
             <div className="flex-1" />
@@ -85,13 +73,12 @@ export const CartDropdown: FC = () => {
           <Divider />
           <div className="p-2">
             <Button
+              asChild
               color="primary"
-              component={Link}
-              fullWidth
-              href="/cart"
-              variant="text"
+              variant="contained"
+              className="w-full"
             >
-              View Cart
+              <Link href="/cart">View Cart</Link>
             </Button>
           </div>
         </Card>

@@ -2,12 +2,12 @@
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
-import { Divider } from '@mui/material';
 import type { FC } from 'react';
 import { WishlistButton } from '../layout/wishlist-button';
 import { AddButton } from './add-button';
 import { AppImage } from './app-image';
 import { Card } from './card';
+import { Divider } from './divider';
 import { ProductDiscount } from './product-discount';
 
 interface ProductCardProps {
@@ -20,7 +20,7 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
   const { product } = props;
 
   return (
-    <Card>
+    <Card className="relative">
       <div className="absolute top-4 right-4 z-50">
         <WishlistButton productId={product._id} />
       </div>
@@ -43,15 +43,14 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
         <Link
           color="inherit"
           href={`/products/${product.slug}`}
-          underline="none"
-          variant="body2"
+          className="body2"
         >
           {product.title}
         </Link>
         <div className="flex items-center">
           {product.originalPrice && (
             <ProductDiscount
-              sx={{ mr: 1 }}
+              className="mr-2"
               variant="small"
               initialPrice={product.originalPrice}
               price={product.price}

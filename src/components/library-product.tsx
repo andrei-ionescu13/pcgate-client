@@ -1,6 +1,5 @@
 'use client';
 
-import { AppImage } from '@/components/app-image';
 import { Link } from '@/i18n/navigation';
 import { Steam as SteamIcon } from '@/icons/steam';
 import type { ProductKey } from '@/types/common';
@@ -8,29 +7,17 @@ import type { Product } from '@/types/product';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
 import { ContentCopyOutlined as ContentCopyIcon } from '@mui/icons-material';
-import { Box, Card, styled } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import { Tooltip } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { FC, MouseEvent, useState } from 'react';
+import { AppImage } from './app-image';
 import { Button } from './button';
+import { Card } from './card';
+import { IconButton } from './icon-button';
 
 interface ProductKeyProps {
   value: string;
 }
-
-const ProductKeyRoot = styled(Box)(({ theme }) => ({
-  justifyContent: 'center',
-  display: 'flex',
-  [theme.breakpoints.up('xs')]: {
-    flexDirection: 'column',
-    width: '100%',
-  },
-  [theme.breakpoints.up('sm')]: {
-    flexDirection: 'row',
-    width: 'inherit',
-  },
-}));
 
 const ProductKey: FC<ProductKeyProps> = (props) => {
   const { value } = props;
@@ -42,72 +29,55 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
   };
 
   return (
-    <ProductKeyRoot>
-      <Box
-        sx={{
-          backgroundColor: 'background.default',
-          borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-          borderTopRightRadius: (theme) => ({
-            sm: 0,
-            xs: theme.shape.borderRadius,
-          }),
-          borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-          borderBottomRightRadius: (theme) => ({
-            sm: 0,
-            xs: theme.shape.borderRadius,
-          }),
-          height: 36,
-          mb: {
-            sm: 0,
-            xs: 1,
-          },
-          px: 1,
-          display: 'flex',
-          minWidth: 210,
-          alignItems: 'center',
-        }}
-      >
-        <p className="body2 text-center">{value}</p>
-        <Box sx={{ flex: 1 }} />
-        <Tooltip
-          title={hasCopied ? 'Copied' : 'Copy'}
-          placement="top"
-          TransitionProps={{
-            onExited: () => {
-              setHasCopied(false);
-            },
-          }}
-        >
-          <IconButton
-            size="small"
-            onClick={handleCopyToClipboard}
+    <div className="flex w-full flex-col gap-2 sm:w-auto">
+      <div className="flex w-full flex-col justify-center rounded-lg bg-[rgb(28,33,41)] sm:flex-row md:max-w-[300px]">
+        <div className="flex items-center justify-between py-1 pl-2 sm:py-0">
+          <p className="body2 line-clamp-1 break-all">{value}</p>
+          <Tooltip
+            title={hasCopied ? 'Copied' : 'Copy'}
+            placement="top"
+            TransitionProps={{
+              onExited: () => {
+                setHasCopied(false);
+              },
+            }}
           >
-            <ContentCopyIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </Box>
+            <IconButton
+              size="small"
+              onClick={handleCopyToClipboard}
+            >
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </div>
+        <Button
+          className="hidden sm:inline-flex"
+          asChild
+          color="primary"
+          variant="contained"
+        >
+          <a
+            href={`https://store.steampowered.com/account/registerkey?key=${value}`}
+            target="_blank"
+          >
+            Redeem
+          </a>
+        </Button>
+      </div>
       <Button
+        className="sm:hidden"
+        asChild
         color="primary"
-        component="a"
-        href={`https://store.steampowered.com/account/registerkey?key=${value}`}
-        sx={{
-          borderTopLeftRadius: {
-            sm: 0,
-          },
-          borderBottomLeftRadius: {
-            sm: 0,
-          },
-          boxShadow: 'none',
-          '&:hover': {
-            boxShadow: 'none',
-          },
-        }}
-        target="_blank"
         variant="contained"
       >
-        Redeem
+        <a
+          href={`https://store.steampowered.com/account/registerkey?key=${value}`}
+          target="_blank"
+        >
+          Redeem
+        </a>
       </Button>
-    </ProductKeyRoot>
+    </div>
   );
 };
 
@@ -135,7 +105,7 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
 
   const handleRevealKey = (event: MouseEvent<HTMLButtonElement>) => {
     revealKey.mutate(productKey._id, {
-      onSuccess: (data, variables, context) => {
+      onSuccess: (data) => {
         setProductKeyValue(data);
       },
     });
@@ -143,38 +113,10 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
 
   return (
     <Card
-      elevation={0}
-      sx={{
-        backgroundColor: 'background.neutral',
-        display: 'flex',
-        alignItems: {
-          sm: 'center',
-          xs: 'flex-start',
-        },
-        position: 'relative',
-        flexDirection: {
-          sm: 'row',
-          xs: 'column',
-        },
-        p: 2,
-        pb: {
-          sm: 2,
-          xs: 5,
-        },
-      }}
+      color="neutral"
+      className="relative flex flex-col items-start gap-2 p-2 sm:flex-row sm:items-center"
     >
-      <Box
-        sx={{
-          display: {
-            md: 'block',
-            xs: 'none',
-          },
-          width: 220,
-          borderRadius: 1,
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
+      <div className="relative w-full overflow-hidden rounded-lg md:block md:max-w-[220px]">
         <AppImage
           layout="responsive"
           width={16}
@@ -187,29 +129,19 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
                 (min-width: 900px) 33vw,
                 (min-width: 600px) 50vw"
         />
-      </Box>
-      <Box
-        sx={{
-          maxWidth: 300,
-          ml: {
-            md: 2,
-            xs: 0,
-          },
-        }}
-      >
+      </div>
+      <div className="ml-2">
         <Link
           href={`/products/${product.slug}`}
-          sx={{ color: '#fff' }}
-          underline="none"
-          variant="body2"
+          className="body2 line-clamp-2"
         >
           {product.title}
         </Link>
-        <Box sx={{ mt: 1 }}>
-          <SteamIcon sx={{ color: '#fff' }} />
-        </Box>
-      </Box>
-      <Box sx={{ flexGrow: 1 }} />
+        <div className="mt-2">
+          <SteamIcon />
+        </div>
+      </div>
+      <div className="flex-1" />
       {productKeyValue ? (
         <ProductKey value={productKeyValue} />
       ) : (
@@ -222,21 +154,6 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
           Reveal
         </Button>
       )}
-      <Link
-        align="right"
-        color="textSecondary"
-        href="https://help.steampowered.com/en/faqs/view/2A12-9D79-C3D7-F870"
-        sx={{
-          position: 'absolute',
-          right: 8,
-          bottom: 8,
-        }}
-        target="_blank"
-        underline="none"
-        variant="caption"
-      >
-        How Do I Redeem My Key?
-      </Link>
     </Card>
   );
 };

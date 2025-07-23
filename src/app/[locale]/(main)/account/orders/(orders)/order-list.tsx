@@ -44,11 +44,6 @@ export const OrderList: FC<OrderListProps> = (props) => {
           <Order
             key={order._id}
             order={order}
-            sx={{
-              '& + &': {
-                mt: 1,
-              },
-            }}
           />
         ))}
       </DataOverlay>

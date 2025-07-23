@@ -1,9 +1,9 @@
 'use client';
 import { AddButton } from '@/components/add-button';
 import { AppImage } from '@/components/app-image';
+import { Card } from '@/components/card';
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import type { Product } from '@/types/product';
-import { Card, CardContent } from '@mui/material';
 import type { FC } from 'react';
 import { ProductDiscount } from '../../../../../components/product-discount';
 
@@ -24,13 +24,7 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
         src={product.cover.public_id}
         width={16}
       />
-      <CardContent
-        sx={{
-          display: 'grid',
-          gridAutoFlow: 'row',
-          gap: 2,
-        }}
-      >
+      <div className="grid grid-flow-row gap-4 p-4">
         <div className="relative flex aspect-square max-w-10">
           <AppImage
             priority
@@ -65,7 +59,7 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
         >
           Add to cart
         </AddButton>
-      </CardContent>
+      </div>
     </Card>
   );
 };

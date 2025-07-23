@@ -30,7 +30,7 @@ export const getNewAccesToken = async (
 
   if (respose.ok) {
     const data = await respose.json();
-    return data;
+    return data.accessToken;
   }
 
   return null;
@@ -63,7 +63,7 @@ const checkSession = async (request: NextRequest, response: NextResponse) => {
     }
 
     response.cookies.set('accessToken', newAccesToken, {
-      maxAge: 60 * 60 * 1000,
+      maxAge: 15 * 60,
       httpOnly: true,
     });
 

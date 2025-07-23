@@ -36,9 +36,7 @@ export const SearchParam: FC<SearchInputProps> = (props) => {
     <form onSubmit={handleSearch}>
       <InputBase
         className="w-full bg-[rgb(28,33,41)]"
-        endAdornment={
-          <SearchIcon sx={{ color: (theme) => theme.palette.text.secondary }} />
-        }
+        endAdornment={<SearchIcon className="text-text-secondary" />}
         onChange={handleKeywordChange}
         value={keyword}
         placeholder={placeholder}

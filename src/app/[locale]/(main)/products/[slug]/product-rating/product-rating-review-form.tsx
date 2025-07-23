@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@/components/button';
+import { Card } from '@/components/card';
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
-import { Card, Rating, TextField } from '@mui/material';
+import { Rating, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useFormik } from 'formik';
 import type { FC } from 'react';
@@ -61,10 +62,7 @@ export const ProductRatingReviewForm: FC<ProductRatingReviewFormProps> = (
   });
 
   return (
-    <Card
-      sx={{ p: 3 }}
-      variant="outlined"
-    >
+    <Card className="p-6">
       <p className="subtitle1">Add Review</p>
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">

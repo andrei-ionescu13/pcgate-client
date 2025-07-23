@@ -4,12 +4,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   TextField,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import type { FC } from 'react';
 import * as Yup from 'yup';
+import { Divider } from './divider';
 
 interface PasswordChangeDialogProps {
   open: boolean;

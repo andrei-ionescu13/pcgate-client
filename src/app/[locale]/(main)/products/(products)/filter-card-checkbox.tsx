@@ -2,19 +2,11 @@
 
 import { InputBase } from '@/components/input-base';
 import type { CardProps } from '@mui/material';
-import {
-  ButtonBase,
-  Card,
-  CardContent,
-  Checkbox,
-  Chip,
-  FormControlLabel,
-  FormGroup,
-  styled,
-} from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
+import { FilterCard } from './filter-card';
 
 interface FilterCardCheckboxProps extends CardProps {
   title: string;
@@ -29,10 +21,6 @@ interface FilterCheckboxProps {
   value: string;
   onClick: (value: string) => void;
 }
-
-const FilterCardCheckboxRoot = styled(Card)(({ theme }) => ({
-  boxShadow: `0px 0px 0px 2px ${theme.palette.background.neutral}`,
-}));
 
 const FilterCheckbox: FC<FilterCheckboxProps> = (props) => {
   const { field, value, onClick } = props;
@@ -92,94 +80,49 @@ export const FilterCardCheckbox: FC<FilterCardCheckboxProps> = (props) => {
   };
 
   return (
-    <FilterCardCheckboxRoot
-      elevation={0}
-      {...rest}
+    <FilterCard
+      title={title}
+      field={field}
+      onClear={searchParams.has(field) ? handleClear : undefined}
     >
-      <div className="bg-neutral flex items-center px-4 py-2">
-        <p className="subtitle1">{title}</p>
-        <div className="flex-1" />
-        {searchParams.has(field) && (
-          <Chip
-            label="Clear"
-            variant="outlined"
-            size="small"
-            onClick={handleClear}
+      {items.length > limit && (
+        <div className="mb-2">
+          <InputBase
+            className="border-divider rounded-lg border py-0.5"
+            placeholder="Search..."
+            value={keyword}
+            onChange={handleKeywordChange}
           />
+        </div>
+      )}
+      <FormGroup>
+        {slicedItems.map((item) => (
+          <FormControlLabel
+            sx={{ userSelect: 'none' }}
+            key={item.value}
+            control={
+              <FilterCheckbox
+                field={field}
+                value={item.value}
+                onClick={handleClick}
+              />
+            }
+            label={item.label}
+            componentsProps={{
+              typography: { variant: 'body3' },
+            }}
+          />
+        ))}
+
+        {items.length > minItems && (
+          <button
+            onClick={handleShowMoreChange}
+            className="text-primary subtitle2 mt-2 inline-flex hover:underline"
+          >
+            {`Show ${showMore ? 'less' : 'more'}`}
+          </button>
         )}
-      </div>
-      <CardContent
-        sx={{
-          py: 1,
-          maxHeight: 360,
-          overflow: 'auto',
-          '&::-webkit-scrollbar': {
-            width: '3px',
-            backgroundColor: 'background.neutral',
-          },
-
-          '&::-webkit-scrollbar-track': {
-            borderRadius: '10px',
-          },
-
-          '&::-webkit-scrollbar-thumb': {
-            background: (theme) => theme.palette.grey[500],
-            borderRadius: '10px',
-          },
-
-          '&::-webkit-scrollbar-thumb:hover': {
-            background: 'rgb(255, 251, 251)',
-          },
-        }}
-      >
-        {items.length > limit && (
-          <div className="mb-2">
-            <InputBase
-              className="border-divider rounded-lg border py-0.5"
-              placeholder="Search..."
-              value={keyword}
-              onChange={handleKeywordChange}
-            />
-          </div>
-        )}
-        <FormGroup>
-          {slicedItems.map((item) => (
-            <FormControlLabel
-              sx={{ userSelect: 'none' }}
-              key={item.value}
-              control={
-                <FilterCheckbox
-                  field={field}
-                  value={item.value}
-                  onClick={handleClick}
-                />
-              }
-              label={item.label}
-              componentsProps={{
-                typography: { variant: 'body3' },
-              }}
-            />
-          ))}
-
-          {items.length > minItems && (
-            <ButtonBase
-              disableRipple
-              onClick={handleShowMoreChange}
-              sx={{
-                mt: 1,
-                color: 'primary.main',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                '&:hover': {
-                  textDecoration: 'underline',
-                },
-              }}
-            >
-              <p className="subtitle2">{`Show ${showMore ? 'less' : 'more'}`}</p>
-            </ButtonBase>
-          )}
-        </FormGroup>
-      </CardContent>
-    </FilterCardCheckboxRoot>
+      </FormGroup>
+    </FilterCard>
   );
 };

@@ -3,9 +3,6 @@
 import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
 import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
 import { Product } from '@/types/product';
-import { Box, IconButton } from '@mui/material';
-import type { SxProps } from '@mui/system';
-import { styled } from '@mui/system';
 import { useEffect, useState, type FC } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -13,55 +10,16 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BREAKPOINTS } from 'theme';
+import { IconButton } from './icon-button';
 import { ProductCard } from './product-card';
 import { ProductCardSkeleton } from './product-card-skeleton';
+import './products-swiper.scss';
 
-interface ProductsSwipperProps {
+interface ProductsSwiperProps {
   products?: Product[];
-  sx?: SxProps;
 }
 
-const ProductsSwipperRoot = styled(Box)(({ theme }) => ({
-  '& .swiper': {
-    height: '100%',
-    width: '100%',
-    borderRadius: 8,
-  },
-  '& .swiper-pagination-bullet ': {
-    backgroundColor: theme.palette.primary.main,
-    cursor: 'pointer',
-    marginInline: theme.spacing(0.25),
-  },
-  '& .custom-swiper-button-next, & .custom-swiper-button-prev': {
-    backgroundColor: theme.palette.primary.main,
-    color: '#fff',
-    opacity: 0.72,
-    position: 'absolute',
-    top: 'calc(50% - 20px)',
-    zIndex: 999999,
-    '&:hover': {
-      opacity: 1,
-      backgroundColor: theme.palette.primary.main,
-    },
-    [theme.breakpoints.up('md')]: {
-      display: 'inline-flex',
-    },
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
-  },
-  '& .custom-swiper-button-prev': {
-    left: -20,
-  },
-  '& .custom-swiper-button-next': {
-    right: -20,
-  },
-  '& .swiper-button-disabled': {
-    display: 'none',
-  },
-}));
-
-export const ProductsSwipper: FC<ProductsSwipperProps> = (props) => {
+export const ProductsSwiper: FC<ProductsSwiperProps> = (props) => {
   const { products } = props;
   const [isMounted, setIsMounted] = useState(false);
 
@@ -79,9 +37,9 @@ export const ProductsSwipper: FC<ProductsSwipperProps> = (props) => {
     );
 
   return (
-    <ProductsSwipperRoot>
+    <div className="products-swiper">
       <div className="relative">
-        <IconButton className="custom-swiper-button-prev">
+        <IconButton className="products-swiper-button-prev -left-5 hidden md:inline-flex">
           <ChevronLeftIcon />
         </IconButton>
         <Swiper
@@ -105,8 +63,8 @@ export const ProductsSwipper: FC<ProductsSwipperProps> = (props) => {
             },
           }}
           navigation={{
-            nextEl: '.custom-swiper-button-next',
-            prevEl: '.custom-swiper-button-prev',
+            nextEl: '.products-swiper-button-next',
+            prevEl: '.products-swiper-button-prev',
           }}
           pagination={{
             el: '.swiper-custom-pagination',
@@ -121,11 +79,11 @@ export const ProductsSwipper: FC<ProductsSwipperProps> = (props) => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <IconButton className="custom-swiper-button-next">
+        <IconButton className="products-swiper-button-next -right-5 hidden md:inline-flex">
           <ChevronRightIcon />
         </IconButton>
       </div>
       <div className="swiper-custom-pagination mt-4 flex justify-center" />
-    </ProductsSwipperRoot>
+    </div>
   );
 };

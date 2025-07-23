@@ -4,7 +4,6 @@ import { Button } from '@/components/button';
 import { Link } from '@/i18n/navigation';
 import type { Order as OrderI } from '@/types/orders';
 import { cn } from '@/utils/cn';
-import { List, ListItem } from '@mui/material';
 import { format } from 'date-fns';
 import type { ComponentProps, FC } from 'react';
 
@@ -29,17 +28,11 @@ export const Order: FC<OrderProps> = (props) => {
         </p>
       </div>
       <div className="text-text-secondary order-3 flex-2 md:order-2">
-        <List disablePadding>
-          {order.lineItems.map((item, index) => (
-            <ListItem
-              disableGutters
-              disablePadding
+        <ul>
+          {order.lineItems.map((item) => (
+            <li
               key={item._id}
-              divider={index + 1 < order.lineItems.length}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
+              className="flex items-center justify-between"
             >
               <p className="body2">
                 {item.product.title}
@@ -49,9 +42,9 @@ export const Order: FC<OrderProps> = (props) => {
                 {order.currency.symbol}
                 {item.finalLinePrice}
               </p>
-            </ListItem>
+            </li>
           ))}
-        </List>
+        </ul>
       </div>
       <div className="order-2 flex-1 md:order-3">
         <p className="subtitle2 uppercase">{order.fulfillmentStatus}</p>
@@ -62,7 +55,7 @@ export const Order: FC<OrderProps> = (props) => {
           color="primary"
           variant="contained"
         >
-          <Link href="/account/orders/${order._id}">View order</Link>
+          <Link href={`/account/orders/${order._id}`}>View order</Link>
         </Button>
       </div>
     </div>

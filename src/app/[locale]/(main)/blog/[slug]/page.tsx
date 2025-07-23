@@ -1,9 +1,9 @@
 import { AppImage } from '@/components/app-image';
 import { Container } from '@/components/container';
+import { Divider } from '@/components/divider';
 import { Markdown } from '@/components/markdown';
 import { Share } from '@/components/share';
 import { markdownToHtml } from '@/utils/markdown-to-html';
-import { Divider } from '@mui/material';
 import { format } from 'date-fns';
 import Head from 'next/head';
 import { getArticle } from './api';
@@ -62,7 +62,7 @@ const Article = async (props: ArticleProps) => {
                 </div>
               </div>
               <Markdown content={content} />
-              <Divider sx={{ my: 1.5 }} />
+              <Divider className="my-3" />
               <div>
                 <p className="subtitle1">Share this post</p>
                 {href && <Share url={href} />}

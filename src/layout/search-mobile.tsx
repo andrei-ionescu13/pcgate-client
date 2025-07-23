@@ -1,7 +1,8 @@
 'use client';
 
+import { IconButton } from '@/components/icon-button';
 import { Search as SearchIcon } from '@/icons/search';
-import { Drawer, IconButton } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { SearchProducts } from 'layout/search-poducts';
 import { usePathname } from 'next/navigation';
 import type { FC } from 'react';
@@ -25,10 +26,7 @@ export const SearchMobile: FC = () => {
 
   return (
     <>
-      <IconButton
-        onClick={handleOpen}
-        sx={{ color: '#fff' }}
-      >
+      <IconButton onClick={handleOpen}>
         <SearchIcon />
       </IconButton>
       <Drawer

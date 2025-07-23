@@ -18,18 +18,7 @@ export const Footer: FC = () => {
         >
           <Link href="/">
             <div className="flex">
-              <Logo
-                sx={{
-                  height: {
-                    md: 33,
-                    xs: 16.5,
-                  },
-                  width: {
-                    md: 166,
-                    xs: 83,
-                  },
-                }}
-              />
+              <Logo className="w-20 md:w-40" />
             </div>
           </Link>
           <div className="flex-1" />
