@@ -8,20 +8,21 @@ import { BlogPopularTags } from './blog-popular-tags';
 import { BlogSlideshow } from './blog-slideshow';
 
 interface BlogProps {
-  searchParams: {
+  searchParams: Promise<{
     category?: string;
     tag?: string;
-  };
+  }>;
 }
 
 const Blog = async (props: BlogProps) => {
-  const { searchParams } = props;
+  const searchParams = await props.searchParams;
   const articlesData = await getArticles(searchParams);
   const categories = await listCategories();
   const tags = await listTags();
+
   if (!articlesData || !categories || !tags) return null;
 
-  const { articles, count } = articlesData;
+  const { articles } = articlesData;
 
   return (
     <>

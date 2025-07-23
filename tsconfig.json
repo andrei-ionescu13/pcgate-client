@@ -36,6 +36,13 @@
       }
     ]
   },
-  "include": ["src", "temp/components", "temp", "temp", ".next/types/**/*.ts"],
+  "include": [
+    "src",
+    "temp/components",
+    "temp",
+    "temp",
+    ".next/types/**/*.ts",
+    "src/icons/.tsx"
+  ],
   "exclude": ["node_modules"]
 }

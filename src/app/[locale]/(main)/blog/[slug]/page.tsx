@@ -10,14 +10,14 @@ import { getArticle } from './api';
 import { ArticleLabel } from './article-label';
 
 interface ArticleProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 const Article = async (props: ArticleProps) => {
   const { params } = props;
-  const { slug } = params;
+  const { slug } = await params;
   const { article } = await getArticle(slug);
   const { title, cover, meta, category } = article;
   const createdAt = new Date(article.createdAt);

@@ -3,14 +3,14 @@ import Head from 'next/head';
 import { searchCoupons } from './api';
 import { CouponList } from './coupon-list';
 
-type CouponsProps = {
-  searchParams: {
+interface CouponsProps {
+  searchParams: Promise<{
     page?: string;
-  };
-};
+  }>;
+}
 
 const Coupons = async (props: CouponsProps) => {
-  const { searchParams } = props;
+  const searchParams = await props.searchParams;
   const data = await searchCoupons(searchParams);
 
   return (

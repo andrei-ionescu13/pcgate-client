@@ -5,9 +5,9 @@ import { searchUserReviews } from './api';
 import { ReviewList } from './review-list';
 
 type ReviewsProps = {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 };
 
 const sortByitems = [

@@ -59,6 +59,7 @@ export const appFetch = async <T>({
 
   if (isServer) {
     const { cookies } = await import('next/headers');
+    import('next/headers');
     cookieStore = await cookies();
   }
 

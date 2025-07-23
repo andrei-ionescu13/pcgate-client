@@ -1,12 +1,12 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
+import { ContentCopy } from '@/icons/content-copy';
 import { Steam as SteamIcon } from '@/icons/steam';
 import type { ProductKey } from '@/types/common';
 import type { Product } from '@/types/product';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
-import { ContentCopyOutlined as ContentCopyIcon } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { FC, MouseEvent, useState } from 'react';
@@ -46,7 +46,7 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
               size="small"
               onClick={handleCopyToClipboard}
             >
-              <ContentCopyIcon fontSize="small" />
+              <ContentCopy />
             </IconButton>
           </Tooltip>
         </div>

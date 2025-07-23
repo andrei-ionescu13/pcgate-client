@@ -2,7 +2,7 @@ import { searchProducts } from 'app/[locale]/(main)/api-calls';
 import { ProductsContent } from './page-content';
 
 interface ProductsProps {
-  searchParams: {
+  searchParams: Promise<{
     publishers?: string | string[];
     developers?: string | string[];
     features?: string | string[];
@@ -12,11 +12,11 @@ interface ProductsProps {
     sortBy?: string;
     price_min?: string;
     price_max?: string;
-  };
+  }>;
 }
 
 export default async function Products(props: ProductsProps) {
-  const { searchParams } = props;
+  const searchParams = await props.searchParams;
   const data = await searchProducts(searchParams);
 
   return (

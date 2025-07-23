@@ -6,11 +6,11 @@ import { getGenre } from './api';
 import { GenreProducts } from './genre-products';
 
 interface GenreProps {
-  params: { slug: string };
-  searchParams: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{
     page: string;
     sortBy: string;
-  };
+  }>;
 }
 
 const sortByitems = [
@@ -38,8 +38,8 @@ const sortByitems = [
 
 const Genre = async (props: GenreProps) => {
   const { params, searchParams } = props;
-  const { slug } = params;
-  const { page, sortBy } = searchParams;
+  const { slug } = await params;
+  const { page, sortBy } = await searchParams;
   const genre = await getGenre(slug);
   const data = await searchProducts({ genres: genre?.name, page, sortBy });
 

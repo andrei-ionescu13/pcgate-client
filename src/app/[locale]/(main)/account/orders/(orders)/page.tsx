@@ -4,9 +4,9 @@ import { searchOrders } from './api';
 import { OrderList } from './order-list';
 
 type OrdersProps = {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 };
 
 const Orders = async (props: OrdersProps) => {

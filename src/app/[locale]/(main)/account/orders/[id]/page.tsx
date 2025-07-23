@@ -5,9 +5,9 @@ import { LibraryProduct } from '../../../../../../components/library-product';
 import { getUserOrder } from './api';
 
 interface OrderProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const Order = async (props: OrderProps) => {

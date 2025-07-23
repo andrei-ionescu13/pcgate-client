@@ -1,7 +1,5 @@
-import {
-  GridView as GridViewIcon,
-  ViewHeadline as ViewHeadlineIcon,
-} from '@mui/icons-material';
+import { GridView as GridViewIcon } from '@/icons/grid-view';
+import { ViewHeadline as ViewHeadlineIcon } from '@/icons/view-headline';
 import type { FC, MouseEvent } from 'react';
 import { Button } from './button';
 

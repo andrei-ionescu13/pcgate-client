@@ -24,9 +24,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
     `https://res.cloudinary.com/desubtoqp/raw/upload/locales/${locale}.json`
   );
   const messages = await response.json();
-  console.log(messages);
+
   return {
     locale,
     messages,
+    timeZone: 'Europe/Bucharest',
   };
 });

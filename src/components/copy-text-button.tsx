@@ -1,6 +1,6 @@
 'use client';
 
-import { ContentCopyOutlined as ContentCopyIcon } from '@mui/icons-material';
+import { ContentCopy as CopyIcon } from '@/icons/content-copy';
 import { Tooltip } from '@mui/material';
 import { useState, type FC } from 'react';
 import { IconButton } from './icon-button';
@@ -34,7 +34,7 @@ export const CopyTextButton: FC<CopyTextButtonProps> = (props) => {
         onClick={handleCopyToClipboard}
         disabled={disabled}
       >
-        <ContentCopyIcon fontSize="small" />
+        <CopyIcon fontSize="small" />
       </IconButton>
     </Tooltip>
   );

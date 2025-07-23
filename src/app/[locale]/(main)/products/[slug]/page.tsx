@@ -14,12 +14,12 @@ import { ProductPricing } from './product-pricing';
 import { ProductRequirements } from './product-requirements';
 
 interface ProductProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 const Product = async (props: ProductProps) => {
   const { params } = props;
-  const { slug } = params;
+  const { slug } = await params;
   const product = await getProduct(slug);
   const content = await markdownToHtml(product.markdown);
   const minimumRequirements = await markdownToHtml(product.minimumRequirements);

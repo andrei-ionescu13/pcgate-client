@@ -6,13 +6,18 @@ import 'nprogress/nprogress.css';
 import Providers from '../providers';
 import './global.css';
 
-export default async function RootLayout({
-  children,
-  params,
-}: Readonly<{
-  children: React.ReactNode;
-  params: { locale: string };
-}>) {
+export default async function RootLayout(
+  props: Readonly<{
+    children: React.ReactNode;
+    params: { locale: string };
+  }>
+) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const session = await getSession();
   const cookieStore = await cookies();
   const currency = cookieStore.get('currency')?.value;

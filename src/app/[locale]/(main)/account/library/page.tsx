@@ -15,7 +15,8 @@ const sortByItems = [
   },
 ];
 
-const Library = async ({ searchParams }) => {
+const Library = async (props) => {
+  const searchParams = await props.searchParams;
   const data = await searchLibrary(searchParams);
 
   return (

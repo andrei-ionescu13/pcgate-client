@@ -69,6 +69,7 @@ const Providers: FC<ProvidersProps> = (props) => {
     <NextIntlClientProvider
       locale={locale}
       messages={messages}
+      timeZone="Europe/Bucharest"
     >
       <AppRouterCacheProvider options={{ enableCssLayer: true }}>
         <GoogleOAuthProvider clientId="750036915548-bdi2e09ms0r0sotdfrb0bi4098156qnr.apps.googleusercontent.com">

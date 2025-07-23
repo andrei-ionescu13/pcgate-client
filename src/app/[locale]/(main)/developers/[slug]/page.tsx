@@ -6,19 +6,19 @@ import { getDeveloper } from './api';
 import { DeveloperProducts } from './developer-products';
 
 interface DeveloperProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     page?: string;
     sortBy?: string;
-  };
+  }>;
 }
 
 const Developer = async (props: DeveloperProps) => {
   const { params, searchParams } = props;
-  const { slug } = params;
-  const { page, sortBy } = searchParams;
+  const { slug } = await params;
+  const { page, sortBy } = await searchParams;
   const developer = await getDeveloper(slug);
 
   const data = await searchProducts({

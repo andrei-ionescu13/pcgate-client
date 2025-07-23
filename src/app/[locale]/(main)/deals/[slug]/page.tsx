@@ -5,7 +5,8 @@ import { getDeal, listDealProducts } from './api';
 import { CollectionProducts } from './collection-products';
 import { CollectionTimer } from './collection-timer';
 
-const Deal = async ({ params }: { params: { slug: string } }) => {
+const Deal = async (props: { params: Promise<{ slug: string }> }) => {
+  const params = await props.params;
   const { slug } = params;
   const deal = await getDeal(slug);
   const initialProducts = await listDealProducts(slug, 0);
