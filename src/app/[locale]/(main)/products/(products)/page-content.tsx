@@ -47,6 +47,7 @@ export const ProductsContent = ({ initialData }) => {
   const searchParams = useSearchParams();
   const containerRef = useRef<HTMLDivElement>(null);
   const query: any = {};
+
   for (const [key, value] of searchParams.entries()) {
     if (!!query[key]) {
       if (Array.isArray(query[key])) {

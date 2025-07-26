@@ -1,4 +1,8 @@
 .products-swiper {
+  .swiper-slide {
+    height: auto;
+  }
+
   .products-swiper-button-next,
   .products-swiper-button-prev {
     background-color: var(--color-primary);

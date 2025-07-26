@@ -50,7 +50,6 @@ const Article = async (props: ArticleProps) => {
               />
             </div>
             <div className="bg-paper p-4">
-              {/* change this */}
               <ArticleLabel category={category} />
               <div className="mb-4 flex items-center justify-between gap-10">
                 <h1 className="h2">{title}</h1>

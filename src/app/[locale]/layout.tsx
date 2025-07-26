@@ -3,6 +3,9 @@ import { getMessages } from 'next-intl/server';
 import { cookies } from 'next/headers';
 import NextTopLoader from 'nextjs-toploader';
 import 'nprogress/nprogress.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Providers from '../providers';
 import './global.css';
 
@@ -14,9 +17,7 @@ export default async function RootLayout(
 ) {
   const params = await props.params;
 
-  const {
-    children
-  } = props;
+  const { children } = props;
 
   const session = await getSession();
   const cookieStore = await cookies();
@@ -28,7 +29,7 @@ export default async function RootLayout(
       lang={params.locale}
       suppressHydrationWarning
     >
-      <body>
+      <body className="flex flex-col">
         <NextTopLoader showSpinner={false} />
         <Providers
           user={session}

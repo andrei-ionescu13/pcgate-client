@@ -29,10 +29,11 @@ export const ProductsSwiper: FC<ProductsSwiperProps> = (props) => {
 
   if (!isMounted)
     return (
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {[1, 2].map((x) => (
-          <ProductCardSkeleton key={x} />
-        ))}
+      <div className="grid gap-4 pb-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <ProductCardSkeleton />
+        <ProductCardSkeleton className="hidden sm:block" />
+        <ProductCardSkeleton className="hidden md:block" />
+        <ProductCardSkeleton className="hidden lg:block" />
       </div>
     );
 
@@ -58,8 +59,8 @@ export const ProductsSwiper: FC<ProductsSwiperProps> = (props) => {
               slidesPerGroup: 2,
             },
             [BREAKPOINTS.xs]: {
-              slidesPerView: 2,
-              slidesPerGroup: 2,
+              slidesPerView: 1,
+              slidesPerGroup: 1,
             },
           }}
           navigation={{
@@ -74,7 +75,10 @@ export const ProductsSwiper: FC<ProductsSwiperProps> = (props) => {
           resistanceRatio={0.6}
         >
           {products?.map((product) => (
-            <SwiperSlide key={product._id}>
+            <SwiperSlide
+              key={product._id}
+              className="h-auto"
+            >
               <ProductCard product={product} />
             </SwiperSlide>
           ))}

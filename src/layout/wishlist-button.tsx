@@ -12,7 +12,7 @@ import { useStoreSelector } from '@/store/use-store-selector';
 import { ApiError } from '@/utils/api-error';
 import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import type { FC, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -44,12 +44,12 @@ export const useRemoveFromWishlist = (onSuccess?: any) =>
 
 interface WishlistButtonProps {
   productId: string;
+  refreshOnRemove?: boolean;
 }
 
 export const WishlistButton: FC<WishlistButtonProps> = (props) => {
-  const queryClient = useQueryClient();
   const router = useRouter();
-  const { productId } = props;
+  const { productId, refreshOnRemove } = props;
   const dispatch = useDispatch();
   const addToWishlist = useAddToWishlist();
   const removeFromWishlist = useRemoveFromWishlist();
@@ -68,6 +68,7 @@ export const WishlistButton: FC<WishlistButtonProps> = (props) => {
   };
 
   const handleRemoveFromWishlist = async () => {
+    refreshOnRemove && router.refresh();
     removeFromWishlist.mutate(productId, {
       onSuccess: (data) => {
         dispatch(removeWishlistProduct(data));

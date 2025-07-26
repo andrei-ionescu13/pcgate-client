@@ -19,6 +19,7 @@ export default async function Wishlist() {
               <ProductCard
                 product={product}
                 key={product._id}
+                refreshOnRemoveFromWislist
               />
             ))}
           </div>

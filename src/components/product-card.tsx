@@ -13,16 +13,20 @@ import { ProductDiscount } from './product-discount';
 interface ProductCardProps {
   loading?: boolean;
   product: Product;
+  refreshOnRemoveFromWislist?: boolean;
 }
 
 export const ProductCard: FC<ProductCardProps> = (props) => {
   const formatCurrency = useFormatCurrency();
-  const { product } = props;
+  const { product, refreshOnRemoveFromWislist } = props;
 
   return (
-    <Card className="relative">
+    <Card className="relative flex h-full flex-col">
       <div className="absolute top-4 right-4 z-50">
-        <WishlistButton productId={product._id} />
+        <WishlistButton
+          refreshOnRemove={refreshOnRemoveFromWislist}
+          productId={product._id}
+        />
       </div>
       <Link href={`/products/${product.slug}`}>
         <div className="relative aspect-video">
@@ -39,11 +43,11 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
           />
         </div>
       </Link>
-      <div className="flex min-h-[62px] flex-col items-start justify-between gap-4 p-2 sm:flex-row">
+      <div className="flex min-h-[68px] flex-1 flex-col items-start justify-between p-2 sm:flex-row md:gap-4">
         <Link
           color="inherit"
           href={`/products/${product.slug}`}
-          className="body2"
+          className="body2 line-clamp-2"
         >
           {product.title}
         </Link>

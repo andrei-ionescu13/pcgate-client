@@ -6,15 +6,16 @@ import { NavbarSecondary } from './navbar-secondary';
 
 interface NavbarProps {
   onOpenSidebar: () => void;
+  onOpenCartDrawer: () => void;
 }
 
 export const Navbar: FC<NavbarProps> = (props) => {
-  const { onOpenSidebar } = props;
+  const { onOpenSidebar, onOpenCartDrawer } = props;
 
   return (
     <header className="shadow-header fixed top-0 right-0 left-0 z-[1100] flex flex-col bg-[#12171E]">
       <NavbarPrimary onOpenSidebar={onOpenSidebar} />
-      <NavbarSecondary />
+      <NavbarSecondary onOpenCartDrawer={onOpenCartDrawer} />
     </header>
   );
 };

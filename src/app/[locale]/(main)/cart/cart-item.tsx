@@ -18,6 +18,7 @@ import { CartItemQuantity } from './cart-item-quantity';
 
 interface CartItemProps {
   item: CartLineItem;
+  className?: string;
 }
 
 export const useRemoveFromCart = () =>
@@ -45,7 +46,7 @@ export const useUpdateQuantity = () =>
   });
 
 export const CartItem: FC<CartItemProps> = (props) => {
-  const { item } = props;
+  const { item, className } = props;
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const removeFromCart = useRemoveFromCart();
@@ -78,15 +79,16 @@ export const CartItem: FC<CartItemProps> = (props) => {
     <Card
       color="paper"
       className={cn(
-        'relative flex items-center p-2',
-        (removeFromCart.isPending || updateQuantity.isPending) && 'opacity-40'
+        'relative flex flex-col gap-4 p-2 sm:flex-row sm:items-center',
+        (removeFromCart.isPending || updateQuantity.isPending) && 'opacity-40',
+        className
       )}
     >
       {removeFromCart.isPending ||
         (updateQuantity.isPending && <div className="absolute inset-0 z-50" />)}
       <Link
         className={cn(
-          'relative block w-[140px] overflow-hidden rounded-lg',
+          'relative block w-full overflow-hidden rounded-lg sm:max-w-[140px]',
           item.isUnavailable && 'grayscale-75'
         )}
         href={`/products/${product.slug}`}
@@ -99,20 +101,22 @@ export const CartItem: FC<CartItemProps> = (props) => {
           />
         </div>
       </Link>
-      <div className="ml-4 max-w-[300px]">
-        <Link
-          color="textPrimary"
-          href={`/products/${product.slug}`}
-          className="body2"
-        >
-          {product.title}
-        </Link>
-        <div className="mt-2 flex items-center">
-          <SteamIcon />
+      <div className="flex">
+        <div className="max-w-[300px]">
+          <Link
+            color="textPrimary"
+            href={`/products/${product.slug}`}
+            className="body2"
+          >
+            {product.title}
+          </Link>
+          <div className="mt-2 flex items-center">
+            <SteamIcon />
+          </div>
         </div>
+        <div className="flex-1" />
       </div>
-      <div className="flex-1" />
-      <div className="flex items-center">
+      <div className="flex items-center justify-end">
         {item.isUnavailable ? (
           <p className="text-error subtitle1 mr-4">Unavailable</p>
         ) : (

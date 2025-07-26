@@ -1,5 +1,6 @@
 import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
+import { useRouter } from '@/i18n/navigation';
 import type { ProductReview } from '@/types/product';
 import { Rating } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -15,13 +16,14 @@ export const ProductRatingReview: FC<ProductRatingReviewProps> = (props) => {
   const { review } = props;
   const { slug } = useParams();
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const deleteReview = useDeleteReview(() => {
+    router.refresh();
 
-  const deleteReview = useDeleteReview(() =>
-    Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['product', slug] }),
+    return Promise.all([
       queryClient.invalidateQueries({ queryKey: ['product', slug, 'reviews'] }),
-    ])
-  );
+    ]);
+  });
 
   return (
     <div className="flex items-start gap-4">

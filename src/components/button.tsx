@@ -22,7 +22,7 @@ const button = cva(
       size: {
         small: 'px-2.5 py-1',
         default: 'px-4 py-1.5',
-        large: 'px-6 py-2',
+        large: 'px-6 py-2.5',
       },
     },
     compoundVariants: [
