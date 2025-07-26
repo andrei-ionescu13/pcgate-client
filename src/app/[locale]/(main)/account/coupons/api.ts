@@ -1,5 +1,5 @@
 import { Coupon } from '@/types/common';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export interface SearchCouponsData {
   promoCodes: Coupon[];
@@ -7,7 +7,7 @@ export interface SearchCouponsData {
 }
 
 export const searchCoupons = (query: Record<string, any>) =>
-  appFetch<SearchCouponsData>({
+  appFetchAuth<SearchCouponsData>({
     url: '/auth/promo-codes',
     withAuth: true,
     query,

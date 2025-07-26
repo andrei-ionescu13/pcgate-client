@@ -1,5 +1,5 @@
 import { UserReview } from '@/types/user';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export interface SearchUserReviewsData {
   reviews: UserReview[];
@@ -7,14 +7,14 @@ export interface SearchUserReviewsData {
 }
 
 export const searchUserReviews = (query: Record<string, any>) =>
-  appFetch<SearchUserReviewsData>({
+  appFetchAuth<SearchUserReviewsData>({
     url: '/auth/reviews',
     withAuth: true,
     query,
   });
 
 export const deleteReview = (id: string) =>
-  appFetch<{}>({
+  appFetchAuth<{}>({
     url: `/reviews/${id}`,
     config: { method: 'DELETE' },
     withAuth: true,

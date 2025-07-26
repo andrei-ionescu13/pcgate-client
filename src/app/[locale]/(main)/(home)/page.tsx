@@ -3,7 +3,7 @@ import { ProductsSwiper } from '@/components/products-swiper';
 import { Slideshow } from '@/components/slideshow';
 import { Asset, Meta } from '@/types/common';
 import { Product } from '@/types/product';
-import { appFetch } from 'utils/app-fetch';
+import { appFetchAuth } from 'utils/app-fetch';
 
 interface Collection {
   meta: Meta;
@@ -18,13 +18,13 @@ interface Collection {
 }
 
 const listCollections = () =>
-  appFetch<any>({
+  appFetchAuth<any>({
     url: '/deals',
     withAuth: true,
   });
 
 const listNewReleases = () =>
-  appFetch<Product[]>({
+  appFetchAuth<Product[]>({
     url: '/products/new-releases',
     withAuth: true,
   });

@@ -1,6 +1,6 @@
 import { useFocused } from '@/hooks/use-focused';
 import { Product } from '@/types/product';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { Button, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -17,7 +17,7 @@ interface SearchProductsProps extends ComponentProps<'div'> {
 }
 
 const getProducts = (keyword: string) => () =>
-  appFetch<{ count: number; products: Product[] }>({
+  appFetchAuth<{ count: number; products: Product[] }>({
     url: '/products',
     withAuth: true,
     query: { keyword },

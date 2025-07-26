@@ -10,7 +10,7 @@ import {
 } from '@/store/slices/wishlist';
 import { useStoreSelector } from '@/store/use-store-selector';
 import { ApiError } from '@/utils/api-error';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation } from '@tanstack/react-query';
 import type { FC, MouseEvent } from 'react';
@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux';
 export const useAddToWishlist = (onSuccess?: any) =>
   useMutation<string, ApiError, string>({
     mutationFn: (productId) =>
-      appFetch({
+      appFetchAuth({
         url: '/auth/wishlist',
         config: {
           body: JSON.stringify({ productId }),
@@ -32,7 +32,7 @@ export const useAddToWishlist = (onSuccess?: any) =>
 export const useRemoveFromWishlist = (onSuccess?: any) =>
   useMutation<string, ApiError, string>({
     mutationFn: (productId) =>
-      appFetch({
+      appFetchAuth({
         url: '/auth/wishlist',
         config: {
           body: JSON.stringify({ productId }),

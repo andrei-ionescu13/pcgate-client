@@ -3,7 +3,7 @@ import { setCart } from '@/store/slices/cart';
 import { setWishlistProducts } from '@/store/slices/wishlist';
 import { useAppDispatch } from '@/store/use-store-dispatch';
 import { Cart } from '@/types/cart';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { useGoogleLogin } from '@react-oauth/google';
 import type { FC, ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -90,7 +90,7 @@ export const login = ({
   email: string;
   password: string;
 }) =>
-  appFetch<void>({
+  appFetchAuth<void>({
     url: '/auth/login',
     config: {
       method: 'POST',
@@ -107,7 +107,7 @@ export const register = ({
   password: string;
   confirmPassword: string;
 }) =>
-  appFetch<void>({
+  appFetchAuth<void>({
     url: '/auth/register',
     config: {
       method: 'POST',
@@ -116,7 +116,7 @@ export const register = ({
   });
 
 export const logout = () =>
-  appFetch<void>({
+  appFetchAuth<void>({
     url: '/auth/logout',
     config: {
       method: 'POST',
@@ -124,7 +124,7 @@ export const logout = () =>
   });
 
 export const requestPasswordReset = (email: string) =>
-  appFetch<void>({
+  appFetchAuth<void>({
     url: '/auth/password-reset-token',
     config: {
       method: 'POST',
@@ -143,7 +143,7 @@ export const passwordReset = ({
   password: string;
   confirmPassword: string;
 }) =>
-  appFetch<void>({
+  appFetchAuth<void>({
     url: '/auth/password-reset',
     config: {
       method: 'PUT',
@@ -162,7 +162,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const googleAuth = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       const { code } = codeResponse;
-      await appFetch<void>({
+      await appFetchAuth<void>({
         url: '/auth/google',
         config: {
           method: 'POST',
@@ -183,9 +183,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     const getUser = async () => {
       try {
         setIsLoading(true);
-        const user = await appFetch<User>({
+        const user = await appFetchAuth<User>({
           url: '/auth/me',
-          withAuth: true,
         });
         setUser(user);
         dispatch(setWishlistProducts(user.wishlist));

@@ -62,42 +62,46 @@ export const CartDrawer: FC<CartDrawerProps> = (props) => {
           )}
         </ul>
         <div className="flex-1"></div>
-        <div>
-          <div className="mb-5">
-            <div className="body2 text-text-secondary flex items-center">
-              <p>Full Price:</p>
-              <div className="flex-1" />
-              <p>{formatCurrency(cart.originalTotalPrice)}</p>
+        {hasItems && (
+          <div>
+            <div className="mb-5">
+              <div className="body2 text-text-secondary flex items-center">
+                <p>Full Price:</p>
+                <div className="flex-1" />
+                <p>{formatCurrency(cart.originalTotalPrice)}</p>
+              </div>
+              <div className="body2 flex items-center">
+                <p className="text-text-secondary">Your saving:</p>
+                <div className="flex-1" />
+                <p className="text-success">
+                  {formatCurrency(cart.totalDiscount)}
+                </p>
+              </div>
+              <Divider className="my-2" />
+              <div className="subtitle1 flex items-center">
+                <p className="text-text-secondary">TOTAL</p>
+                <div className="flex-1" />
+                <p className="text-primary">
+                  {formatCurrency(cart.totalPrice)}
+                </p>
+              </div>
             </div>
-            <div className="body2 flex items-center">
-              <p className="text-text-secondary">Your saving:</p>
-              <div className="flex-1" />
-              <p className="text-success">
-                {formatCurrency(cart.totalDiscount)}
-              </p>
-            </div>
-            <Divider className="my-2" />
-            <div className="subtitle1 flex items-center">
-              <p className="text-text-secondary">TOTAL</p>
-              <div className="flex-1" />
-              <p className="text-primary">{formatCurrency(cart.totalPrice)}</p>
-            </div>
-          </div>
-          <Button
-            asChild
-            className="w-full"
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            <Link
-              href="/cart"
-              onClick={onClose}
+            <Button
+              asChild
+              className="w-full"
+              variant="contained"
+              color="primary"
+              size="large"
             >
-              Checkout
-            </Link>
-          </Button>
-        </div>
+              <Link
+                href="/cart"
+                onClick={onClose}
+              >
+                Checkout
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </Drawer>
   );

@@ -53,11 +53,12 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
           >
             <Avatar size="large">
               <Image
-                alt=""
+                alt="avatar"
                 priority
                 src={user.avatar}
                 layout="fill"
                 objectFit="cover"
+                unoptimized
               />
             </Avatar>
             <CameraIcon className="h4 text-primary absolute right-0 bottom-0 w-4" />

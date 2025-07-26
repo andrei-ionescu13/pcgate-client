@@ -1,8 +1,8 @@
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { ParsedUrlQuery } from 'querystring';
 
 export const searchProducts = (query: ParsedUrlQuery) =>
-  appFetch<any>({
+  appFetchAuth<any>({
     url: `/products`,
     query,
   });

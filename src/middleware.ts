@@ -4,13 +4,13 @@ import createMiddleware from 'next-intl/middleware';
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextRequest, NextResponse } from 'next/server';
 import { Decoded } from './contexts/auth-context';
-import { appFetch } from './utils/app-fetch';
+import { appFetchAuth } from './utils/app-fetch';
 // import { listLanguages } from './contexts/settings-context';
 import { Language } from './contexts/settings-context';
 import { routing } from './i18n/routing';
 
 export const listLanguages = () =>
-  appFetch<Language[]>({
+  appFetchAuth<Language[]>({
     url: '/languages',
   });
 

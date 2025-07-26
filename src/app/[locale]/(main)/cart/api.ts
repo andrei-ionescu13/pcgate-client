@@ -1,8 +1,8 @@
 import { Cart } from '@/types/cart';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export const getCart = () =>
-  appFetch<Cart>({
+  appFetchAuth<Cart>({
     url: '/auth/cart',
     withAuth: true,
   });

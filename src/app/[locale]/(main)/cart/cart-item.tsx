@@ -8,7 +8,7 @@ import { X as XIcon } from '@/icons/x';
 import { setCart } from '@/store/slices/cart';
 import { Cart, CartLineItem } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FC } from 'react';
@@ -24,7 +24,7 @@ interface CartItemProps {
 export const useRemoveFromCart = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (itemId) =>
-      appFetch({
+      appFetchAuth({
         url: '/auth/cart',
         config: {
           method: 'DELETE',
@@ -36,7 +36,7 @@ export const useRemoveFromCart = () =>
 export const useUpdateQuantity = () =>
   useMutation<Cart, ApiError, { productId: string; quantity: number }>({
     mutationFn: ({ productId, quantity }) =>
-      appFetch({
+      appFetchAuth({
         url: '/auth/cart/quantity',
         config: {
           method: 'PUT',

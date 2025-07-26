@@ -1,8 +1,8 @@
 import { Product } from '@/types/product';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export const getWishlist = () =>
-  appFetch<Product[]>({
+  appFetchAuth<Product[]>({
     url: '/auth/wishlist',
     withAuth: true,
   });

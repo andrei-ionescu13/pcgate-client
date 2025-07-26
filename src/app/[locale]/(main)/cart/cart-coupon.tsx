@@ -8,7 +8,7 @@ import { setCart } from '@/store/slices/cart';
 import { useAppDispatch } from '@/store/use-store-dispatch';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 export const useApplyCoupon = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (code) =>
-      appFetch<Cart>({
+      appFetchAuth<Cart>({
         url: '/auth/cart/promo-code',
         config: {
           method: 'POST',
@@ -29,7 +29,7 @@ export const useApplyCoupon = () =>
 export const useRemoveCoupon = () =>
   useMutation<Cart, ApiError>({
     mutationFn: () =>
-      appFetch<Cart>({
+      appFetchAuth<Cart>({
         url: '/auth/cart/promo-code',
         config: {
           method: 'DELETE',

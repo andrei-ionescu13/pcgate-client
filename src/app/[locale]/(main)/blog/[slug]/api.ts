@@ -1,8 +1,8 @@
 import { Article } from '@/types/articles';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export const getArticle = (slug: string) =>
-  appFetch<{ article: Article }>({
+  appFetchAuth<{ article: Article }>({
     url: `/articles/${slug}`,
     withAuth: true,
   });

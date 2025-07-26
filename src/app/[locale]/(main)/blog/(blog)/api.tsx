@@ -1,5 +1,5 @@
 import { Article, ArticleCategory, ArticleTag } from '@/types/articles';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { ParsedUrlQuery } from 'querystring';
 
 interface GetArticlesData {
@@ -8,17 +8,17 @@ interface GetArticlesData {
 }
 
 export const getArticles = (query: ParsedUrlQuery) =>
-  appFetch<GetArticlesData>({
+  appFetchAuth<GetArticlesData>({
     url: '/articles',
     query,
   });
 
 export const listCategories = () =>
-  appFetch<ArticleCategory[]>({
+  appFetchAuth<ArticleCategory[]>({
     url: '/article-categories',
   });
 
 export const listTags = () =>
-  appFetch<ArticleTag[]>({
+  appFetchAuth<ArticleTag[]>({
     url: '/article-tags',
   });

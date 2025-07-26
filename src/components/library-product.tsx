@@ -6,7 +6,7 @@ import { Steam as SteamIcon } from '@/icons/steam';
 import type { ProductKey } from '@/types/common';
 import type { Product } from '@/types/product';
 import { ApiError } from '@/utils/api-error';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { Tooltip } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { FC, MouseEvent, useState } from 'react';
@@ -84,7 +84,7 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
 export const useRevealKey = () =>
   useMutation<any, ApiError, string>({
     mutationFn: (keyId) =>
-      appFetch({
+      appFetchAuth({
         url: `/keys/reveal/${keyId}`,
         withAuth: true,
         config: {
@@ -114,7 +114,7 @@ export const LibraryProduct: FC<LibraryProductProps> = (props) => {
   return (
     <Card
       color="neutral"
-      className="relative flex flex-col items-start gap-2 p-2 sm:flex-row sm:items-center"
+      className="relative flex flex-col items-start gap-2 p-2 pr-6 sm:flex-row sm:items-center"
     >
       <div className="relative w-full overflow-hidden rounded-lg md:block md:max-w-[220px]">
         <AppImage

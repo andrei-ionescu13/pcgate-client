@@ -1,5 +1,5 @@
 import { LibraryItem } from '@/types/library';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export interface SearchLibraryData {
   items: LibraryItem[];
@@ -7,7 +7,7 @@ export interface SearchLibraryData {
 }
 
 export const searchLibrary = (query: Record<string, any>) =>
-  appFetch<SearchLibraryData>({
+  appFetchAuth<SearchLibraryData>({
     url: '/auth/library',
     withAuth: true,
     query,

@@ -8,7 +8,7 @@ import { Gift as GiftIcon } from '@/icons/gift';
 import { useAppDispatch } from '@/store/use-store-dispatch';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { FC } from 'react';
@@ -20,7 +20,7 @@ interface CartSummaryProps {
 export const useCreateOrder = (onError: (error: ApiError) => void) =>
   useMutation<Cart, ApiError>({
     mutationFn: () =>
-      appFetch<any>({
+      appFetchAuth<any>({
         url: '/auth/order',
         withAuth: true,
         config: {
@@ -43,7 +43,7 @@ export const CartSummary: FC<CartSummaryProps> = (props) => {
   const formatCurrency = useFormatCurrency();
 
   const checkout = async () => {
-    const url = await appFetch<string>({
+    const url = await appFetchAuth<string>({
       url: '/auth/checkout',
       config: {
         method: 'POST',

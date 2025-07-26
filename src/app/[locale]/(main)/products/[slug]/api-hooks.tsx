@@ -1,4 +1,4 @@
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { listProductReviews } from './api';
@@ -15,7 +15,7 @@ export const useListProductReviews = () => {
 export const useCreateReview = (onSuccess: () => Promise<unknown>) =>
   useMutation<{}, Error, Record<string, string | number>>({
     mutationFn: (values) =>
-      appFetch({
+      appFetchAuth({
         url: '/reviews',
         withAuth: true,
         config: {
@@ -29,7 +29,7 @@ export const useCreateReview = (onSuccess: () => Promise<unknown>) =>
 export const useDeleteReview = (onSuccess?: () => Promise<unknown>) =>
   useMutation<{}, Error, string>({
     mutationFn: (id) =>
-      appFetch({
+      appFetchAuth({
         url: `/reviews/${id}`,
         config: { method: 'DELETE' },
         withAuth: true,

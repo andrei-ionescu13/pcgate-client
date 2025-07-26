@@ -42,22 +42,25 @@ const baseThemeOptions: ThemeOptions = {
         root: {
           backgroundColor: alpha(PALETTE.GREY[500], 0.08),
           fontSize: 14,
-          borderRadius: BORDER_RADIUS * 2,
+          borderRadius: BORDER_RADIUS * 1,
           '::before': {
             display: 'none',
           },
           '::after': {
             display: 'none',
           },
+          '& .MuiFilledInput-input': {
+            height: '40px',
+          },
           '& .MuiFilledInput-input:focus': {
-            borderRadius: BORDER_RADIUS * 2,
+            borderRadius: BORDER_RADIUS * 1,
           },
           '&:hover': {
             backgroundColor: alpha(PALETTE.GREY[500], 0.16),
           },
         },
         input: {
-          borderRadius: BORDER_RADIUS * 2,
+          borderRadius: BORDER_RADIUS * 1,
         },
       },
     },

@@ -1,7 +1,7 @@
 import { Developer as DeveloperI } from '@/types/developer';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export const getDeveloper = (slug: string) =>
-  appFetch<DeveloperI>({
+  appFetchAuth<DeveloperI>({
     url: `/developers/${slug}`,
   });

@@ -1,5 +1,5 @@
 import { Order } from '@/types/orders';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 
 export interface SearchOrdersData {
   orders: Order[];
@@ -8,7 +8,7 @@ export interface SearchOrdersData {
 
 export const searchOrders = (query: Record<string, any>) => {
   console.log(query);
-  return appFetch<SearchOrdersData>({
+  return appFetchAuth<SearchOrdersData>({
     url: '/orders',
     withAuth: true,
     query,

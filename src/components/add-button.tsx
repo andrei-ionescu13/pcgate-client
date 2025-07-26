@@ -6,7 +6,7 @@ import { ShoppingCart } from '@/icons/shopping-cart';
 import { setCart } from '@/store/slices/cart';
 import { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation } from '@tanstack/react-query';
 import type { ComponentProps, FC } from 'react';
@@ -21,7 +21,7 @@ interface AddButtonProps extends Omit<ComponentProps<'button'>, 'color'> {
 export const useAddToCart = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (productId) =>
-      appFetch({
+      appFetchAuth({
         url: '/auth/cart',
         withAuth: true,
         config: {

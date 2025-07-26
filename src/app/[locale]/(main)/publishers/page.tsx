@@ -1,11 +1,11 @@
 import { Container } from '@/components/container';
 import { LinkCategories } from '@/components/link-categories';
 import { Publisher } from '@/types/publishers';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import Head from 'next/head';
 
 const listPublishers = () =>
-  appFetch<Publisher[]>({ url: '/publishers', withAuth: true });
+  appFetchAuth<Publisher[]>({ url: '/publishers', withAuth: true });
 
 export default async function Publishers() {
   const publishers = await listPublishers();

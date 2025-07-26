@@ -30,7 +30,7 @@ export const Items: FC<ItemsProps> = (props) => {
           />
         ))}
       </DataOverlay>
-      {count > 2 && (
+      {count > 12 && (
         <div className="mt-10 flex content-center">
           <PaginationParam count={Math.ceil(count / 2)} />
         </div>
