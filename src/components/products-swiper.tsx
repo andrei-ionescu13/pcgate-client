@@ -4,15 +4,11 @@ import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
 import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
 import { Product } from '@/types/product';
 import { useEffect, useState, type FC } from 'react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BREAKPOINTS } from 'theme';
 import { IconButton } from './icon-button';
 import { ProductCard } from './product-card';
-import { ProductCardSkeleton } from './product-card-skeleton';
 import './products-swiper.scss';
 
 interface ProductsSwiperProps {
@@ -30,10 +26,25 @@ export const ProductsSwiper: FC<ProductsSwiperProps> = (props) => {
   if (!isMounted)
     return (
       <div className="grid gap-4 pb-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <ProductCardSkeleton />
-        <ProductCardSkeleton className="hidden sm:block" />
-        <ProductCardSkeleton className="hidden md:block" />
-        <ProductCardSkeleton className="hidden lg:block" />
+        {!!products?.[0] && <ProductCard product={products[0]} />}
+        {!!products?.[1] && (
+          <ProductCard
+            product={products[1]}
+            className="hidden sm:block"
+          />
+        )}
+        {!!products?.[2] && (
+          <ProductCard
+            product={products[2]}
+            className="hidden md:block"
+          />
+        )}
+        {!!products?.[3] && (
+          <ProductCard
+            product={products[3]}
+            className="hidden lg:block"
+          />
+        )}
       </div>
     );
 

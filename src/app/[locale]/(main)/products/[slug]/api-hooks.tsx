@@ -17,7 +17,6 @@ export const useCreateReview = (onSuccess: () => Promise<unknown>) =>
     mutationFn: (values) =>
       appFetchAuth({
         url: '/reviews',
-        withAuth: true,
         config: {
           body: JSON.stringify(values),
           method: 'POST',
@@ -32,7 +31,6 @@ export const useDeleteReview = (onSuccess?: () => Promise<unknown>) =>
       appFetchAuth({
         url: `/reviews/${id}`,
         config: { method: 'DELETE' },
-        withAuth: true,
       }),
     onSuccess,
   });

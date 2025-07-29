@@ -11,7 +11,7 @@ export const Progress: FC<ProgressProps> = (props) => {
   return (
     <div
       className={cn(
-        'bg-primary-dark relative h-[5px] w-full overflow-hidden rounded-md',
+        'bg-primary/35 relative h-[5px] w-full overflow-hidden rounded-md',
         className
       )}
     >

@@ -1,11 +1,12 @@
 'use client';
+
 import { AddButton } from '@/components/add-button';
 import { AppImage } from '@/components/app-image';
 import { Card } from '@/components/card';
+import { ProductDiscount } from '@/components/product-discount';
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import type { Product } from '@/types/product';
 import type { FC } from 'react';
-import { ProductDiscount } from '../../../../../components/product-discount';
 
 interface ProductPricingProps {
   product: Product;

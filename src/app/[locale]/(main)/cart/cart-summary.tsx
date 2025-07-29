@@ -22,7 +22,6 @@ export const useCreateOrder = (onError: (error: ApiError) => void) =>
     mutationFn: () =>
       appFetchAuth<any>({
         url: '/auth/order',
-        withAuth: true,
         config: {
           method: 'POST',
         },

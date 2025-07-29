@@ -9,6 +9,5 @@ export interface SearchCouponsData {
 export const searchCoupons = (query: Record<string, any>) =>
   appFetchAuth<SearchCouponsData>({
     url: '/auth/promo-codes',
-    withAuth: true,
     query,
   });

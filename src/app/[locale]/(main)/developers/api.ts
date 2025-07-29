@@ -1,5 +1,5 @@
 import { Developer } from '@/types/developer';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 
 export const listDevelopers = () =>
-  appFetchAuth<Developer[]>({ url: '/developers', withAuth: true });
+  appFetch<Developer[]>({ url: '/developers' });
