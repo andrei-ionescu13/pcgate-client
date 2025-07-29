@@ -86,7 +86,6 @@ export const useRevealKey = () =>
     mutationFn: (keyId) =>
       appFetchAuth({
         url: `/keys/reveal/${keyId}`,
-        withAuth: true,
         config: {
           method: 'POST',
         },

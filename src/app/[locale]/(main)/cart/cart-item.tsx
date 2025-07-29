@@ -114,8 +114,8 @@ export const CartItem: FC<CartItemProps> = (props) => {
             <SteamIcon />
           </div>
         </div>
-        <div className="flex-1" />
       </div>
+      <div className="flex-1" />
       <div className="flex items-center justify-end">
         {item.isUnavailable ? (
           <p className="text-error subtitle1 mr-4">Unavailable</p>

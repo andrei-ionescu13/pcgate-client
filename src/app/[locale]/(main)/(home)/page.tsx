@@ -3,7 +3,7 @@ import { ProductsSwiper } from '@/components/products-swiper';
 import { Slideshow } from '@/components/slideshow';
 import { Asset, Meta } from '@/types/common';
 import { Product } from '@/types/product';
-import { appFetchAuth } from 'utils/app-fetch';
+import { appFetch } from 'utils/app-fetch';
 
 interface Collection {
   meta: Meta;
@@ -18,26 +18,18 @@ interface Collection {
 }
 
 const listCollections = () =>
-  appFetchAuth<any>({
+  appFetch<any>({
     url: '/deals',
-    withAuth: true,
   });
 
 const listNewReleases = () =>
-  appFetchAuth<Product[]>({
+  appFetch<Product[]>({
     url: '/products/new-releases',
-    withAuth: true,
   });
 
 export default async function Home() {
-  let deals;
-  let newReleases;
-  try {
-    deals = await listCollections();
-    newReleases = await listNewReleases();
-  } catch (error) {
-    console.log(error);
-  }
+  const deals = await listCollections();
+  const newReleases = await listNewReleases();
 
   return (
     <div className="pb-10 md:pt-10">
@@ -54,7 +46,6 @@ export default async function Home() {
           <h4 className="mb-3">Top Sellers</h4>
           <ProductsSwiper products={newReleases} />
         </div>
-        {/* <BrowseSection /> */}
       </Container>
     </div>
   );

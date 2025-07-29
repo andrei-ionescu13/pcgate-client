@@ -63,9 +63,13 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
 
   return (
     <>
-      <div {...props}>
+      <div
+        className="flex"
+        {...props}
+      >
         {user?.avatar ? (
           <button
+            className="inline-flex"
             onClick={handleOpen}
             ref={anchorRef}
           >
@@ -81,7 +85,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
         ) : (
           <Skeleton
             variant="circular"
-            className="h-9 w-9"
+            className="h-10 w-10"
           />
         )}
       </div>

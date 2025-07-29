@@ -9,12 +9,12 @@ import { ApiError } from '@/utils/api-error';
 import { appFetchAuth } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation } from '@tanstack/react-query';
-import type { ComponentProps, FC } from 'react';
+import type { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
-import { Button } from './button';
+import { Button, ButtonProps } from './button';
 
-interface AddButtonProps extends Omit<ComponentProps<'button'>, 'color'> {
+interface AddButtonProps extends ButtonProps {
   productId: string;
 }
 
@@ -23,7 +23,6 @@ export const useAddToCart = () =>
     mutationFn: (productId) =>
       appFetchAuth({
         url: '/auth/cart',
-        withAuth: true,
         config: {
           method: 'POST',
           body: JSON.stringify({ productId }),

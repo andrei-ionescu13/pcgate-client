@@ -7,10 +7,8 @@ export interface SearchOrdersData {
 }
 
 export const searchOrders = (query: Record<string, any>) => {
-  console.log(query);
   return appFetchAuth<SearchOrdersData>({
     url: '/orders',
-    withAuth: true,
     query,
   });
 };

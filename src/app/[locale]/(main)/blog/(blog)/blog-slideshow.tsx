@@ -1,12 +1,10 @@
 'use client';
+
 import { IconButton } from '@/components/icon-button';
 import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
 import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
 import type { Article } from '@/types/articles';
-import { FC } from 'react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { FC, useEffect, useState } from 'react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BlogSlideshowArticle } from './blog-slideshow-article';
@@ -18,6 +16,19 @@ interface BlogSlideshowProps {
 
 export const BlogSlideshow: FC<BlogSlideshowProps> = (props) => {
   const { articles } = props;
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div className="pb-5">
+        <BlogSlideshowArticle article={articles[0]} />
+      </div>
+    );
+  }
 
   return (
     <div className="articles-slideshow">
@@ -31,8 +42,8 @@ export const BlogSlideshow: FC<BlogSlideshowProps> = (props) => {
         <Swiper
           modules={[Navigation, Pagination]}
           navigation={{
-            nextEl: 'articles-slideshow-button-next',
-            prevEl: 'articles-slideshow-button-prev',
+            nextEl: '.articles-slideshow-button-next',
+            prevEl: '.articles-slideshow-button-prev',
           }}
           pagination={{
             el: '.articles-slideshow-pagination',

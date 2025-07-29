@@ -14,7 +14,7 @@ export const ProductDetails: FC<ProductDetailsProps> = (props) => {
   const { product } = props;
 
   return (
-    <Card className="p-2">
+    <Card className="p-4">
       <h6>Game details</h6>
       <ul>
         <PropertyItem

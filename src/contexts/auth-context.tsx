@@ -95,6 +95,7 @@ export const login = ({
     config: {
       method: 'POST',
       body: JSON.stringify({ email, password }),
+      credentials: 'include', // <-- this is CRUCIAL
     },
   });
 

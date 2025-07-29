@@ -53,9 +53,9 @@ export const ProductRating: FC<ProductRatingProps> = (props) => {
           {Object.keys(product.rating.distribution).map((key) => (
             <div
               key={key}
-              className="grid grid-flow-col grid-cols-[15%_1fr_5%] items-center gap-1 sm:grid-cols-[20%_1fr_10%] sm:gap-2"
+              className="grid grid-flow-col grid-cols-[auto_1fr_auto] items-center gap-2 sm:grid-cols-[20%_1fr_10%]"
             >
-              <p className="subtitle2">{`${key} Star`}</p>
+              <p className="subtitle2 text-nowrap">{`${key} Star`}</p>
               <div className="flex-1">
                 <Progress
                   value={

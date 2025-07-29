@@ -9,6 +9,5 @@ export interface SearchLibraryData {
 export const searchLibrary = (query: Record<string, any>) =>
   appFetchAuth<SearchLibraryData>({
     url: '/auth/library',
-    withAuth: true,
     query,
   });

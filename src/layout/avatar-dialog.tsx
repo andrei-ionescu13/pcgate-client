@@ -12,12 +12,10 @@ export const useUpdateAvatar = () =>
     mutationFn: (values) =>
       appFetchAuth({
         url: '/auth/avatar',
-        noContentType: true,
         config: {
           body: values,
           method: 'PUT',
         },
-        withAuth: true,
       }),
   });
 

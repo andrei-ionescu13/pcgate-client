@@ -12,7 +12,7 @@ interface OrderProps {
 
 const Order = async (props: OrderProps) => {
   const { params } = props;
-  const { id } = params;
+  const { id } = await params;
   const order = await getUserOrder(id);
 
   return (

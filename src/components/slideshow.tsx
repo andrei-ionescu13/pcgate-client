@@ -3,10 +3,7 @@
 import { Link } from '@/i18n/navigation';
 import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
 import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
-import { Box } from '@mui/material';
-import type { FC } from 'react';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { useEffect, useState, type FC } from 'react';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AppImage } from './app-image';
@@ -28,30 +25,44 @@ interface SlideshowProps {
 
 export const Slideshow: FC<SlideshowProps> = (props) => {
   const { items } = props;
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const slides = items.map((item) => ({
     ...item,
     href: `/deals/${item.slug}`,
     image: item.cover.public_id,
   }));
 
+  if (!isMounted) {
+    const slide = slides?.[0];
+
+    return (
+      <Link
+        href={slide.href}
+        className="relative block aspect-video"
+      >
+        <AppImage
+          priority
+          src={slide.image}
+          alt={slide.title}
+          fill
+        />
+        <div className="absolute inset-0 flex items-end p-6">
+          <div>
+            <h2 className="text-primary">{slide.title}</h2>
+            <h5>{slide.description}</h5>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
   return (
-    <Box
-      sx={{
-        '& .swiper': {
-          position: 'relative',
-        },
-        '& .swiper-button-next, & .swiper-button-prev': {
-          color: '#fff',
-          width: 'auto',
-          height: 'auto',
-          fontSize: 8,
-          position: 'absolute',
-        },
-        '& .swiper-button-lock': {
-          display: 'none',
-        },
-      }}
-    >
+    <div>
       <Swiper
         enabled={slides.length > 1}
         modules={[Autoplay, Navigation]}
@@ -59,7 +70,6 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
           delay: 8000,
           disableOnInteraction: true,
         }}
-        loop
         navigation={{
           nextEl: '.slideshow-swiper-button-next',
           prevEl: '.slideshow-swiper-button-prev',
@@ -77,7 +87,7 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
               <AppImage
                 priority
                 src={slide.image}
-                alt=""
+                alt={slide.title}
                 fill
               />
               <div className="absolute inset-0 flex items-end p-6">
@@ -93,6 +103,6 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
           <ChevronRightIcon fontSize="large" />
         </Button>
       </Swiper>
-    </Box>
+    </div>
   );
 };

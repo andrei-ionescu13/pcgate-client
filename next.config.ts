@@ -6,14 +6,14 @@ const withNextIntl = createNextIntlPlugin({
 });
 
 const config: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_PATH}/:path*`, // Proxy to Backend
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/api/:path*',
+  //       destination: `${process.env.NEXT_PUBLIC_API_PATH}/:path*`, // Proxy to Backend
+  //     },
+  //   ];
+  // },
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,

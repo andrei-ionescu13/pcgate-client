@@ -2,6 +2,7 @@
 import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
+import { cn } from '@/utils/cn';
 import type { FC } from 'react';
 import { WishlistButton } from '../layout/wishlist-button';
 import { AddButton } from './add-button';
@@ -14,14 +15,15 @@ interface ProductCardProps {
   loading?: boolean;
   product: Product;
   refreshOnRemoveFromWislist?: boolean;
+  className?: string;
 }
 
 export const ProductCard: FC<ProductCardProps> = (props) => {
+  const { product, refreshOnRemoveFromWislist, className } = props;
   const formatCurrency = useFormatCurrency();
-  const { product, refreshOnRemoveFromWislist } = props;
 
   return (
-    <Card className="relative flex h-full flex-col">
+    <Card className={cn('relative flex h-full flex-col', className)}>
       <div className="absolute top-4 right-4 z-50">
         <WishlistButton
           refreshOnRemove={refreshOnRemoveFromWislist}
