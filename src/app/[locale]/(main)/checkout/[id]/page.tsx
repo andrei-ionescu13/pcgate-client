@@ -5,7 +5,6 @@ import { Spinner } from '@/components/spinner';
 import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
 import { getUserOrderByStripeId } from './api';
 
 const Checkout = () => {
@@ -16,19 +15,24 @@ const Checkout = () => {
     queryFn: () => getUserOrderByStripeId(id),
   });
 
-  useEffect(() => {
-    const timeout = setInterval(() => {
-      if (data?.paymentStatus === 'pending') {
-        refetch();
-      } else {
-        clearInterval(timeout);
-      }
-    }, 3000);
+  // useEffect(() => {
+  //   let timeout: NodeJS.Timer;
 
-    return () => {
-      if (timeout) clearInterval(timeout);
-    };
-  }, []);
+  //   if (data) {
+  //     timeout = setInterval(() => {
+  //       console.log(data);
+  //       if (data?.paymentStatus === 'pending') {
+  //         refetch();
+  //       } else {
+  //         clearInterval(timeout);
+  //       }
+  //     }, 3000);
+  //   }
+
+  //   return () => {
+  //     if (timeout) clearInterval(timeout);
+  //   };
+  // }, [data?.paymentStatus]);
 
   const getContent = () => {
     if (data?.paymentStatus === 'pending') {
@@ -40,7 +44,7 @@ const Checkout = () => {
       );
     }
 
-    if (1) {
+    if (data?.paymentStatus === 'expired') {
       return (
         <div>
           <p>Your Order has been canceled</p>
