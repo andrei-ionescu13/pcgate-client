@@ -1,116 +1,85 @@
+import { Link } from '@/i18n/navigation';
 import type { FC } from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import { Link } from '@/components/link';
+import { Button } from './button';
 
 const items = [
   {
     href: '/search?os=windows',
-    label: 'Windows Games'
+    label: 'Windows Games',
   },
   {
     href: '/search?os=linux',
-    label: 'Linux Games'
+    label: 'Linux Games',
   },
   {
     href: '/search?os=mac',
-    label: 'Mac Games'
+    label: 'Mac Games',
   },
   {
     href: '/search?drm=steam',
-    label: 'Steam Games'
+    label: 'Steam Games',
   },
   {
     href: '/search?drm=uplay',
-    label: 'Uplay Games'
+    label: 'Uplay Games',
   },
   {
     href: '/search?drm=rockstar',
-    label: 'Rockstar Games'
+    label: 'Rockstar Games',
   },
   {
     href: '/search?genres=Indie',
-    label: 'Indie Games'
+    label: 'Indie Games',
   },
   {
     href: '/search?genres=Action',
-    label: 'Action Games'
+    label: 'Action Games',
   },
   {
     href: '/search?genres=Adventure',
-    label: 'Adventure Games'
+    label: 'Adventure Games',
   },
   {
     href: '/search?genres=Strategy',
-    label: 'Strategy Games'
+    label: 'Strategy Games',
   },
   {
     href: '/search?genres=Roleplaying',
-    label: 'Roleplaying Games'
+    label: 'Roleplaying Games',
   },
   {
     href: '/search?genres=Casual',
-    label: 'Casual Games'
+    label: 'Casual Games',
   },
   {
     href: '/search?genres=Sports',
-    label: 'Sports Games'
+    label: 'Sports Games',
   },
   {
     href: '/search?genres=Racing',
-    label: 'Racing Games'
+    label: 'Racing Games',
   },
   {
     href: '/search?genres=Shooter',
-    label: 'Shooter Games'
-  }
+    label: 'Shooter Games',
+  },
 ];
 
 export const BrowseSection: FC = () => (
-  <Box
-    sx={{
-      backgroundColor: 'background.default',
-      py: 8
-    }}
-  >
-    <Typography
-      color="textPrimary"
-      sx={{ mb: 3 }}
-      variant="h4"
-    >
-      Browse
-    </Typography>
-    <Box
-      sx={{
-        display: 'grid',
-        gap: 2,
-        gridTemplateColumns: {
-          lg: 'repeat(5, 1fr)',
-          md: 'repeat(4, 1fr)',
-          sm: 'repeat(3, 1fr)',
-          xs: 'repeat(2, 1fr)',
-        }
-      }}
-    >
+  <div className="py-16">
+    <h4 className="mb-6">Browse</h4>
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
       {items.map((item) => (
         <Button
           color="primary"
-          component={Link}
-          fullWidth
-          href={item.href}
           key={item.label}
           size="large"
-          sx={{
-            fontSize: {
-              sm: 14,
-              xs: 12
-            },
-            px: 0
-          }}
+          className="w-full px-0"
           variant="outlined"
         >
-          {item.label}
+          <Link href={item.href}>{item.label}</Link>
         </Button>
       ))}
-    </Box>
-  </Box>
+    </div>
+  </div>
 );

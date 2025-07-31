@@ -1,9 +1,11 @@
-import { useRef } from 'react';
-import type { FC } from 'react';
-import { Box, Button, List, ListItemButton, Popover, Typography } from '@mui/material';
-import type { SxProps } from '@mui/system';
-import { ChevronDown as ChevronDownIcon } from '@/icons/chevron-down';
 import { useOpen } from '@/hooks/use-open';
+import { ChevronDown as ChevronDownIcon } from '@/icons/chevron-down';
+import { cn } from '@/utils/cn';
+import { Button, Popover } from '@mui/material';
+import type { SxProps } from '@mui/system';
+import type { FC } from 'react';
+import { useRef } from 'react';
+import { ListButton } from './dropdown-button';
 
 export interface SortByPopoverItem {
   value: string;
@@ -12,7 +14,7 @@ export interface SortByPopoverItem {
 
 interface SortByPopoverProps {
   sx?: SxProps;
-  items: SortByPopoverItem[]
+  items: SortByPopoverItem[];
   value: string;
   onChange: (value: string) => void;
 }
@@ -26,67 +28,52 @@ export const SortByPopover: FC<SortByPopoverProps> = (props) => {
   const handleChange = (value: string): void => {
     onChange(value);
     handleClose();
-  }
+  };
 
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography
-          color="textPrimary"
-          variant="body2"
-          sx={{
-            mr: 2,
-            whiteSpace: 'nowrap'
-          }}
-        >
-          Sort by
-        </Typography>
+      <div className="flex items-center">
+        <p className="body2 mr-4 text-nowrap">Sort by</p>
         <Button
           color="white"
           variant="outlined"
           ref={anchorRef}
           onClick={handleOpen}
         >
-          <Typography
-            color="textPrimary"
-            variant="body2"
-            mr={1}
-          >
-            {itemSelected?.label}
-          </Typography>
+          <p className="body2 mr-2">{itemSelected?.label}</p>
           <ChevronDownIcon
-            sx={{
-              transform: open ? 'rotate(180deg)' : undefined,
-              transition: 'transform 200ms'
-            }}
+            className={cn('transition-all duration-200', open && 'rotate-180')}
           />
         </Button>
-      </Box>
+      </div>
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         onClose={handleClose}
         open={open}
         PaperProps={{
           sx: {
             maxWidth: 160,
-            width: '100%'
-          }
+            width: '100%',
+          },
         }}
       >
-        <List>
+        <ul>
           {items.map((item) => (
-            <ListItemButton
-              key={item.value}
-              onClick={() => { handleChange(item.value) }}
-            >
-              {item.label}
-            </ListItemButton>
+            <li key={item.value}>
+              <ListButton
+                onClick={() => {
+                  handleChange(item.value);
+                }}
+              >
+                {item.label}
+              </ListButton>
+            </li>
           ))}
-        </List>
+        </ul>
       </Popover>
     </>
   );

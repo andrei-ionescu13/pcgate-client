@@ -1,6 +1,8 @@
-import { useSettings } from "@/contexts/settings-context";
-import { useRouter } from "next/router";
+"use client"
 
+import { useSettings } from "@/contexts/settings-context";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
 interface ResolvedNumberFormatOptions {
   locale: string;
   numberingSystem: string;
@@ -13,16 +15,16 @@ interface ResolvedNumberFormatOptions {
   useGrouping: boolean;
 }
 
-export const useFormatCurrency = (options?: ResolvedNumberFormatOptions) => {
+export const useFormatCurrency = () => {
   const { settings } = useSettings();
-  const { locale } = useRouter();
+  const { locale } = useParams();
 
-  const baseOptions = {
+  const options = {
     style: 'currency',
     currency: settings.currency,
     maximumFractionDigits: 2,
     minimumFractionDigits: 2
   }
 
-  return new Intl.NumberFormat(locale, { ...baseOptions, ...options }).format;
+  return new Intl.NumberFormat(locale, options).format;
 }

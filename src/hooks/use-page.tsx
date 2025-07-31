@@ -1,10 +1,19 @@
+"use client"
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router';
 
 const isString = (value: any): value is string => typeof value === 'string';
 
 export const usePage = (): [number, (event: unknown, newPage: number) => void] => {
-  const { pathname, query, push } = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams()
+  const { push } = useRouter();
+
+  let query: any = {};
+  for (const [key, value] of searchParams.entries()) {
+    query[key] = value;
+  }
+
   const [page, setPage] = useState<number>(() => {
     const parsedPage = isString(query.page) ? Number.parseInt(query.page) : 0;
 
@@ -24,10 +33,7 @@ export const usePage = (): [number, (event: unknown, newPage: number) => void] =
       newQuery.page = (newPage + 1).toString();
     }
 
-    push({
-      pathname: pathname,
-      query: newQuery
-    });
+    push(`${[pathname]}?${query.toString()}`);
   }
 
   useEffect(() => {

@@ -1,41 +1,20 @@
-import type { FC } from 'react';
-import { Badge, Box } from '@mui/material';
-import { Link } from '@/components/link';
+import { Badge } from '@/components/badge';
+import { Link } from '@/i18n/navigation';
 import { Heart as HeartIcon } from '@/icons/heart';
+import type { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 export const WishlistLink: FC = () => {
   const wishlistProducts = useSelector((state) => state.wishlist.products);
 
   return (
-    <Badge
-      badgeContent={wishlistProducts?.length}
-      showZero
-      sx={{
-        '& .MuiBadge-badge': {
-          backgroundColor: '#fff',
-          color: '#000'
-        },
-      }}
-    >
-      <Box
-        component={Link}
+    <Badge content={wishlistProducts?.length}>
+      <Link
         href="/wishlist"
-        sx={{
-          alignItems: 'center',
-          backgroundColor: '#1E4582',
-          borderRadius: 2,
-          color: '#fff',
-          cursor: 'pointer',
-          display: 'flex',
-          p: 1
-        }}
+        className="flex cursor-pointer items-center rounded-lg bg-[#1E4582] p-2"
       >
-        <HeartIcon
-          fontSize="small"
-          sx={{ color: 'inherit' }}
-        />
-      </Box>
+        <HeartIcon fontSize="small" />
+      </Link>
     </Badge>
   );
 };

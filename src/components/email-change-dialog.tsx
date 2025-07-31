@@ -1,16 +1,8 @@
-import type { FC } from 'react';
+import { TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import type { FC } from 'react';
 import * as Yup from 'yup';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  TextField,
-} from '@mui/material';
+import { DialogAlert } from './dialog-alert';
 
 interface EmailChangeDialogProps {
   open: boolean;
@@ -22,7 +14,7 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      submit: null
+      submit: null,
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().max(255).email().required('Email is required'),
@@ -37,51 +29,32 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
-    }
+    },
   });
 
   return (
-    <Dialog
-      fullWidth
+    <DialogAlert
       onClose={onClose}
       open={open}
+      title="Change Email"
+      onSubmit={() => {
+        formik.handleSubmit();
+      }}
     >
-      <DialogTitle>
-        Change Email
-      </DialogTitle>
-      <Divider />
-      <DialogContent>
-        <Box sx={{ mb: 2 }}>
-          <TextField
-            error={Boolean(formik.touched.email && formik.errors.email)}
-            fullWidth
-            helperText={formik.touched.email && formik.errors.email}
-            label="Email address"
-            name="email"
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            size="small"
-            type="email"
-            value={formik.values.email}
-          />
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color="white"
-          onClick={onClose}
-          variant="outlined"
-        >
-          Cancel
-        </Button>
-        <Button
-          color="primary"
-          onClick={() => { formik.handleSubmit(); }}
-          variant="contained"
-        >
-          Change
-        </Button>
-      </DialogActions>
-    </Dialog>
+      <div className="mb-4">
+        <TextField
+          error={Boolean(formik.touched.email && formik.errors.email)}
+          fullWidth
+          helperText={formik.touched.email && formik.errors.email}
+          label="Email address"
+          name="email"
+          onBlur={formik.handleBlur}
+          onChange={formik.handleChange}
+          size="small"
+          type="email"
+          value={formik.values.email}
+        />
+      </div>
+    </DialogAlert>
   );
 };

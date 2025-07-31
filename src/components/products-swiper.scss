@@ -1,0 +1,23 @@
+.products-swiper {
+  .swiper-slide {
+    height: auto;
+  }
+
+  .products-swiper-button-next,
+  .products-swiper-button-prev {
+    background-color: var(--color-primary);
+    color: #fff;
+    opacity: 0.72;
+    position: absolute;
+    top: calc(50% - 20px);
+    z-index: 10;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .swiper-button-disabled {
+    display: none;
+  }
+}

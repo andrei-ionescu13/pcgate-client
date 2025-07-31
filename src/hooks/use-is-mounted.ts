@@ -1,12 +1,17 @@
-import { useRef, useEffect } from 'react';
+"use client"
+
+import { useEffect, useRef } from 'react'
 
 export const useIsMounted = (): boolean => {
-  const isMountedRef = useRef<boolean>(false);
+  const isMounted = useRef(false)
 
   useEffect(() => {
-    isMountedRef.current = true;
-    return () => { isMountedRef.current = false; };
-  }, []);
+    isMounted.current = true
 
-  return isMountedRef.current;
-};
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
+
+  return isMounted.current;
+}

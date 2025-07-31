@@ -1,124 +1,76 @@
+'use client';
+
+import { Button } from '@/components/button';
+import { Container } from '@/components/container';
+import { IconButton } from '@/components/icon-button';
+import { useAuth } from '@/contexts/auth-context';
+import { Link } from '@/i18n/navigation';
+import { Menu as MenuIcon } from '@/icons/menu';
 import type { FC } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Toolbar,
-  useMediaQuery
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { AccountPopover } from './account-popover';
-import { Link } from '@/components/link';
 import { Logo } from './logo';
 import { SearchMobile } from './search-mobile';
-import { Search } from './search';
-import { Menu as MenuIcon } from '@/icons/menu';
-import { SwitchThemeButton } from './switch-theme-button';
-import { WishlistLink } from './wishlist-link';
-import { CartDropdown } from './cart-dropdown';
-import { useAuth } from '@/contexts/auth-context';
+import { SearchProducts } from './search-poducts';
 
 interface NavbarPrimaryProps {
-  smUp: boolean;
   onOpenSidebar: () => void;
 }
 
 export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
   const { isAuthenticated } = useAuth();
-  const { smUp, onOpenSidebar } = props;
-  const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
+  const { onOpenSidebar } = props;
 
   return (
-    <Box>
+    <div>
       <Container maxWidth="lg">
-        <Toolbar
-          disableGutters
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            minHeight: {
-              xs: 56
-            }
-          }}
-        >
+        <div className="flex h-14 items-center">
           <Link
             href="/"
-            sx={{
-              display: {
-                sm: 'block',
-                xs: 'none'
-              }
-            }}
+            className="hidden sm:inline"
           >
-            <Box sx={{ display: 'flex' }}>
-              <Logo
-                sx={{
-                  height: 33,
-                  width: 166,
-                }}
-              />
-            </Box>
+            <div className="flex">
+              <Logo />
+            </div>
           </Link>
           <IconButton
             onClick={onOpenSidebar}
-            sx={{
-              color: '#fff',
-              display: {
-                sm: 'none'
-              }
-            }}
+            className="sm:hidden"
           >
             <MenuIcon />
           </IconButton>
-          <Search
-            sx={{
-              display: {
-                md: 'flex',
-                xs: 'none'
-              },
-              width: '100%',
-              maxWidth: 600,
-              ml: 5,
-              mr: 2
-            }}
-          />
-          <Box sx={{ flexGrow: 1 }} />
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 1.5
-            }}
-          >
-            {!mdUp && <SearchMobile />}
-            {smUp && isAuthenticated ? (
+          <div className="mr-4 ml-10 hidden w-full max-w-sm md:block">
+            <SearchProducts />
+          </div>
+          <div className="flex-1" />
+          <div className="flex gap-3">
+            {/* todo change this */}
+            <div className="md:hidden">
+              <SearchMobile />
+            </div>
+            {isAuthenticated ? (
               <>
                 <AccountPopover />
               </>
             ) : (
               <>
                 <Button
-                  component={Link}
-                  href="/register"
+                  asChild
                   variant="outlined"
-                  color="white"
                 >
-                  Register
+                  <Link href="/register">Register</Link>
                 </Button>
                 <Button
-                  component={Link}
-                  href="/login"
+                  asChild
                   color="primary"
                   variant="contained"
                 >
-                  Login
+                  <Link href="/login">Login</Link>
                 </Button>
               </>
             )}
-          </Box>
-        </Toolbar>
+          </div>
+        </div>
       </Container>
-    </Box>
+    </div>
   );
 };

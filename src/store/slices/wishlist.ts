@@ -24,14 +24,6 @@ export const wishlist = createSlice({
       state.products = state.products.filter((product) => product !== action.payload);
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.wishlist,
-      };
-    },
-  },
 });
 
 export const { setWishlistProducts, addWishlistProduct, removeWishlistProduct } = wishlist.actions;

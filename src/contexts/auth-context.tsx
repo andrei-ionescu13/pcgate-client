@@ -1,10 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import type { FC, ReactNode } from "react";
-import { appFetch } from "@/utils/app-fetch";
-import { Cart } from "@/types/cart";
-import { setWishlistProducts } from "@/store/slices/wishlist";
-import { useAppDispatch } from "@/store/use-store-dispatch";
-import { setCart } from "@/store/slices/cart";
+import { useRouter } from '@/i18n/navigation';
+import { setCart } from '@/store/slices/cart';
+import { setWishlistProducts } from '@/store/slices/wishlist';
+import { useAppDispatch } from '@/store/use-store-dispatch';
+import { Cart } from '@/types/cart';
+import { appFetchAuth } from '@/utils/app-fetch';
+import { useGoogleLogin } from '@react-oauth/google';
+import type { FC, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface Decoded {
   userId: string;
@@ -14,7 +16,7 @@ export interface Decoded {
   avatar: string;
 }
 
-interface User extends Omit<Decoded, "iat" | "exp"> {
+interface User extends Omit<Decoded, 'iat' | 'exp'> {
   cart: Cart;
   wishlist: string[];
   avatar: string;
@@ -43,6 +45,7 @@ interface SessionContextValue {
     confirmPassword: string;
   }) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
+  googleAuth: () => void;
   passwordReset: ({
     userId,
     token,
@@ -64,6 +67,7 @@ const defaultSessionContext = {
   isAuthenticated: false,
   userIsLoading: false,
   login: () => Promise.resolve(),
+  googleAuth: () => {},
   register: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   passwordReset: () => Promise.resolve(),
@@ -86,11 +90,12 @@ export const login = ({
   email: string;
   password: string;
 }) =>
-  appFetch<void>({
-    url: "/auth/login",
+  appFetchAuth<void>({
+    url: '/auth/login',
     config: {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ email, password }),
+      credentials: 'include', // <-- this is CRUCIAL
     },
   });
 
@@ -103,27 +108,27 @@ export const register = ({
   password: string;
   confirmPassword: string;
 }) =>
-  appFetch<void>({
-    url: "/auth/register",
+  appFetchAuth<void>({
+    url: '/auth/register',
     config: {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ email, password, confirmPassword }),
     },
   });
 
 export const logout = () =>
-  appFetch<void>({
-    url: "/auth/logout",
+  appFetchAuth<void>({
+    url: '/auth/logout',
     config: {
-      method: "POST",
+      method: 'POST',
     },
   });
 
 export const requestPasswordReset = (email: string) =>
-  appFetch<void>({
-    url: "/auth/password-reset-token",
+  appFetchAuth<void>({
+    url: '/auth/password-reset-token',
     config: {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ email }),
     },
   });
@@ -139,10 +144,10 @@ export const passwordReset = ({
   password: string;
   confirmPassword: string;
 }) =>
-  appFetch<void>({
-    url: "/auth/password-reset",
+  appFetchAuth<void>({
+    url: '/auth/password-reset',
     config: {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify({ userId, token, password, confirmPassword }),
     },
   });
@@ -153,14 +158,34 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const [user, setUser] = useState<User | null | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const { refresh, push } = useRouter();
+
+  const googleAuth = useGoogleLogin({
+    onSuccess: async (codeResponse) => {
+      const { code } = codeResponse;
+      await appFetchAuth<void>({
+        url: '/auth/google',
+        config: {
+          method: 'POST',
+          body: JSON.stringify({ code }),
+        },
+      });
+
+      push('/');
+      refresh();
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+    flow: 'auth-code',
+  });
 
   useEffect(() => {
     const getUser = async () => {
       try {
         setIsLoading(true);
-        const user = await appFetch<User>({
-          url: "/auth/me",
-          withAuth: true,
+        const user = await appFetchAuth<User>({
+          url: '/auth/me',
         });
         setUser(user);
         dispatch(setWishlistProducts(user.wishlist));
@@ -198,6 +223,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         logout,
         requestPasswordReset,
         passwordReset,
+        googleAuth,
       }}
     >
       {children}

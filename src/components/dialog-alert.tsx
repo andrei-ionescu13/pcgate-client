@@ -1,6 +1,6 @@
-import { FC, ReactNode } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import type { DialogProps } from '@mui/material';
+import { Dialog } from '@mui/material';
+import { FC, ReactNode } from 'react';
 import { Button } from './button';
 
 export interface DialogAlertProps extends DialogProps {
@@ -24,7 +24,7 @@ export const DialogAlert: FC<DialogAlertProps> = (props) => {
     onSubmit,
     title,
     ...rest
-  } = props
+  } = props;
 
   return (
     <Dialog
@@ -33,37 +33,24 @@ export const DialogAlert: FC<DialogAlertProps> = (props) => {
       fullWidth
       {...rest}
     >
-      <DialogTitle>
-        {title}
-      </DialogTitle>
-      <DialogContent>
-        {children || (content && (
-          <Typography
-            color="textSecondary"
-            variant="body2"
-          >
-            {content}Delete review
-          </Typography>
-        ))}
-      </DialogContent>
-      <DialogActions sx={{ p: 2 }}>
-        <Button
-          onClick={onClose}
-          variant="text"
-          color="white"
-        >
-          Cancel
-        </Button>
+      <div className="px-4 pt-4">
+        <h2 className="h4">{title}</h2>
+      </div>
+      <div className="flex-1 px-4 py-5">
+        {children || <p className="text-text-secondary">{content}</p>}
+      </div>
+      <div className="flex justify-end gap-2 p-4">
+        <Button onClick={onClose}>Cancel</Button>
         <Button
           autoFocus
           variant="contained"
-          color={error ? 'error' : 'primary'}
+          color="primary"
           onClick={onSubmit}
           isLoading={isLoading}
         >
           Confirm
         </Button>
-      </DialogActions>
+      </div>
     </Dialog>
-  )
-}
+  );
+};

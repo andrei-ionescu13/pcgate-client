@@ -1,13 +1,23 @@
-import { alpha, createTheme, responsiveFontSizes } from "@mui/material/styles";
-import type { Theme, ThemeOptions } from "@mui/material/styles";
-import { Star as StarIcon } from "@/icons/star";
-import { typography } from "./typography";
-import * as PALETTE from "./palette";
-import * as SHADOWS from "./shadows";
+import { Star as StarIcon } from '@/icons/star';
+import type { Theme, ThemeOptions } from '@mui/material/styles';
+import { alpha, createTheme, responsiveFontSizes } from '@mui/material/styles';
+import * as PALETTE from './palette';
+import * as SHADOWS from './shadows';
+import { typography } from './typography';
 
 const BORDER_RADIUS = 8;
+export const BREAKPOINTS = {
+  xs: 0,
+  sm: 600,
+  md: 900,
+  lg: 1200,
+  xl: 1536,
+};
 
 const baseThemeOptions: ThemeOptions = {
+  breakpoints: {
+    values: BREAKPOINTS,
+  },
   components: {
     MuiInputLabel: {
       styleOverrides: {
@@ -21,7 +31,7 @@ const baseThemeOptions: ThemeOptions = {
         root: {
           borderRadius: BORDER_RADIUS,
           color: PALETTE.DARK_TEXT.secondary,
-          "&:hover": {
+          '&:hover': {
             backgroundColor: alpha(PALETTE.GREY[500], 0.24),
           },
         },
@@ -32,36 +42,39 @@ const baseThemeOptions: ThemeOptions = {
         root: {
           backgroundColor: alpha(PALETTE.GREY[500], 0.08),
           fontSize: 14,
-          borderRadius: BORDER_RADIUS * 2,
-          "::before": {
-            display: "none",
+          borderRadius: BORDER_RADIUS * 1,
+          '::before': {
+            display: 'none',
           },
-          "::after": {
-            display: "none",
+          '::after': {
+            display: 'none',
           },
-          "& .MuiFilledInput-input:focus": {
-            borderRadius: BORDER_RADIUS * 2,
+          '& .MuiFilledInput-input': {
+            height: '40px',
           },
-          "&:hover": {
+          '& .MuiFilledInput-input:focus': {
+            borderRadius: BORDER_RADIUS * 1,
+          },
+          '&:hover': {
             backgroundColor: alpha(PALETTE.GREY[500], 0.16),
           },
         },
         input: {
-          borderRadius: BORDER_RADIUS * 2,
+          borderRadius: BORDER_RADIUS * 1,
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: "none",
-          boxShadow: "none",
-          "&:hover": {
-            boxShadow: "none",
+          textTransform: 'none',
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
           },
         },
         sizeSmall: {
-          minWidth: "fit-content",
+          minWidth: 'fit-content',
         },
       },
     },
@@ -76,7 +89,7 @@ const baseThemeOptions: ThemeOptions = {
     MuiCardContent: {
       styleOverrides: {
         root: {
-          "&:last-child": {
+          '&:last-child': {
             paddingBottom: 16,
           },
         },
@@ -85,28 +98,28 @@ const baseThemeOptions: ThemeOptions = {
     MuiContainer: {
       styleOverrides: {
         root: {
-          "@media (min-width: 600px)": {},
+          '@media (min-width: 600px)': {},
         },
       },
     },
     MuiCssBaseline: {
       styleOverrides: {
         html: {
-          height: "100%",
+          height: '100%',
+          boxSizing: 'border-box',
         },
         body: {
-          height: "100%",
+          height: '100%',
         },
-        "#__next": {
-          height: "100%",
+        '#__next': {
+          height: '100%',
         },
-        "#nprogress": {
-          ".bar": {
-            zIndex: "9999999 !important",
-            height: "2px !important",
+        '#nprogress': {
+          '.bar': {
+            height: '2px !important',
             background: `${PALETTE.PRIMARY.main} !important`,
-            ".peg": {
-              display: "none",
+            '.peg': {
+              display: 'none',
             },
           },
         },
@@ -114,13 +127,13 @@ const baseThemeOptions: ThemeOptions = {
     },
     MuiLink: {
       defaultProps: {
-        underline: "hover",
+        underline: 'hover',
       },
     },
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundImage: "initial",
+          backgroundImage: 'initial',
         },
       },
     },
@@ -165,7 +178,7 @@ const darkThemeOptions: ThemeOptions = {
 
 export const createCustomTheme = (themeMode: string): Theme => {
   let themeOptions =
-    themeMode === "light" ? lightThemeOptions : darkThemeOptions;
+    themeMode === 'light' ? lightThemeOptions : darkThemeOptions;
 
   if (!themeOptions) {
     console.warn(new Error(`The theme ${themeMode} is not valid`));

@@ -1,38 +1,40 @@
-import jwtDecode from "jwt-decode";
-import { getCookies, setCookie } from 'cookies-next';
-import type { IncomingMessage, ServerResponse } from "http";
-import { getNewAccesToken } from "./app-fetch";
+import jwtDecode from 'jwt-decode';
+import { cookies, headers } from 'next/headers';
+
+const parseCookies = (rawCookies: string | null) => {
+  const pairs = rawCookies?.split(';');
+  const setCookies: any = {};
+
+  if (pairs) {
+    for (var i = 0; i < pairs.length; i++) {
+      var nameValue = pairs[i].split('=');
+      setCookies[nameValue[0].trim()] = nameValue[1];
+    }
+  }
+
+  return setCookies;
+};
 
 interface Decoded {
-  userId: string;
+  adminId: string;
   iat: number;
   exp: number;
 }
 
-export const getSession = async (req: IncomingMessage, res: ServerResponse): Promise<Decoded | null> => {
-  const { accessToken, refreshToken } = getCookies({ req, res });
+export const getSession = async (): Promise<Decoded | null> => {
+  const cookieStore = await cookies();
+  const headerStore = await headers();
+  const setCookies: any = parseCookies(headerStore.get('set-cookie'));
+  const accessToken =
+    cookieStore.get('accessToken')?.value || setCookies?.accessToken;
 
-  if (!accessToken && !refreshToken) {
-    return null;
-  }
-
-  if (!!accessToken) {
+  if (accessToken) {
     const decoded: Decoded = jwtDecode(accessToken);
 
-    if (decoded.exp > (Date.now() / 1000)) {
-      return decoded;
+    if (decoded.exp > Date.now() / 1000) {
+      return jwtDecode(accessToken);
     }
   }
 
-  if (
-    (!accessToken || (jwtDecode(accessToken) as Decoded).exp < (Date.now() / 1000))
-    && !!refreshToken && (jwtDecode(refreshToken) as Decoded).exp > (Date.now() / 1000)
-  ) {
-    const newAccesToken = await getNewAccesToken(req.headers.cookie);
-    setCookie('accessToken', newAccesToken, { req, res, maxAge: 60 * 60 * 1000, httpOnly: true });
-
-    return jwtDecode(newAccesToken)
-  }
-
   return null;
-}
+};

@@ -1,91 +1,47 @@
-import type { FC } from 'react';
-import numeral from 'numeral';
-import { Box, Typography } from '@mui/material';
-import { styled } from '@mui/system';
-import type { SxProps } from '@mui/system';
-import { Link } from '../components/link';
-import { ProductDiscount } from '../components/product-discount';
-import { Steam as SteamIcon } from '@/icons/steam';
-import { Product } from '@/types/product';
 import { AppImage } from '@/components/app-image';
 import { useFormatCurrency } from '@/hooks/use-format-currency';
+import { Link } from '@/i18n/navigation';
+import { Steam as SteamIcon } from '@/icons/steam';
+import { Product } from '@/types/product';
+import { cn } from '@/utils/cn';
+import type { ComponentProps, FC } from 'react';
+import { ProductDiscount } from '../components/product-discount';
 
-interface SearchItemProps {
+interface SearchItemProps extends Omit<ComponentProps<typeof Link>, 'href'> {
   product: Product;
-  sx?: SxProps;
 }
 
-const SearchItemRoot = styled(Link)(
-  ({ theme }) => ({
-    alignItems: 'center',
-    backgroundColor: theme.palette.background.paper,
-    color: theme.palette.text.primary,
-    display: 'flex',
-    paddingRight: theme.spacing(2),
-    '& + &': {
-      borderTop: `1px solid ${theme.palette.divider}`,
-    },
-    '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.16)',
-      textDecoration: 'none'
-    }
-  }));
-
 export const SearchItem: FC<SearchItemProps> = (props) => {
-  const { product } = props;
+  const { product, className, ...rest } = props;
   const formatCurrency = useFormatCurrency();
 
   return (
-    <SearchItemRoot
+    <Link
+      className={cn(
+        'bg-paper flex items-center pr-4 hover:bg-[rgba(0,0,0,0.16)]',
+        className
+      )}
       color="inherit"
-      href={`/games/${product.slug}`}
-      underline="none"
+      href={`/products/${product.slug}`}
+      {...rest}
     >
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '120px',
-        }}
-      >
+      <div className="relative aspect-video w-full max-w-[160px]">
         <AppImage
           priority
           src={product.cover.public_id}
           alt={product.title}
           sizes="120px"
-          height={9}
-          width={16}
-          layout="responsive"
+          fill
         />
-      </Box>
-      <Box
-        sx={{
-          maxWidth: 300,
-          ml: 2,
-          py: 1
-        }}
-      >
-        <Typography
-          color="textPrimary"
-          variant="body2"
-        >
-          {product.title}
-        </Typography>
-        <Box sx={{
-          alignItems: 'center',
-          display: 'flex',
-          mt: 0.5
-        }}
-        >
+      </div>
+      <div className="ml-4 max-w-[300px] py-2">
+        <p className="body2">{product.title}</p>
+        <div className="mt-1 flex items-center">
           <SteamIcon />
-        </Box>
-      </Box>
-      <Box sx={{ flexGrow: 1 }} />
-      <Box
-        sx={{
-          alignItems: 'center',
-          display: 'flex'
-        }}
-      >
+        </div>
+      </div>
+      <div className="flex-1" />
+      <div className="flex items-center">
         {product?.initialPrice && (
           <ProductDiscount
             initialPrice={product.initialPrice}
@@ -93,27 +49,17 @@ export const SearchItem: FC<SearchItemProps> = (props) => {
             variant="small"
           />
         )}
-        <Box sx={{ ml: 1 }}>
+        <div className="ml-2">
           {product?.initialPrice && (
-            <Typography
-              align="center"
-              color="textSecondary"
-              component="p"
-              sx={{ textDecoration: 'line-through' }}
-              variant="caption"
-            >
+            <p className="text-text-secondary caption text-center line-through">
               {formatCurrency(product.initialPrice)}
-            </Typography>
+            </p>
           )}
-          <Typography
-            align="center"
-            color="textPrimary"
-            variant="subtitle1"
-          >
+          <p className="subtitle1 text-center">
             {formatCurrency(product.price)}
-          </Typography>
-        </Box>
-      </Box>
-    </SearchItemRoot>
+          </p>
+        </div>
+      </div>
+    </Link>
   );
 };

@@ -1,15 +1,18 @@
-import { useState, useRef } from 'react';
-import type { FC } from 'react';
-import { useRouter } from 'next/router';
-import { Avatar, Box, List, ListItemButton, Popover, Skeleton } from '@mui/material';
-import { styled } from '@mui/system';
-import type { SxProps } from '@mui/system';
-import { Link } from '@/components/link';
+'use client';
+
+import { Avatar } from '@/components/avatar';
+import { Divider } from '@/components/divider';
+import { ListButton } from '@/components/dropdown-button';
+import { Skeleton } from '@/components/skeleton';
 import { useAuth } from '@/contexts/auth-context';
-import { AppImage } from '@/components/app-image';
-import Image from 'next/image';
-import { useMutation } from '@tanstack/react-query';
+import { Link, useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/utils/api-error';
+import { Popover } from '@mui/material';
+import type { SxProps } from '@mui/system';
+import { useMutation } from '@tanstack/react-query';
+import Image from 'next/image';
+import type { FC } from 'react';
+import { useRef, useState } from 'react';
 
 interface AccountPopoverProps {
   sx?: SxProps;
@@ -18,33 +21,26 @@ interface AccountPopoverProps {
 const links = [
   {
     href: '/account',
-    label: 'Settings'
+    label: 'Settings',
   },
   {
     href: '/wishlist',
-    label: 'Wishlist'
+    label: 'Wishlist',
   },
   {
     href: '/account/orders',
-    label: 'Orders'
+    label: 'Orders',
   },
   {
     href: '/account/library',
-    label: 'Library'
-  }
+    label: 'Library',
+  },
 ];
-
-const AccountPopoverRoot = styled(Box)(() => ({
-  alignItems: 'center',
-  color: '#fff',
-  cursor: 'pointer',
-  display: 'flex'
-}));
 
 export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   const { user, logout } = useAuth();
-  const mutation = useMutation<void, ApiError>(logout);
-  const anchorRef = useRef<Element | null>(null);
+  const mutation = useMutation<void, ApiError>({ mutationFn: logout });
+  const anchorRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -57,71 +53,68 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
   };
 
   const handleLogout = () => {
-    mutation.mutate(undefined, { onSuccess: () => { router.push('/') } })
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push('/');
+        router.refresh();
+      },
+    });
   };
 
   return (
     <>
-      <AccountPopoverRoot
-        onClick={handleOpen}
-        ref={anchorRef}
+      <div
+        className="flex"
         {...props}
       >
         {user?.avatar ? (
-          <Avatar
-            sx={{
-              width: 36,
-              height: 36,
-            }}
+          <button
+            className="inline-flex"
+            onClick={handleOpen}
+            ref={anchorRef}
           >
-            <Image
-              alt=""
-              priority
-              src={user.avatar}
-              layout='fill'
-              objectFit="cover"
-            />
-          </Avatar>
-        ) :
+            <Avatar>
+              <Image
+                unoptimized
+                fill
+                alt="avatar"
+                src={user.avatar}
+              />
+            </Avatar>
+          </button>
+        ) : (
           <Skeleton
             variant="circular"
-            width={36}
-            height={36}
+            className="h-10 w-10"
           />
-        }
-      </AccountPopoverRoot>
+        )}
+      </div>
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         onClose={handleClose}
         open={open}
         PaperProps={{
           sx: {
             maxWidth: 160,
-            width: '100%'
-          }
+            width: '100%',
+          },
         }}
       >
-        <List>
+        <ul>
           {links.map((link) => (
-            <ListItemButton
-              component={Link}
-              href={link.href}
-              key={link.href}
-            >
-              {link.label}
-            </ListItemButton>
+            <li key={link.href}>
+              <ListButton asChild>
+                <Link href={link.href}>{link.label}</Link>
+              </ListButton>
+            </li>
           ))}
-          <ListItemButton
-            onClick={handleLogout}
-            sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
-          >
-            Logout
-          </ListItemButton>
-        </List>
+        </ul>
+        <Divider />
+        <ListButton onClick={handleLogout}>Logout</ListButton>
       </Popover>
     </>
   );

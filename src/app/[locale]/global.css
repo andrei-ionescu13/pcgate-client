@@ -1,0 +1,262 @@
+@import 'tailwindcss';
+
+:root {
+  --swiper-pagination-color: var(--color-primary);
+  --swiper-pagination-bullet-inactive-color: var(--color-primary);
+}
+
+@theme {
+  --h-0.25: 0.0625rem;
+
+  --breakpoint-*: initial;
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1536px;
+
+  --container-sm: 600px;
+  --container-md: 900px;
+  --container-lg: 1200px;
+  --container-xl: 1536px;
+
+  --text-color-*: initial;
+
+  --color-*: initial;
+
+  --color-default: #161c24;
+  --color-paper: #212b36;
+  --color-neutral: rgba(145, 158, 171, 0.12);
+  --color-divider: rgba(145, 158, 171, 0.25);
+
+  --color-primary-lighter: #fee9d1;
+  --color-primary-light: #fdab76;
+  --color-primary: #fa541c;
+  --color-primary-dark: #b3200e;
+  --color-primary-darker: #770508;
+
+  --color-info-lighter: #cbfefc;
+  --color-info-light: #63e8f9;
+  --color-info: #00b1ed;
+  --color-info-dark: #0067aa;
+  --color-info-darker: #003471;
+
+  --color-success-lighter: #cdfcd1;
+  --color-success-light: #69f290;
+  --color-success: #0cd66e;
+  --color-success-dark: #069a6b;
+  --color-success-darker: #02665b;
+
+  --color-secondary-lighter: #d2fcf4;
+  --color-secondary-light: #77f0ed;
+  --color-secondary: #22b8cf;
+  --color-secondary-dark: #116e95;
+  --color-secondary-darker: #063963;
+
+  --color-warning-lighter: #fff8d1;
+  --color-warning-light: #ffe475;
+  --color-warning: #ffc81a;
+  --color-warning-dark: #b7860d;
+  --color-warning-darker: #7a5204;
+
+  --color-error-lighter: #ffe7d9;
+  --color-error-light: #ffa48d;
+  --color-error: #ff4842;
+  --color-error-dark: #b72136;
+  --color-error-darker: #7a0c2e;
+
+  --color-grey-100: #f9fafb;
+  --color-grey-200: #f4f6f8;
+  --color-grey-300: #dfe3e8;
+  --color-grey-400: #c4cdd5;
+  --color-grey-500: #919eab;
+  --color-grey-600: #637381;
+  --color-grey-700: #454f5b;
+  --color-grey-800: #212b36;
+  --color-grey-900: #161c24;
+
+  --color-dark-grey-light: #919eab;
+  --color-dark-grey: rgba(145, 158, 171, 0.08);
+  --color-dark-grey-dark: rgba(145, 158, 171, 0.24);
+
+  --color-white: rgb(255 255 255);
+  --color-black: rgb(0, 0, 0);
+  --color-text-primary: #fff;
+  --color-text-secondary: #919eab;
+  --color-text-disabled: #637381;
+
+  --color-skeleton: rgba(255, 255, 255, 0.13);
+
+  --background-image-*: initial;
+  --background-image-article: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgb(0, 0, 0) 90%
+  );
+  --background-image-auth-image: url('https://cdn.akamai.steamstatic.com/steam/apps/1817070/ss_dfba6f2477bfa42be69ddfdffbd421d3943d20bf.1920x1080.jpg?t=1667406675');
+  --background-image-auth-image-gradient: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgb(0, 0, 0) 75%
+  );
+
+  --flex-2: 2 2 0%;
+
+  --font-barlow: Barlow, sans-serif;
+  --font-poppins: Poppins, sans-serif;
+
+  --shadow-header:
+    0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0px 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-filter-card: 0px 0px 0px 2px var(--color-neutral);
+
+  --background-image-deal:
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, #161c24 100%),
+    linear-gradient(270deg, rgba(0, 0, 0, 0) 50%, #161c24 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #161c24 100%);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
+}
+
+.h1,
+h1 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 1.25;
+}
+
+.h2,
+h2 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.33;
+}
+
+.h3,
+h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.5;
+}
+
+.h4,
+h4 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.h5,
+h5 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.h6,
+h6 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.subtitle1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.subtitle2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.85;
+}
+
+.subtitle3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1.84;
+}
+
+.body1,
+html {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.body2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.85;
+}
+
+.body3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.84;
+}
+
+.caption {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+}
+
+.overline {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.66;
+}
+
+html {
+  box-sizing: border-box;
+  color: var(--color-text-primary);
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.swiper-button-disabled {
+  display: none;
+}

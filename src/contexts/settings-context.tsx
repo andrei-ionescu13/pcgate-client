@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import type { FC, ReactNode } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { appFetch } from "@/utils/app-fetch";
-import { getCookie } from "cookies-next";
-import { useTranslation } from "next-i18next";
+'use client';
+import { appFetchAuth } from '@/utils/app-fetch';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
+import type { FC, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface Currency {
   name: string;
@@ -17,14 +17,14 @@ export interface Language {
   nativeName: string;
 }
 
-const listLanguages = () =>
-  appFetch<Language[]>({
-    url: "/languages",
+export const listLanguages = () =>
+  appFetchAuth<Language[]>({
+    url: '/languages',
   });
 
 const listCurrencies = () =>
-  appFetch<Currency[]>({
-    url: "/currencies",
+  appFetchAuth<Currency[]>({
+    url: '/currencies',
   });
 
 interface Settings {
@@ -42,49 +42,63 @@ export interface SettingsContextValue {
 
 interface SettingsProviderProps {
   children?: ReactNode;
+  currency?: string;
 }
 
 const initialSettings: Settings = {
-  currency: "",
-  language: "",
-  theme: "light",
+  currency: '',
+  language: '',
+  theme: 'light',
 };
 
 export const SettingsContext = createContext<SettingsContextValue>({
   settings: initialSettings,
   saveSettings: () => {},
   currencies:
-    typeof window !== "undefined" &&
-    (localStorage.getItem("languages")
-      ? JSON.parse(localStorage.getItem("languages") as string)
+    typeof window !== 'undefined' &&
+    (localStorage.getItem('languages')
+      ? JSON.parse(localStorage.getItem('languages') as string)
       : []),
   languages:
-    typeof window !== "undefined" &&
-    (localStorage.getItem("currencies")
-      ? JSON.parse(localStorage.getItem("currencies") as string)
+    typeof window !== 'undefined' &&
+    (localStorage.getItem('currencies')
+      ? JSON.parse(localStorage.getItem('currencies') as string)
       : []),
 });
 
 export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
-  const { children } = props;
-  const { i18n } = useTranslation();
+  const { children, currency } = props;
+  const queryClient = useQueryClient();
+  const language = useLocale();
   const [settings, setSettings] = useState<Settings>({
     ...initialSettings,
-    language: i18n.language,
-    currency: (getCookie("preferredCurrency") as string) || "USD",
+    language: language,
+    currency: currency || 'USD',
   });
-  const { data: languages } = useQuery<Language[]>(
-    ["languages"],
-    listLanguages
-  );
-  const { data: currencies } = useQuery<Currency[]>(
-    ["currencies"],
-    listCurrencies
-  );
+
+  const { data: languages } = useQuery<Language[]>({
+    queryKey: ['languages'],
+    queryFn: listLanguages,
+  });
+  const { data: currencies } = useQuery<Currency[]>({
+    queryKey: ['currencies'],
+    queryFn: listCurrencies,
+  });
 
   const saveSettings = (updatedSettings: Settings): void => {
     setSettings(updatedSettings);
   };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['products'],
+      refetchType: 'active',
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['cart'],
+      refetchType: 'active',
+    });
+  }, [settings.currency]);
 
   return (
     <SettingsContext.Provider

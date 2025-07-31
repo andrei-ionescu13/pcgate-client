@@ -1,11 +1,11 @@
-import type { FC } from 'react';
-import { Box, Card, Typography } from '@mui/material';
-import { Link } from './link';
-import { ProductDiscount } from './product-discount';
-import type { Product } from '@/types/product';
-import { AppImage } from './app-image';
-import { AddButton } from './add-button';
 import { useFormatCurrency } from '@/hooks/use-format-currency';
+import { Link } from '@/i18n/navigation';
+import type { Product } from '@/types/product';
+import type { FC } from 'react';
+import { AddButton } from './add-button';
+import { AppImage } from './app-image';
+import { Card } from './card';
+import { ProductDiscount } from './product-discount';
 
 interface ProductCardLineProps {
   loading?: boolean;
@@ -18,28 +18,12 @@ export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
   const formatCurrency = useFormatCurrency();
 
   return (
-    <Card
-      sx={{
-        backgroundColor: 'background.paper',
-        display: 'flex',
-        overflow: 'hidden',
-        position: 'relative',
-        textDecoration: 'none',
-        p: 1,
-      }}
-    >
-      <Box
-        sx={{
-          width: '30%',
-          maxWidth: 220,
-          minWidth: 100,
-          overflow: 'hidden',
-          'img': {
-            borderRadius: 1
-          }
-        }}
-      >
-        <Link href={`/games/${product.slug}`}>
+    <Card className="relative flex overflow-hidden p-2">
+      <div className="w-2/6 max-w-56 min-w-24">
+        <Link
+          href={`/products/${product.slug}`}
+          className="block overflow-hidden rounded-lg"
+        >
           <AppImage
             layout="responsive"
             width={16}
@@ -53,103 +37,46 @@ export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
                 (min-width: 600px) 50vw"
           />
         </Link>
-      </Box>
-      <Box
-        sx={{
-          px: 1,
-          display: 'flex',
-          flex: 1,
-          flexDirection: {
-            md: 'row',
-            xs: 'column'
-          },
-          alignItems: {
-            md: 'center',
-            xs: 'stretch'
-          },
-          gap: {
-            md: 0,
-            xs: 1
-          },
-        }}
-      >
+      </div>
+      <div className="flex flex-1 flex-col gap-2 px-2 md:flex-row md:items-center md:gap-0">
         <Link
           color="inherit"
-          href={`/games/${product.slug}`}
-          underline="none"
-          variant="body1"
+          href={`/products/${product.slug}`}
+          className="body1"
         >
           {product.title}
         </Link>
-        <Box sx={{ flexGrow: 1 }} />
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-
-            }}
-          >
-            {product.initialPrice && (
+        <div className="flex-1" />
+        <div className="flex items-center">
+          <div className="flex flex-1 items-center">
+            {product.originalPrice && (
               <ProductDiscount
-                sx={{ mr: 1 }}
+                className="mt-2"
                 variant="small"
-                initialPrice={product.initialPrice}
+                initialPrice={product.originalPrice}
                 price={product.price}
               />
             )}
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%'
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'grid',
-                  placeItems: 'center',
-                  minWidth: {
-                    md: 64,
-                    xs: 'none'
-                  }
-                }}
-              >
-                {product.initialPrice && (
-                  <Typography
-                    color="textSecondary"
-                    sx={{ textDecoration: 'line-through' }}
-                    variant="caption"
-                  >
-                    {formatCurrency(product.initialPrice)}
-                  </Typography>
+            <div className="flex w-full items-center">
+              <div className="grid place-items-center md:min-w-16">
+                {product.originalPrice && (
+                  <p className="text-text-secondary caption line-through">
+                    {formatCurrency(product.originalPrice)}
+                  </p>
                 )}
-                <Typography
-                  color="textPrimary"
-                  variant="body1"
-                  sx={{ fontWeight: 500 }}
-                >
-                  {formatCurrency(product.price)}
-                </Typography>
-              </Box>
-              <Box sx={{ flex: 1 }} />
+                <p className="subtitle1">{formatCurrency(product.price)}</p>
+              </div>
+              <div className="flex-1" />
               <AddButton
                 productId={product._id}
-                sx={{ ml: 1 }}
+                className="ml-2"
               >
                 Add
               </AddButton>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-    </Card >
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
   );
 };

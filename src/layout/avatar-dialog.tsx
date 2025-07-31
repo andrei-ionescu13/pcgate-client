@@ -1,22 +1,23 @@
-import { DialogAlert, DialogAlertProps } from '@/components/dialog-alert';
+import { DialogAlert } from '@/components/dialog-alert';
 import { Dropzone, DropzoneFile } from '@/components/dropzone';
 import { useAuth } from '@/contexts/auth-context';
-import { appFetch } from '@/utils/app-fetch';
+import { appFetchAuth } from '@/utils/app-fetch';
 import { buildFormData } from '@/utils/build-form-data';
 import { useMutation } from '@tanstack/react-query';
-import React, { FC, useState } from 'react'
-import { toast } from 'react-toastify';
+import { FC, useState } from 'react';
+import { toast } from 'sonner';
 
-export const useUpdateAvatar = () => useMutation<string, Error, BodyInit>((values) => appFetch({
-  url: '/auth/avatar',
-  noContentType: true,
-  config: {
-    body: values,
-    method: 'PUT'
-  },
-  withAuth: true
-}));
-
+export const useUpdateAvatar = () =>
+  useMutation<string, Error, BodyInit>({
+    mutationFn: (values) =>
+      appFetchAuth({
+        url: '/auth/avatar',
+        config: {
+          body: values,
+          method: 'PUT',
+        },
+      }),
+  });
 
 interface AvatarDialogProps {
   onClose: () => void;
@@ -32,14 +33,14 @@ export const AvatarDialog: FC<AvatarDialogProps> = (props) => {
     const formData = buildFormData({ avatar });
     updateAvatar.mutate(formData, {
       onSuccess: (data) => {
-        updateUser({ avatar: data })
-        onClose()
+        updateUser({ avatar: data });
+        onClose();
       },
       onError(error, variables, context) {
-        toast.error(error.message)
+        toast.error(error.message);
       },
     });
-  }
+  };
 
   return (
     <DialogAlert
@@ -47,7 +48,7 @@ export const AvatarDialog: FC<AvatarDialogProps> = (props) => {
       onClose={onClose}
       onSubmit={handleSubmit}
       title="Avatar"
-      isLoading={updateAvatar.isLoading}
+      isLoading={updateAvatar.isPending}
     >
       <Dropzone
         file={avatar}
@@ -55,5 +56,5 @@ export const AvatarDialog: FC<AvatarDialogProps> = (props) => {
         placeholder="Select your avatar"
       />
     </DialogAlert>
-  )
-}
+  );
+};

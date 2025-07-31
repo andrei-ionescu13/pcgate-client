@@ -1,9 +1,10 @@
-import type { FC } from 'react';
-import { Box, IconButton, Drawer, DrawerProps, List, ListItemButton, ListItemText, Theme, useMediaQuery } from '@mui/material';
-import { Link } from '@/components/link';
-import { useTranslation } from 'next-i18next';
-import { Logo } from './logo';
+import { ListButton } from '@/components/dropdown-button';
+import { IconButton } from '@/components/icon-button';
+import { Link } from '@/i18n/navigation';
 import { X } from '@/icons/x';
+import { Drawer, List } from '@mui/material';
+import type { FC } from 'react';
+import { Logo } from './logo';
 
 interface LinkI {
   href: string;
@@ -12,17 +13,17 @@ interface LinkI {
 
 const links: LinkI[] = [
   {
-    href: '/games',
-    translation: 'navbar.store'
+    href: '/products',
+    translation: 'navbar.store',
   },
   {
     href: '/bundles',
-    translation: 'navbar.bundles'
+    translation: 'navbar.bundles',
   },
   {
     href: '/blog',
-    translation: 'navbar.blog'
-  }
+    translation: 'navbar.blog',
+  },
 ];
 
 interface MobileSidebarProps {
@@ -32,7 +33,6 @@ interface MobileSidebarProps {
 
 export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
   const { open, onClose } = props;
-  const { t } = useTranslation('common');
 
   return (
     <Drawer
@@ -41,49 +41,34 @@ export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
       sx={{
         '& .MuiDrawer-paper': {
           width: 240,
-        }
+        },
       }}
-      onClose={() => { onClose() }}
+      onClose={() => {
+        onClose();
+      }}
       open={open}
     >
-      <Box>
-        <Box
-          sx={{
-            minHeight: 56,
-            backgroundColor: 'background.default',
-            px: 2,
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          <Logo sx={{ width: 56 }} />
-          <Box sx={{ flex: 1 }} />
-          <IconButton
-            size="small"
-            onClick={() => onClose()}
-          >
-            <X fontSize="small" />
+      <div>
+        <div className="bg-default flex min-h-14 items-center px-4">
+          <Logo className="w-16" />
+          <div className="flex-1" />
+          <IconButton onClick={() => onClose()}>
+            <X />
           </IconButton>
-        </Box>
+        </div>
         <List disablePadding>
           {links.map((link) => (
-            <ListItemButton
+            <ListButton
               key={link.href}
-              component={Link}
-              href={link.href}
-              sx={{ py: 0.5 }}
-              onClick={() => { onClose() }}
+              onClick={() => {
+                onClose();
+              }}
             >
-              <ListItemText
-                primary={t(link.translation)}
-                primaryTypographyProps={{
-                  variant: 'body2'
-                }}
-              />
-            </ListItemButton>
+              <Link href={link.href}>{link.translation}</Link>
+            </ListButton>
           ))}
         </List>
-      </Box>
+      </div>
     </Drawer>
-  )
-}
+  );
+};

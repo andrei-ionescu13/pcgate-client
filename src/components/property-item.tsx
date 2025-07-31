@@ -1,5 +1,5 @@
+import { cn } from '@/utils/cn';
 import type { FC, ReactNode } from 'react';
-import { Typography, ListItem } from '@mui/material';
 
 interface PropertyItemProps {
   align?: 'horizontal' | 'vertical';
@@ -11,29 +11,23 @@ export const PropertyItem: FC<PropertyItemProps> = (props) => {
   const { label, content, align = 'horizontal' } = props;
 
   return (
-    <ListItem
-      disableGutters
-      sx={{
-        alignItems: align === 'horizontal' ? 'center' : 'flex-start',
-        flexDirection: align === 'horizontal' ? 'row' : 'column',
-      }}
+    <li
+      className={cn(
+        'flex py-1 sm:py-2',
+        align === 'horizontal'
+          ? 'flex-col items-start sm:flex-row sm:items-center'
+          : 'flex-col items-start'
+      )}
     >
-      <Typography
-        color="textSecondary"
-        sx={{ width: align === 'horizontal' ? 120 : 'auto' }}
-        variant="body2"
+      <p
+        className={cn(
+          'text-text-secondary body2',
+          align === 'horizontal' ? 'sm:min-w-[120px]' : 'min-w-auto'
+        )}
       >
         {label}
-      </Typography>
-      {typeof content === 'string'
-        ? (<Typography
-          color="textPrimary"
-          variant="body2"
-        >
-          {content}
-        </Typography>)
-        : content
-      }
-    </ListItem>
+      </p>
+      <div>{typeof content === 'string' ? <p>{content}</p> : content}</div>
+    </li>
   );
 };

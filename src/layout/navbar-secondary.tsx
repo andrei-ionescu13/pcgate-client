@@ -1,18 +1,12 @@
-import type { FC } from "react";
-import { useTranslation } from "next-i18next";
-import {
-  Box,
-  Container,
-  Toolbar,
-  List,
-  useMediaQuery,
-  Typography,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { CartDropdown } from "./cart-dropdown";
-import { NavLink } from "../components/nav-link";
-import { WishlistLink } from "./wishlist-link";
-import { useAuth } from "@/contexts/auth-context";
+import { Badge } from '@/components/badge';
+import { Container } from '@/components/container';
+import { useAuth } from '@/contexts/auth-context';
+import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
+import { useStoreSelector } from '@/store/use-store-selector';
+import { useTranslations } from 'next-intl';
+import type { FC } from 'react';
+import { NavLink } from '../components/nav-link';
+import { WishlistLink } from './wishlist-link';
 
 interface LinkI {
   href: string;
@@ -21,75 +15,62 @@ interface LinkI {
 
 const links: LinkI[] = [
   {
-    href: "/products",
-    translation: "navbar.store",
+    href: '/products',
+    translation: 'navbar_store',
   },
   {
-    href: "/bundles",
-    translation: "navbar.bundles",
+    href: '/bundles',
+    translation: 'navbar_bundles',
   },
   {
-    href: "/blog",
-    translation: "navbar.blog",
+    href: '/blog',
+    translation: 'navbar_blog',
   },
 ];
 
-export const NavbarSecondary: FC = () => {
-  const { t } = useTranslation("common");
+interface NavbarSecondaryProps {
+  onOpenCartDrawer: () => void;
+}
+
+export const NavbarSecondary: FC<NavbarSecondaryProps> = (props) => {
+  const { onOpenCartDrawer } = props;
+  const cart = useStoreSelector((state) => state.cart);
   const { isAuthenticated } = useAuth();
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
+  const t = useTranslations('general');
 
   return (
-    <Box>
+    <div className="hidden sm:block">
       <Container maxWidth="lg">
-        <Toolbar
-          disableGutters
-          sx={{
-            alignItems: "center",
-            color: "#fff",
-            display: "flex",
-            minHeight: {
-              xs: 56,
-            },
-          }}
-        >
-          <List
-            disablePadding
-            sx={{
-              display: "flex",
-              position: "static",
-            }}
-          >
+        <div className="flex h-14 items-center text-white">
+          <ul className="static flex">
             {links.map((link) => (
-              <NavLink
-                underline="none"
-                color="textPrimary"
-                href={link.href}
-                key={link.href}
-                sx={{ mr: 2 }}
-                activeStyles={{
-                  color: "primary.main",
-                }}
-              >
-                {t(link.translation)}
-              </NavLink>
+              <li key={link.href}>
+                <NavLink
+                  href={link.href}
+                  className="hover:text-primary mr-2"
+                  activeClassName="text-primary"
+                >
+                  {t(link.translation)}
+                </NavLink>
+              </li>
             ))}
-          </List>
-          <Box sx={{ flexGrow: 1 }} />
-          {smUp && isAuthenticated && (
-            <Box
-              sx={{
-                display: "flex",
-                gap: 1.5,
-              }}
-            >
+          </ul>
+          <div className="flex-1" />
+          {isAuthenticated && (
+            <div className="flex gap-3">
               <WishlistLink />
-              <CartDropdown />
-            </Box>
+              <Badge content={cart.itemCount}>
+                <button
+                  className="flex cursor-pointer items-center rounded-lg bg-[#1E4582] p-2 text-[#FFF]"
+                  onClick={onOpenCartDrawer}
+                >
+                  <ShoppingCartIcon />
+                </button>
+              </Badge>
+            </div>
           )}
-        </Toolbar>
+        </div>
       </Container>
-    </Box>
+    </div>
   );
 };

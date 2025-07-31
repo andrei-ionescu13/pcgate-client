@@ -1,64 +1,41 @@
-import type { FC } from 'react';
-import { Box, Typography } from '@mui/material';
-import type { BoxProps } from '@mui/material';
-import { styled } from '@mui/system';
-import type { SxProps } from '@mui/system';
+//todo make this a server component
+'use client';
 
-type Variant = 'small' | 'medium' | 'large';
+import { cn } from '@/utils/cn';
+import { cva, VariantProps } from 'class-variance-authority';
+import type { ComponentProps, FC } from 'react';
 
-interface ProductDiscountRootProps extends BoxProps {
-  variant?: Variant;
-}
+const productDiscount = cva(
+  'items-center bg-success rounded-2xl flex text-white max-h-6',
+  {
+    variants: {
+      variant: {
+        small: 'px-2',
+        medium: 'px-3',
+        large: 'px-6',
+      },
+    },
+  }
+);
 
-interface ProductDiscountProps {
-  sx?: SxProps;
-  variant?: Variant;
+interface ProductDiscountProps
+  extends ComponentProps<'div'>,
+    VariantProps<typeof productDiscount> {
   initialPrice: number;
   price: number;
 }
 
-const ProductDiscountRoot = styled(({ variant, ...props }: ProductDiscountRootProps) => (
-  <Box {...props} />
-))<ProductDiscountRootProps>(
-  ({ theme, variant }) => ({
-    alignItems: 'center',
-    backgroundColor: theme.palette.success.main,
-    borderRadius: 16,
-    color: '#fff',
-    display: 'flex',
-    ...variant === 'small' && ({
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-      height: 24,
-    }),
-    ...variant === 'medium' && ({
-      paddingLeft: theme.spacing(1.5),
-      paddingRight: theme.spacing(1.5),
-      height: 24,
-    }),
-    ...variant === 'large' && ({
-      paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
-      height: 24,
-    })
-  }));
-
 export const ProductDiscount: FC<ProductDiscountProps> = (props) => {
-  const { variant = 'medium', initialPrice, price, ...rest } = props;
+  const { variant = 'medium', className, initialPrice, price, ...rest } = props;
 
   return (
-    <ProductDiscountRoot
-      variant={variant}
+    <div
+      className={cn(productDiscount({ variant, className }))}
       {...rest}
     >
-      <Typography
-        color="inherit"
-        variant="body3"
-      >
-        -
-        {Math.floor((initialPrice - price) * 100 / initialPrice)}
-        %
-      </Typography>
-    </ProductDiscountRoot>
+      <p className="body3">
+        -{Math.floor(((initialPrice - price) * 100) / initialPrice)}%
+      </p>
+    </div>
   );
 };

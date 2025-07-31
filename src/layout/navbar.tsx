@@ -1,30 +1,21 @@
+'use client';
+
 import type { FC } from 'react';
-import { AppBar, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { NavbarPrimary } from './navbar-primary';
 import { NavbarSecondary } from './navbar-secondary';
 
 interface NavbarProps {
   onOpenSidebar: () => void;
+  onOpenCartDrawer: () => void;
 }
 
 export const Navbar: FC<NavbarProps> = (props) => {
-  const { onOpenSidebar } = props;
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up('sm'));
+  const { onOpenSidebar, onOpenCartDrawer } = props;
 
   return (
-    <AppBar
-      sx={{
-        backgroundColor: '#12171E',
-        backgroundImage: 'initial'
-      }}
-    >
-      <NavbarPrimary
-        smUp={true}
-        onOpenSidebar={onOpenSidebar}
-      />
-      {smUp && <NavbarSecondary />}
-    </AppBar>
+    <header className="shadow-header fixed top-0 right-0 left-0 z-[1100] flex flex-col bg-[#12171E]">
+      <NavbarPrimary onOpenSidebar={onOpenSidebar} />
+      <NavbarSecondary onOpenCartDrawer={onOpenCartDrawer} />
+    </header>
   );
 };

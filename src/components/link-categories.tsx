@@ -1,6 +1,6 @@
-import type { FC } from "react";
-import { useScrollTo } from "@/hooks/use-scroll-to";
-import { Box, Button, Typography, Link } from "@mui/material";
+import { Link } from '@mui/material';
+import type { FC } from 'react';
+import { LinkCategoriesButton } from './link-categories-button';
 
 interface LinkCategoriesProps {
   items: Array<{
@@ -11,11 +11,10 @@ interface LinkCategoriesProps {
 
 export const LinkCategories: FC<LinkCategoriesProps> = (props) => {
   const { items } = props;
-  const scrollTo = useScrollTo();
-  const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const categories = [
     {
-      char: "0-9",
+      char: '0-9',
       items: (items || []).filter((item) => /^[0-9]/.test(item.label)),
     },
     ...alpha.map((char) => ({
@@ -31,53 +30,39 @@ export const LinkCategories: FC<LinkCategoriesProps> = (props) => {
   );
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 5 }}>
+    <div>
+      <div className="mb-10 flex flex-wrap">
         {filteredCategories.map((category) => (
-          <Button
+          <LinkCategoriesButton
             key={category.char}
-            color="white"
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              const el: HTMLElement | null = document.querySelector(
-                `#category_${category.char}`
-              );
-              console.log(`.category_${category.char}`);
-              el && scrollTo(el);
-            }}
-          >
-            {category.char}
-          </Button>
+            category={category}
+          />
         ))}
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      </div>
+      <div className="flex flex-col gap-10">
         {filteredCategories.map((category) => (
-          <Box
+          <div
             key={category.char}
-            sx={{ display: "flex", gap: 5 }}
+            className="flex gap-10"
             id={`category_${category.char}`}
           >
-            <Box sx={{ minWidth: 80 }}>
-              <Typography variant="h4">{category.char}</Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                flex: 1,
-                pt: 1,
-              }}
-            >
+            <div className="min-w-20">
+              <h4>{category.char}</h4>
+            </div>
+            <div className="grid flex-1 grid-cols-4">
               {category.items.map((item) => (
-                <Link href={item.href} key={item.href} color="textPrimary">
+                <Link
+                  href={item.href}
+                  key={item.href}
+                  color="textPrimary"
+                >
                   {item.label}
                 </Link>
               ))}
-            </Box>
-          </Box>
+            </div>
+          </div>
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
