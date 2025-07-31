@@ -2,7 +2,8 @@ import { isServer } from '@tanstack/react-query';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import { ApiError } from './api-error';
 
-const apiUrl = process.env.NEXT_PUBLIC_API_PATH;
+const hasClient = typeof window !== 'undefined';
+const apiUrl = hasClient ? `/api` : process.env.NEXT_PUBLIC_API_PATH;
 
 const buildSearchParams = (query: Record<string, any>): string => {
   const searchParams: URLSearchParams = new URLSearchParams();
