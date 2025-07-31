@@ -14,7 +14,7 @@ const Order = async (props: OrderProps) => {
   const { params } = props;
   const { id } = await params;
   const order = await getUserOrder(id);
-
+  console.log(order);
   return (
     <>
       <Head>
