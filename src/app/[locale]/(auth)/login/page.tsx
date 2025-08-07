@@ -1,4 +1,5 @@
 'use client';
+
 import { Button } from '@/components/button';
 import { GoogleAuthButton } from '@/components/google-auth-button';
 import { IconButton } from '@/components/icon-button';
@@ -7,13 +8,19 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { Eye as EyeIcon } from '@/icons/eye';
 import { EyeSlash as EyeSlashIcon } from '@/icons/eye-slash';
 import { ApiError } from '@/utils/api-error';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FormHelperText, InputAdornment, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { useFormik } from 'formik';
 import { AuthLayout } from 'layout/auth/AuthLayout';
 import Head from 'next/head';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
+
+interface FormValues {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
   const { login } = useAuth();
@@ -25,31 +32,46 @@ export default function Login() {
     mutationFn: login,
   });
   const { refresh, push } = useRouter();
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const formik = useFormik({
-    initialValues: {
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: {
       email: 'gegag51027@7tul.com',
       password: 'Masinarie1',
     },
-    validationSchema: Yup.object({
-      email: Yup.string().email().max(255).required(),
-      password: Yup.string().max(255).required(),
-    }),
-    onSubmit: async (values) => {
-      setSubmitError(null);
-
-      mutation.mutate(values, {
-        onSuccess: () => {
-          push('/');
-          refresh();
-        },
-        onError: (error) => {
-          setSubmitError(error.message);
-        },
-      });
-    },
+    resolver: yupResolver(
+      Yup.object({
+        email: Yup.string().email().max(255).required(),
+        password: Yup.string().max(255).required(),
+      })
+    ),
   });
+
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    setError('root.serverError', {
+      type: 'server',
+      message: '',
+    });
+
+    mutation.mutate(values, {
+      onSuccess: () => {
+        push('/');
+        refresh();
+      },
+      onError: (error) => {
+        setError('root.serverError', {
+          type: 'server',
+          message: error.message,
+        });
+      },
+    });
+  };
 
   const handleShowPasswordChange = () => {
     setShowPassword((prev) => !prev);
@@ -84,31 +106,27 @@ export default function Login() {
           </div>
           <form
             className="flex flex-col gap-5"
-            onSubmit={formik.handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <TextField
-              error={Boolean(formik.touched.email && formik.errors.email)}
+              {...register('email')}
+              error={!!errors.email}
               fullWidth
-              helperText={formik.touched.email && formik.errors.email}
+              helperText={errors.email?.message}
               label="Email address"
               name="email"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
               type="email"
-              value={formik.values.email}
               variant="filled"
             />
             <TextField
-              error={!!formik.touched.password && !!formik.errors.password}
+              {...register('password')}
               fullWidth
-              helperText={formik.touched.password && formik.errors.password}
               id="password"
               type={showPassword ? 'text' : 'password'}
+              error={!!errors.password}
+              helperText={errors.password?.message}
               label="Password"
               name="password"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.password}
               variant="filled"
               InputProps={{
                 endAdornment: (
@@ -144,8 +162,10 @@ export default function Login() {
             >
               Login
             </Button>
-            {!!submitError && (
-              <FormHelperText error>{submitError}</FormHelperText>
+            {!!errors.root?.serverError && (
+              <FormHelperText error>
+                {errors.root.serverError.message}
+              </FormHelperText>
             )}
           </form>
         </div>

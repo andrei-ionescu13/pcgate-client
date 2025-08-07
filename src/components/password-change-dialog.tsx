@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   Dialog,
@@ -6,10 +7,16 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { useFormik } from 'formik';
 import type { FC } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { Divider } from './divider';
+
+interface FormValues {
+  confirmNewPassword: string;
+  newPassword: string;
+  password: string;
+}
 
 interface PasswordChangeDialogProps {
   open: boolean;
@@ -18,33 +25,31 @@ interface PasswordChangeDialogProps {
 
 export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
   const { open, onClose } = props;
-  const formik = useFormik({
-    initialValues: {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: {
       confirmNewPassword: '',
       newPassword: '',
       password: '',
-      submit: null,
     },
-    validationSchema: Yup.object().shape({
-      confirmNewPassword: Yup.string()
-        .max(255)
-        .oneOf([Yup.ref('newPassword')], 'Passwords must match')
-        .required('Confirm new password is required'),
-      newPassword: Yup.string().max(255).required('New password is required'),
-      password: Yup.string().max(255).required('Old password is required'),
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-      } catch (err) {
-        console.error(err);
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    },
+    resolver: yupResolver(
+      Yup.object().shape({
+        confirmNewPassword: Yup.string()
+          .max(255)
+          .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+          .required('Confirm new password is required'),
+        newPassword: Yup.string().max(255).required('New password is required'),
+        password: Yup.string().max(255).required('Old password is required'),
+      })
+    ),
   });
+
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {};
 
   return (
     <Dialog
@@ -57,52 +62,38 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
       <DialogContent>
         <div className="mb-4">
           <TextField
-            error={Boolean(formik.touched.password && formik.errors.password)}
+            {...register('password')}
+            error={!!errors.password}
             fullWidth
-            helperText={formik.touched.password && formik.errors.password}
+            helperText={errors.password?.message}
             label="Password"
             name="password"
-            onChange={formik.handleChange}
             size="small"
             type="password"
-            value={formik.values.password}
-            onBlur={formik.handleBlur}
           />
         </div>
         <div className="mb-4">
           <TextField
-            error={Boolean(
-              formik.touched.newPassword && formik.errors.newPassword
-            )}
+            {...register('newPassword')}
+            error={!!errors.newPassword}
             fullWidth
-            helperText={formik.touched.newPassword && formik.errors.newPassword}
+            helperText={errors.newPassword?.message}
             label="New Password"
             name="newPassword"
-            onChange={formik.handleChange}
             size="small"
             type="password"
-            value={formik.values.newPassword}
-            onBlur={formik.handleBlur}
           />
         </div>
         <div className="mb-4">
           <TextField
-            error={Boolean(
-              formik.touched.confirmNewPassword &&
-                formik.errors.confirmNewPassword
-            )}
+            {...register('newPassword')}
+            error={!!errors.confirmNewPassword}
             fullWidth
-            helperText={
-              formik.touched.confirmNewPassword &&
-              formik.errors.confirmNewPassword
-            }
+            helperText={errors.confirmNewPassword?.message}
             label="Confirm Password"
             name="confirmNewPassword"
-            onChange={formik.handleChange}
             size="small"
             type="confirmNewPassword"
-            value={formik.values.confirmNewPassword}
-            onBlur={formik.handleBlur}
           />
         </div>
       </DialogContent>
@@ -116,9 +107,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
         </Button>
         <Button
           color="primary"
-          onClick={() => {
-            formik.handleSubmit();
-          }}
+          onClick={handleSubmit(onSubmit)}
           variant="contained"
         >
           Change

@@ -5,14 +5,20 @@ import { GoogleAuthButton } from '@/components/google-auth-button';
 import { useAuth } from '@/contexts/auth-context';
 import { Link } from '@/i18n/navigation';
 import { ApiError } from '@/utils/api-error';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FormHelperText, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { useFormik } from 'formik';
 import { AuthLayout } from 'layout/auth/AuthLayout';
 import Head from 'next/head';
-import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as Yup from 'yup';
+
+interface FormValues {
+  confirmPassword: string;
+  email: string;
+  password: string;
+}
 
 const Register = () => {
   const { register } = useAuth();
@@ -21,40 +27,49 @@ const Register = () => {
     ApiError,
     { email: string; password: string; confirmPassword: string }
   >({ mutationFn: register });
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const formik = useFormik({
-    initialValues: {
+  const {
+    register: registerField,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: {
       confirmPassword: '',
       email: '',
       password: '',
-      submit: null,
     },
-    validationSchema: Yup.object().shape({
-      confirmPassword: Yup.string()
-        .max(255)
-        .oneOf([Yup.ref('password')], 'Passwords must match')
-        .required('Confirm password is required'),
-      email: Yup.string().max(255).email().required('Email is required'),
-      password: Yup.string().min(8).max(255).required('Password is required'),
-    }),
-    onSubmit: async (values, { setSubmitting }) => {
-      setSubmitError(null);
-      setSubmitting(true);
-
-      mutation.mutate(values, {
-        onSuccess: () => {
-          toast.success('An activation link has been sent to your email');
-        },
-        onError: (error) => {
-          setSubmitError(error.message);
-        },
-        onSettled: () => {
-          setSubmitting(false);
-        },
-      });
-    },
+    resolver: yupResolver(
+      Yup.object().shape({
+        confirmPassword: Yup.string()
+          .max(255)
+          .oneOf([Yup.ref('password')], 'Passwords must match')
+          .required('Confirm password is required'),
+        email: Yup.string().max(255).email().required('Email is required'),
+        password: Yup.string().min(8).max(255).required('Password is required'),
+      })
+    ),
   });
+
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    setError('root.serverError', {
+      type: 'server',
+      message: '',
+    });
+
+    mutation.mutate(values, {
+      onSuccess: () => {
+        toast.success('An activation link has been sent to your email');
+      },
+      onError: (error) => {
+        setError('root.serverError', {
+          type: 'server',
+          message: error.message,
+        });
+      },
+    });
+  };
 
   return (
     <>
@@ -93,46 +108,36 @@ const Register = () => {
           </div>
           <form
             className="flex flex-col gap-5"
-            onSubmit={formik.handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <TextField
-              error={Boolean(formik.touched.email && formik.errors.email)}
+              {...registerField('email')}
               fullWidth
-              helperText={formik.touched.email && formik.errors.email}
               label="Email address"
               name="email"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
               type="email"
-              value={formik.values.email}
               variant="filled"
+              error={!!errors.email}
+              helperText={errors.email?.message}
             />
             <TextField
-              error={Boolean(formik.touched.password && formik.errors.password)}
+              {...registerField('password')}
+              error={!!errors.password}
+              helperText={errors.password?.message}
               fullWidth
-              helperText={formik.touched.password && formik.errors.password}
               label="Password"
               name="password"
-              onChange={formik.handleChange}
               type="password"
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
               variant="filled"
             />
             <TextField
-              error={Boolean(
-                formik.touched.confirmPassword && formik.errors.confirmPassword
-              )}
+              {...registerField('confirmPassword')}
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
               fullWidth
-              helperText={
-                formik.touched.confirmPassword && formik.errors.confirmPassword
-              }
               label="Confirm Password"
               name="confirmPassword"
-              onChange={formik.handleChange}
               type="password"
-              value={formik.values.confirmPassword}
-              onBlur={formik.handleBlur}
               variant="filled"
             />
             <Button
@@ -144,8 +149,10 @@ const Register = () => {
             >
               Register
             </Button>
-            {!!submitError && (
-              <FormHelperText error>{submitError}</FormHelperText>
+            {!!errors.root?.serverError && (
+              <FormHelperText error>
+                {errors.root.serverError.message}
+              </FormHelperText>
             )}
             <p className="caption text-text-secondary text-center align-middle">
               I agree to{' '}

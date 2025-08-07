@@ -2,42 +2,60 @@
 import { Button } from '@/components/button';
 import { useAuth } from '@/contexts/auth-context';
 import { ApiError } from '@/utils/api-error';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FormHelperText, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { useFormik } from 'formik';
 import { AuthLayout } from 'layout/auth/AuthLayout';
 import Head from 'next/head';
-import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as Yup from 'yup';
+
+interface FormValues {
+  email: string;
+}
 
 const PasswordRecovery = () => {
   const { requestPasswordReset } = useAuth();
   const mutation = useMutation<void, ApiError, string>({
     mutationFn: requestPasswordReset,
   });
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      submit: null,
-    },
-    validationSchema: Yup.object().shape({
-      email: Yup.string().max(255).email().required('Email is required'),
-    }),
-    onSubmit: async (values, helpers) => {
-      setSubmitError(null);
 
-      mutation.mutate(values.email, {
-        onSuccess: () => {
-          toast.success('A reset link has been sent to your email');
-        },
-        onError: (error) => {
-          setSubmitError(error.message);
-        },
-      });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
     },
+    resolver: yupResolver(
+      Yup.object().shape({
+        email: Yup.string().max(255).email().required('Email is required'),
+      })
+    ),
   });
+
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    setError('root.serverError', {
+      type: 'server',
+      message: '',
+    });
+
+    mutation.mutate(values.email, {
+      onSuccess: () => {
+        toast.success('A reset link has been sent to your email');
+      },
+      onError: (error) => {
+        setError('root.serverError', {
+          type: 'server',
+          message: error.message,
+        });
+      },
+    });
+  };
 
   return (
     <>
@@ -55,18 +73,16 @@ const PasswordRecovery = () => {
           </div>
           <form
             className="flex flex-col gap-5"
-            onSubmit={formik.handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <TextField
-              error={Boolean(formik.touched.email && formik.errors.email)}
+              {...register('email')}
+              error={!!errors.email}
               fullWidth
-              helperText={formik.touched.email && formik.errors.email}
+              helperText={errors.email?.message}
               label="Email address"
               name="email"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
               type="email"
-              value={formik.values.email}
               variant="filled"
             />
             <Button
@@ -78,8 +94,10 @@ const PasswordRecovery = () => {
             >
               Reset
             </Button>
-            {!!submitError && (
-              <FormHelperText error>{submitError}</FormHelperText>
+            {!!errors.root?.serverError && (
+              <FormHelperText error>
+                {errors.root.serverError.message}
+              </FormHelperText>
             )}
           </form>
         </div>
