@@ -1,8 +1,8 @@
 //todo rename file
-"use client"
+'use client';
 
 import { useScrollTo } from '@/hooks/use-scroll-to';
-import type { FC } from 'react'
+import type { FC } from 'react';
 import { Button } from './button';
 
 interface LinkCategoriesButtonProps {
@@ -30,5 +30,5 @@ export const LinkCategoriesButton: FC<LinkCategoriesButtonProps> = (props) => {
     >
       {category.char}
     </Button>
-  )
+  );
 };

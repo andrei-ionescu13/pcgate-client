@@ -1,4 +1,4 @@
-import { Link } from '@mui/material';
+import { Link } from '@/i18n/navigation';
 import type { FC } from 'react';
 import { LinkCategoriesButton } from './link-categories-button';
 

@@ -1,9 +1,9 @@
 'use client';
 import { PaginationParam } from '@/components/pagination-param';
 import { ProductList } from '@/components/product-list';
-import { useSearchProducts } from 'app/[locale]/(main)/api-calls-hooks';
 import { useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
+import { useSearchProducts } from '../../api-calls-hooks';
 
 interface GenreProductsProps {
   genre: string;

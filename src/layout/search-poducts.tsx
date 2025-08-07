@@ -2,7 +2,7 @@ import { useFocused } from '@/hooks/use-focused';
 import { Product } from '@/types/product';
 import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
-import { Button, useMediaQuery } from '@mui/material';
+import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -76,7 +76,6 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
   }, [keyword]);
 
   const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event?.target.value);

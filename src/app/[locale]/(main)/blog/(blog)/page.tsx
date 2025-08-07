@@ -4,7 +4,6 @@ import { getArticles, listCategories, listTags } from './api';
 import { ArticleCard } from './article-card';
 import { BlogCategories } from './blog-categories';
 import { BlogPopularArticles } from './blog-popular-articles';
-import { BlogPopularTags } from './blog-popular-tags';
 import { BlogSlideshow } from './blog-slideshow';
 
 interface BlogProps {
@@ -46,7 +45,8 @@ const Blog = async (props: BlogProps) => {
             <div>
               <BlogCategories categories={categories} />
               <BlogPopularArticles articles={articles} />
-              <BlogPopularTags tags={tags} />
+
+              {/* <BlogPopularTags tags={tags} /> */}
             </div>
           </div>
         </Container>
