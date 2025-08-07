@@ -266,7 +266,7 @@ body {
 
 #nprogress {
   .bar {
-    height: '2px !important';
+    height: 2px;
     background: var(--color-primary) !important;
     .peg {
       display: 'none';
