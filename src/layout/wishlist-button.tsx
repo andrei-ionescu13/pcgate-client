@@ -68,10 +68,10 @@ export const WishlistButton: FC<WishlistButtonProps> = (props) => {
   };
 
   const handleRemoveFromWishlist = async () => {
-    refreshOnRemove && router.refresh();
     removeFromWishlist.mutate(productId, {
       onSuccess: (data) => {
         dispatch(removeWishlistProduct(data));
+        refreshOnRemove && router.refresh();
       },
       onError: (error) => {
         if (error.status === 401) router.push('/login');
