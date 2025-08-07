@@ -129,6 +129,7 @@ const Register = () => {
               name="password"
               type="password"
               variant="filled"
+              size="medium"
             />
             <TextField
               {...registerField('confirmPassword')}

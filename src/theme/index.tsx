@@ -37,21 +37,29 @@ const baseThemeOptions: ThemeOptions = {
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          paddingBottom: '8px',
+          paddingTop: '8px',
+        },
+      },
+    },
     MuiFilledInput: {
       styleOverrides: {
         root: {
           backgroundColor: alpha(PALETTE.GREY[500], 0.08),
           fontSize: 14,
           borderRadius: BORDER_RADIUS * 1,
+          paddingBottom: '8px',
+          paddingTop: '8px',
           '::before': {
             display: 'none',
           },
           '::after': {
             display: 'none',
           },
-          '& .MuiFilledInput-input': {
-            height: '40px',
-          },
+          '& .MuiFilledInput-input': {},
           '& .MuiFilledInput-input:focus': {
             borderRadius: BORDER_RADIUS * 1,
           },

@@ -251,6 +251,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
+body {
+  background-color: #161c24;
+}
 *,
 *:before,
 *:after {
