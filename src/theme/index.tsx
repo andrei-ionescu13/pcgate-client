@@ -37,29 +37,21 @@ const baseThemeOptions: ThemeOptions = {
         },
       },
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          paddingBottom: '8px',
-          paddingTop: '8px',
-        },
-      },
-    },
     MuiFilledInput: {
       styleOverrides: {
         root: {
           backgroundColor: alpha(PALETTE.GREY[500], 0.08),
           fontSize: 14,
           borderRadius: BORDER_RADIUS * 1,
-          paddingBottom: '8px',
-          paddingTop: '8px',
           '::before': {
             display: 'none',
           },
           '::after': {
             display: 'none',
           },
-          '& .MuiFilledInput-input': {},
+          '& .MuiFilledInput-input': {
+            height: '40px',
+          },
           '& .MuiFilledInput-input:focus': {
             borderRadius: BORDER_RADIUS * 1,
           },
@@ -107,29 +99,6 @@ const baseThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           '@media (min-width: 600px)': {},
-        },
-      },
-    },
-    MuiCssBaseline: {
-      styleOverrides: {
-        html: {
-          height: '100%',
-          boxSizing: 'border-box',
-        },
-        body: {
-          height: '100%',
-        },
-        '#__next': {
-          height: '100%',
-        },
-        '#nprogress': {
-          '.bar': {
-            height: '2px !important',
-            background: `${PALETTE.PRIMARY.main} !important`,
-            '.peg': {
-              display: 'none',
-            },
-          },
         },
       },
     },

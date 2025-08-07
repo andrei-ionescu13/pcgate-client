@@ -263,3 +263,13 @@ body {
 .swiper-button-disabled {
   display: none;
 }
+
+#nprogress {
+  .bar {
+    height: '2px !important';
+    background: var(--color-primary) !important;
+    .peg {
+      display: 'none';
+    }
+  }
+}
