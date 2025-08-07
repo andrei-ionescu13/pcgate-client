@@ -1,7 +1,11 @@
 'use client';
 
+import {
+  CssBaseline,
+  InitColorSchemeScript,
+  ThemeProvider,
+} from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
   isServer,
@@ -71,9 +75,11 @@ const Providers: FC<ProvidersProps> = (props) => {
             <StoreProvider>
               <AuthProvider decoded={user}>
                 <SettingsProvider currency={currency}>
+                  <InitColorSchemeScript attribute="class" />
                   <ThemeProvider theme={theme}>
                     <Toaster richColors />
                     <ReactQueryDevtools initialIsOpen={false} />
+                    <CssBaseline />
                     {children}
                   </ThemeProvider>
                 </SettingsProvider>
