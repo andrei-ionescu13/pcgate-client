@@ -1,11 +1,8 @@
 'use client';
 
-import {
-  CssBaseline,
-  InitColorSchemeScript,
-  ThemeProvider,
-} from '@mui/material';
+import { CssBaseline, InitColorSchemeScript } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { ThemeProvider } from '@mui/material/styles';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
   isServer,
@@ -69,7 +66,7 @@ const Providers: FC<ProvidersProps> = (props) => {
       messages={messages}
       timeZone="Europe/Bucharest"
     >
-      <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+      <AppRouterCacheProvider>
         <GoogleOAuthProvider clientId="750036915548-bdi2e09ms0r0sotdfrb0bi4098156qnr.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
             <StoreProvider>
