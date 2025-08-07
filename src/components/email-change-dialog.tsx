@@ -1,8 +1,13 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField } from '@mui/material';
-import { useFormik } from 'formik';
 import type { FC } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { DialogAlert } from './dialog-alert';
+
+interface FormValues {
+  email: string;
+}
 
 interface EmailChangeDialogProps {
   open: boolean;
@@ -11,48 +16,43 @@ interface EmailChangeDialogProps {
 
 export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
   const { open, onClose } = props;
-  const formik = useFormik({
-    initialValues: {
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: {
       email: '',
-      submit: null,
     },
-    validationSchema: Yup.object().shape({
-      email: Yup.string().max(255).email().required('Email is required'),
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        helpers.setStatus({ success: true });
-        helpers.setSubmitting(false);
-      } catch (err) {
-        console.error(err);
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    },
+    resolver: yupResolver(
+      Yup.object().shape({
+        email: Yup.string().max(255).email().required('Email is required'),
+      })
+    ),
   });
+
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {};
 
   return (
     <DialogAlert
       onClose={onClose}
       open={open}
       title="Change Email"
-      onSubmit={() => {
-        formik.handleSubmit();
-      }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="mb-4">
         <TextField
-          error={Boolean(formik.touched.email && formik.errors.email)}
+          {...register('email')}
+          error={!!errors.email}
           fullWidth
-          helperText={formik.touched.email && formik.errors.email}
+          helperText={errors.email?.message}
           label="Email address"
           name="email"
-          onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
           size="small"
           type="email"
-          value={formik.values.email}
         />
       </div>
     </DialogAlert>
