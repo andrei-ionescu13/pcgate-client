@@ -49,9 +49,6 @@ const baseThemeOptions: ThemeOptions = {
           '::after': {
             display: 'none',
           },
-          '& .MuiFilledInput-input': {
-            height: '40px',
-          },
           '& .MuiFilledInput-input:focus': {
             borderRadius: BORDER_RADIUS * 1,
           },
