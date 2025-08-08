@@ -3,7 +3,7 @@
 import { IconButton } from '@/components/icon-button';
 import { Search as SearchIcon } from '@/icons/search';
 import { Drawer } from '@mui/material';
-import { SearchProducts } from 'layout/search-poducts';
+import { SearchProducts } from 'layout/search-products';
 import { usePathname } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';

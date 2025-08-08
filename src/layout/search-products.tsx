@@ -151,7 +151,7 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
   const getContent = () => {
     if (showProductsContainer) {
       return (
-        <div className="bg-paper top-10 right-0 left-0 z-20 md:absolute">
+        <div className="bg-paper top-10 right-0 left-0 z-20 max-h-[600] overflow-auto md:absolute">
           {getDropdownContent()}
         </div>
       );

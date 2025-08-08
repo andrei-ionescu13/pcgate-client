@@ -251,8 +251,10 @@ button:disabled {
   cursor: not-allowed;
 }
 
-body {
+body,
+html {
   background-color: #161c24;
+  height: 100%;
 }
 *,
 *:before,

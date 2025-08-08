@@ -51,7 +51,7 @@ export const appFetch = async <T>({
   config?: RequestInit;
   query?: Record<string, any>;
 }): Promise<T> => {
-  const constructedUrl = `${apiUrl}${url}${buildSearchParams(query)}`;
+  const constructedUrl = `${apiUrl}${url}?${buildSearchParams(query)}`;
   let cookieStore: ReadonlyRequestCookies | undefined;
 
   if (isServer) {
@@ -88,7 +88,7 @@ export const appFetchAuth = async <T>({
   config?: RequestInit;
   query?: Record<string, any>;
 }): Promise<T> => {
-  const constructedUrl = `${apiUrl}${url}${query ? `?${buildSearchParams(query)}` : ''}`;
+  const constructedUrl = `${apiUrl}${url}?${buildSearchParams(query)}`;
   let cookieStore: ReadonlyRequestCookies | undefined;
 
   if (isServer) {

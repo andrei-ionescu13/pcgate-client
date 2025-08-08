@@ -10,7 +10,7 @@ import type { FC } from 'react';
 import { AccountPopover } from './account-popover';
 import { Logo } from './logo';
 import { SearchMobile } from './search-mobile';
-import { SearchProducts } from './search-poducts';
+import { SearchProducts } from './search-products';
 
 interface NavbarPrimaryProps {
   onOpenSidebar: () => void;
@@ -43,7 +43,6 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
           </div>
           <div className="flex-1" />
           <div className="flex gap-3">
-            {/* todo change this */}
             <div className="md:hidden">
               <SearchMobile />
             </div>
