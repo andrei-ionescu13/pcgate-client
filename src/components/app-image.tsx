@@ -34,16 +34,3 @@ export const AppImage: FC<AppImageProps> = (props) => {
     />
   );
 };
-
-//click checkout
-//check inventory for keys
-//empty the card
-//change status for those key locked/pending whatever
-//return checkout page
-//complete the checkout
-
-//use webhooks to check when the payment is done and send the keys to the user
-//if checkout session expires change status to those keys back to locked
-
-//on checkout send user to a page with loading and fetch the session (polling) to
-//get the session and find the order by stripe id session
