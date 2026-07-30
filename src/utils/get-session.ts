@@ -1,20 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 
-const parseCookies = (rawCookies: string | null) => {
-  const pairs = rawCookies?.split(';');
-  const setCookies: any = {};
-
-  if (pairs) {
-    for (var i = 0; i < pairs.length; i++) {
-      var nameValue = pairs[i].split('=');
-      setCookies[nameValue[0].trim()] = nameValue[1];
-    }
-  }
-
-  return setCookies;
-};
-
 interface Decoded {
   adminId: string;
   iat: number;

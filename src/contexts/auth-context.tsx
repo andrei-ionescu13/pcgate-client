@@ -91,13 +91,10 @@ export const login = ({
   email: string;
   password: string;
 }) =>
-  appFetch<void>({
-    url: '/auth/login',
-    config: {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      credentials: 'include',
-    },
+  fetch('/api/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+    credentials: 'include',
   });
 
 export const register = ({
