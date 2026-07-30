@@ -73,7 +73,7 @@
     "sass": "^1.89.2",
     "tailwindcss": "^4.1.11",
     "typescript": "^7.0.2",
-    "typescript-eslint": "^8.15.0"
+    "typescript-eslint": "^8.65.0"
   },
   "overrides": {
     "@types/react": "19.1.8",
