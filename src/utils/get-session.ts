@@ -26,6 +26,7 @@ export const getSession = async (): Promise<{
   isAuthenticated: boolean;
 }> => {
   const cookieStore = await cookies();
+  console.log(cookieStore.get('accessToken'));
   const accessToken = cookieStore.get('accessToken')?.value;
 
   if (accessToken) {
