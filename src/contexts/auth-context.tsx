@@ -160,7 +160,7 @@ export const AuthProvider = ({ decoded, children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null | undefined>();
   const isAuthenticated = !!decoded;
-
+  console.log(decoded);
   const googleAuth = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       const { code } = codeResponse;
