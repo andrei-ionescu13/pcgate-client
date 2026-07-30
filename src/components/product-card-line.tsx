@@ -1,8 +1,7 @@
-import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
-import type { FC } from 'react';
 import { AddButton } from './add-button';
+import { Amount } from './amount';
 import { AppImage } from './app-image';
 import { Card } from './card';
 import { ProductDiscount } from './product-discount';
@@ -13,10 +12,7 @@ interface ProductCardLineProps {
   variant?: 'line' | 'card';
 }
 
-export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
-  const { product } = props;
-  const formatCurrency = useFormatCurrency();
-
+export const ProductCardLine = ({ product }: ProductCardLineProps) => {
   return (
     <Card className="relative flex overflow-hidden p-2">
       <div className="w-2/6 max-w-56 min-w-24">
@@ -60,11 +56,11 @@ export const ProductCardLine: FC<ProductCardLineProps> = (props) => {
             <div className="flex w-full items-center">
               <div className="grid place-items-center md:min-w-16">
                 {product.originalPrice && (
-                  <p className="text-text-secondary caption line-through">
-                    {formatCurrency(product.originalPrice)}
-                  </p>
+                  <Amount className="text-text-secondary caption line-through">
+                    {product.originalPrice}
+                  </Amount>
                 )}
-                <p className="subtitle1">{formatCurrency(product.price)}</p>
+                <Amount className="subtitle1">{product.price}</Amount>
               </div>
               <div className="flex-1" />
               <AddButton

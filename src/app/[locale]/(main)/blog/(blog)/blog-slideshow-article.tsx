@@ -3,15 +3,14 @@ import { Card } from '@/components/card';
 import { Link } from '@/i18n/navigation';
 import type { Article } from '@/types/articles';
 import { format } from 'date-fns';
-import type { FC } from 'react';
 
 interface BlogSlideshowArticleProps {
   article: Article;
 }
 
-export const BlogSlideshowArticle: FC<BlogSlideshowArticleProps> = (props) => {
-  const { article } = props;
-
+export const BlogSlideshowArticle = ({
+  article,
+}: BlogSlideshowArticleProps) => {
   return (
     <Card>
       <div className="grid md:grid-cols-[8fr_4fr]">

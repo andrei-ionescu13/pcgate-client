@@ -1,17 +1,16 @@
 'use client';
+
+import { Amount } from '@/components/amount';
 import { Button } from '@/components/button';
 import { Card } from '@/components/card';
 import { Divider } from '@/components/divider';
-import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { useRouter } from '@/i18n/navigation';
-import { Gift as GiftIcon } from '@/icons/gift';
-import { useAppDispatch } from '@/store/use-store-dispatch';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { FC } from 'react';
+import { GiftIcon } from 'lucide-react';
 
 interface CartSummaryProps {
   cart: Cart;
@@ -20,33 +19,32 @@ interface CartSummaryProps {
 export const useCreateOrder = (onError: (error: ApiError) => void) =>
   useMutation<Cart, ApiError>({
     mutationFn: () =>
-      appFetchAuth<any>({
+      appFetch<any>({
         url: '/auth/order',
         config: {
           method: 'POST',
         },
+        withAuth: true,
       }),
     onError,
   });
 
-export const CartSummary: FC<CartSummaryProps> = (props) => {
-  const { cart } = props;
+export const CartSummary = ({ cart }: CartSummaryProps) => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const createOrder = useCreateOrder((error: ApiError): void => {
     if (error.status === 403) {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     }
   });
-  const formatCurrency = useFormatCurrency();
 
   const checkout = async () => {
-    const url = await appFetchAuth<string>({
+    const url = await appFetch<string>({
       url: '/auth/checkout',
       config: {
         method: 'POST',
       },
+      withAuth: true,
     });
 
     router.push(url);
@@ -58,25 +56,25 @@ export const CartSummary: FC<CartSummaryProps> = (props) => {
       <div className="body2 text-text-secondary flex items-center">
         <p>Full Price:</p>
         <div className="flex-1" />
-        <p>{formatCurrency(cart.originalTotalPrice)}</p>
+        <Amount>{cart.originalTotalPrice}</Amount>
       </div>
       <div className="body2 flex items-center">
         <p className="text-text-secondary">Your saving:</p>
         <div className="flex-1" />
-        <p className="text-success">{formatCurrency(cart.totalDiscount)}</p>
+        <Amount className="text-success">{cart.totalDiscount}</Amount>
       </div>
       <Divider className="my-2" />
       <div className="subtitle1 flex items-center">
         <p className="text-text-secondary">TOTAL</p>
         <div className="flex-1" />
-        <p className="text-primary">{formatCurrency(cart.totalPrice)}</p>
+        <Amount className="text-primary">{cart.totalPrice}</Amount>
       </div>
       <FormControlLabel
         disableTypography
         control={<Checkbox defaultChecked />}
         label={
           <div className="flex items-center">
-            <GiftIcon fontSize="small" />
+            <GiftIcon />
             <p className="body2 mt-0.5 ml-1">Gift this order</p>
           </div>
         }

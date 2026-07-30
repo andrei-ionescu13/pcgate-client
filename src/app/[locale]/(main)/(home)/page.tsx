@@ -1,21 +1,8 @@
 import { Container } from '@/components/container';
 import { ProductsSwiper } from '@/components/products-swiper';
 import { Slideshow } from '@/components/slideshow';
-import { Asset, Meta } from '@/types/common';
-import { Product } from '@/types/product';
-import { appFetch } from 'utils/app-fetch';
-
-interface Collection {
-  meta: Meta;
-  _id: string;
-  cover: Asset;
-  title: string;
-  description: string;
-  slug: string;
-  endDate: null | string;
-  products: string[];
-  isDeal: boolean;
-}
+import type { Product } from '@/types/product';
+import { appFetch } from '@/utils/app-fetch';
 
 const listCollections = () =>
   appFetch<any>({

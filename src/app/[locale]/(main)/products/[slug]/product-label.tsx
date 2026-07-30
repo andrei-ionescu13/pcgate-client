@@ -1,10 +1,4 @@
-import type { FC } from 'react';
-
-interface ProductLabelProps {
-  variant: string;
-}
-
-export const ProductLabel: FC<ProductLabelProps> = () => {
+export const ProductLabel = () => {
   return (
     <div className="absolute -top-10 -left-10 w-fit">
       <div className="flex">

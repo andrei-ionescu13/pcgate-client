@@ -1,6 +1,6 @@
 'use client';
-import { Cart } from '@/types/cart';
-import type { FC } from 'react';
+
+import type { Cart } from '@/types/cart';
 import { useCart } from './api-hooks';
 import { CartAlerts } from './cart-alerts';
 import { CartCoupon } from './cart-coupon';
@@ -12,8 +12,7 @@ interface CartDetailsProps {
   initialCart: Cart;
 }
 
-export const CartDetails: FC<CartDetailsProps> = (props) => {
-  const { initialCart } = props;
+export const CartDetails = ({ initialCart }: CartDetailsProps) => {
   const { data: cart } = useCart(initialCart);
 
   if (!cart.items.length) {
@@ -23,7 +22,7 @@ export const CartDetails: FC<CartDetailsProps> = (props) => {
   return (
     <div className="grid gap-6">
       <CartAlerts cart={cart} />
-      <div className="grid gap-6 md:grid-cols-[8fr_4fr]">
+      <div className="grid items-start gap-6 md:grid-cols-[8fr_4fr]">
         <div>
           <CartItems cart={cart} />
         </div>

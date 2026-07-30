@@ -1,11 +1,13 @@
 'use client';
 
 import { InputBase } from '@/components/input-base';
+import { useRouter } from '@/i18n/navigation';
+import { usePageLoading } from '@/store/page-loading';
 import type { CardProps } from '@mui/material';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
-import type { ChangeEvent, FC } from 'react';
-import { useEffect, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { FilterCard } from './filter-card';
 
 interface FilterCardCheckboxProps extends CardProps {
@@ -22,8 +24,7 @@ interface FilterCheckboxProps {
   onClick: (value: string) => void;
 }
 
-const FilterCheckbox: FC<FilterCheckboxProps> = (props) => {
-  const { field, value, onClick } = props;
+const FilterCheckbox = ({ field, value, onClick }: FilterCheckboxProps) => {
   const searchParams = useSearchParams();
   const [checked, setChecked] = useState(searchParams.has(field, value));
 
@@ -42,8 +43,16 @@ const FilterCheckbox: FC<FilterCheckboxProps> = (props) => {
     />
   );
 };
-export const FilterCardCheckbox: FC<FilterCardCheckboxProps> = (props) => {
-  const { title, limit = 12, field, items, minItems = 8, ...rest } = props;
+export const FilterCardCheckbox = ({
+  title,
+  limit = 12,
+  field,
+  items,
+  minItems = 8,
+}: FilterCardCheckboxProps) => {
+  const { push } = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const { setIsPageLoading } = usePageLoading();
   const searchParams = useSearchParams();
   const [keyword, setKeyword] = useState('');
   const [showMore, setshowMore] = useState(false);
@@ -73,19 +82,27 @@ export const FilterCardCheckbox: FC<FilterCardCheckboxProps> = (props) => {
       params.append(field, value);
     }
 
-    window.history.pushState(null, '', '?' + params.toString());
+    startTransition(() => {
+      push(`?${params.toString()}`);
+    });
   };
 
   const handleClear = () => {
     const params = new URLSearchParams(searchParams);
     params.delete(field);
 
-    window.history.pushState(null, '', '?' + params.toString());
+    startTransition(() => {
+      push(`?${params.toString()}`);
+    });
   };
 
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setKeyword(event.target.value);
   };
+
+  useEffect(() => {
+    setIsPageLoading(isPending);
+  }, [isPending]);
 
   return (
     <FilterCard
@@ -105,7 +122,10 @@ export const FilterCardCheckbox: FC<FilterCardCheckboxProps> = (props) => {
       )}
       <FormGroup>
         {slicedItems.map((item) => (
-          <div className="flex items-center justify-between">
+          <div
+            className="flex items-center justify-between"
+            key={item.value}
+          >
             <FormControlLabel
               sx={{ userSelect: 'none' }}
               key={item.value}
@@ -119,8 +139,10 @@ export const FilterCardCheckbox: FC<FilterCardCheckboxProps> = (props) => {
                 />
               }
               label={item.label}
-              componentsProps={{
-                typography: { variant: 'body3' },
+              slotProps={{
+                typography: {
+                  variant: 'body3',
+                },
               }}
             />
             <div className="caption bg-neutral inline-flex max-h-[24px] items-center rounded-lg p-1.5">

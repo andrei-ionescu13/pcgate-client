@@ -1,19 +1,21 @@
 'use client';
 import { Button } from '@/components/button';
 import { useAuth } from '@/contexts/auth-context';
+import { AuthLayout } from '@/layout/auth/AuthLayout';
 import { ApiError } from '@/utils/api-error';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FormHelperText, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { AuthLayout } from 'layout/auth/AuthLayout';
 import Head from 'next/head';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'sonner';
-import * as Yup from 'yup';
+import * as z from 'zod';
 
-interface FormValues {
-  email: string;
-}
+const schema = z.object({
+  email: z.email().max(255),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 const PasswordRecovery = () => {
   const { requestPasswordReset } = useAuth();
@@ -31,11 +33,7 @@ const PasswordRecovery = () => {
     defaultValues: {
       email: '',
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        email: Yup.string().max(255).email().required('Email is required'),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {

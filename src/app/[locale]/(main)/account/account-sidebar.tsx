@@ -6,13 +6,10 @@ import { Skeleton } from '@/components/skeleton';
 import { useAuth } from '@/contexts/auth-context';
 import { useOpen } from '@/hooks/use-open';
 import { Link, usePathname } from '@/i18n/navigation';
-import { Camera as CameraIcon } from '@/icons/camera';
+import { AvatarDialog } from '@/layout/avatar-dialog';
 import { cn } from '@/utils/cn';
-import { AvatarDialog } from 'layout/avatar-dialog';
+import { CameraIcon } from 'lucide-react';
 import Image from 'next/image';
-import type { FC } from 'react';
-
-interface AccountSidebarProps {}
 
 const links = [
   {
@@ -37,7 +34,11 @@ const links = [
   },
 ];
 
-export const AccountSidebar: FC<AccountSidebarProps> = () => {
+interface AccountSidebarProps {
+  onLinkClick?: () => void;
+}
+
+export const AccountSidebar = ({ onLinkClick }: AccountSidebarProps) => {
   const { decoded, user } = useAuth();
   const pathname = usePathname();
   const [open, handleOpen, handleClose] = useOpen();
@@ -88,7 +89,12 @@ export const AccountSidebar: FC<AccountSidebarProps> = () => {
                     isActive && activeClassName
                   )}
                 >
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link
+                    onClick={onLinkClick}
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
                 </Button>
               </li>
             );

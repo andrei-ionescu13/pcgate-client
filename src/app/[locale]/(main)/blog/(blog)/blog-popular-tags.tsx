@@ -1,14 +1,11 @@
 import { ArticleTag } from '@/types/articles';
 import { Chip } from '@mui/material';
-import type { FC } from 'react';
 
 interface BlogPopularTagsProps {
   tags: ArticleTag[];
 }
 
-export const BlogPopularTags: FC<BlogPopularTagsProps> = (props) => {
-  const { tags } = props;
-
+export const BlogPopularTags = ({ tags }: BlogPopularTagsProps) => {
   return (
     <div>
       <h4 className="mb-2">Popular Tags</h4>

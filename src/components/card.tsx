@@ -1,6 +1,6 @@
 import { cn } from '@/utils/cn';
-import { cva, VariantProps } from 'class-variance-authority';
-import type { ComponentProps, FC } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { ComponentProps } from 'react';
 
 interface CardProps
   extends Omit<ComponentProps<'div'>, 'color'>,
@@ -25,9 +25,7 @@ const card = cva(' bg-paper overflow-hidden rounded-lg', {
   },
 });
 
-export const Card: FC<CardProps> = (props) => {
-  const { variant, color, className, ...rest } = props;
-
+export const Card = ({ variant, color, className, ...rest }: CardProps) => {
   return (
     <div
       className={cn(card({ variant, color, className }))}

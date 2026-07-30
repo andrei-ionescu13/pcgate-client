@@ -1,26 +1,25 @@
-import { FilterCardCheckbox } from 'app/[locale]/(main)/products/(products)/filter-card-checkbox';
-import { FilterCardRange } from 'app/[locale]/(main)/products/(products)/filter-card-range';
-import { type FC } from 'react';
+import { FilterCardCheckbox } from './filter-card-checkbox';
+import { FilterCardRange } from './filter-card-range';
+
+export type FilterOptions = Array<{ name: string; count: number }>;
 
 interface ProductsFiltersProps {
-  platforms: Array<{ name: string; count: number }>;
-  genres: Array<{ name: string; count: number }>;
-  publishers: Array<{ name: string; count: number }>;
-  developers: Array<{ name: string; count: number }>;
-  features: Array<{ name: string; count: number }>;
-  operatingSystems: Array<{ name: string; count: number }>;
+  platforms: FilterOptions;
+  genres: FilterOptions;
+  publishers: FilterOptions;
+  developers: FilterOptions;
+  features: FilterOptions;
+  operatingSystems: FilterOptions;
 }
 
-export const ProductsFilters: FC<ProductsFiltersProps> = (props) => {
-  const {
-    platforms,
-    genres,
-    publishers,
-    developers,
-    features,
-    operatingSystems,
-  } = props;
-
+export const ProductsFilters = ({
+  platforms,
+  genres,
+  publishers,
+  developers,
+  features,
+  operatingSystems,
+}: ProductsFiltersProps) => {
   return (
     <div className="flex flex-col gap-6">
       <FilterCardRange

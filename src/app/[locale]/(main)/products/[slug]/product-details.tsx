@@ -2,7 +2,6 @@ import { Card } from '@/components/card';
 import { Link } from '@/i18n/navigation';
 import { Product } from '@/types/product';
 import { format } from 'date-fns';
-import { type FC } from 'react';
 import { PropertyItem } from '../../../../../components/property-item';
 import { LinkList } from '../../../../../components/property-item-list';
 
@@ -10,9 +9,7 @@ interface ProductDetailsProps {
   product: Product;
 }
 
-export const ProductDetails: FC<ProductDetailsProps> = (props) => {
-  const { product } = props;
-
+export const ProductDetails = ({ product }: ProductDetailsProps) => {
   return (
     <Card className="p-4">
       <h6>Game details</h6>

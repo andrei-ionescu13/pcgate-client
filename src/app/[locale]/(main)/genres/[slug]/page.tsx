@@ -1,9 +1,10 @@
 import { Container } from '@/components/container';
+import { PaginationParam } from '@/components/pagination-param';
+import { ProductList } from '@/components/product-list';
 import { SortByPopoverQuery } from '@/components/sort-by-popover-query';
-import { searchProducts } from 'app/[locale]/(main)/api-calls';
 import Head from 'next/head';
+import { searchProducts } from '../../api-calls';
 import { getGenre } from './api';
-import { GenreProducts } from './genre-products';
 
 interface GenreProps {
   params: Promise<{ slug: string }>;
@@ -36,12 +37,12 @@ const sortByitems = [
   },
 ];
 
-const Genre = async (props: GenreProps) => {
-  const { params, searchParams } = props;
+const Genre = async ({ params, searchParams }: GenreProps) => {
   const { slug } = await params;
   const { page, sortBy } = await searchParams;
   const genre = await getGenre(slug);
   const data = await searchProducts({ genres: genre?.name, page, sortBy });
+  const { products, count } = data;
 
   return (
     <>
@@ -58,10 +59,14 @@ const Genre = async (props: GenreProps) => {
               defaultValue={'name'}
             />
           </div>
-          <GenreProducts
-            genre={genre.name}
-            initialData={data}
-          />
+          <div>
+            <ProductList products={products} />
+            {Math.ceil(count / 36) > 1 && (
+              <div className="mt-20 flex justify-center">
+                <PaginationParam count={Math.ceil(count / 36)} />
+              </div>
+            )}
+          </div>
         </Container>
       </div>
     </>

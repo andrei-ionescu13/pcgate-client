@@ -1,11 +1,9 @@
-'use client';
-import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
 import { cn } from '@/utils/cn';
-import type { FC } from 'react';
 import { WishlistButton } from '../layout/wishlist-button';
 import { AddButton } from './add-button';
+import { Amount } from './amount';
 import { AppImage } from './app-image';
 import { Card } from './card';
 import { Divider } from './divider';
@@ -18,10 +16,11 @@ interface ProductCardProps {
   className?: string;
 }
 
-export const ProductCard: FC<ProductCardProps> = (props) => {
-  const { product, refreshOnRemoveFromWislist, className } = props;
-  const formatCurrency = useFormatCurrency();
-
+export const ProductCard = ({
+  product,
+  refreshOnRemoveFromWislist,
+  className,
+}: ProductCardProps) => {
   return (
     <Card className={cn('relative flex h-full flex-col', className)}>
       <div className="absolute top-4 right-4 z-50">
@@ -30,22 +29,19 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
           productId={product._id}
         />
       </div>
-      <Link href={`/products/${product.slug}`}>
+      <Link
+        href={`/products/${product.slug}`}
+        scroll
+      >
         <div className="relative aspect-video">
           <AppImage
             fill
-            priority
             src={product.cover.public_id}
             alt={product.title}
-            sizes="
-                (min-width: 1200px) 400px,
-                (min-width: 900px) 33vw,
-                (min-width: 600px) 50vw
-                "
           />
         </div>
       </Link>
-      <div className="flex min-h-[68px] flex-1 flex-col items-start justify-between p-2 sm:flex-row md:gap-4">
+      <div className="flex min-h-17 flex-1 flex-col items-start justify-between p-2 sm:flex-row md:gap-4">
         <Link
           color="inherit"
           href={`/products/${product.slug}`}
@@ -64,11 +60,11 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
           )}
           <div className="grid place-items-center">
             {product.originalPrice && (
-              <p className="text-shadow-text-secondary caption line-through">
-                {formatCurrency(product.originalPrice)}
-              </p>
+              <Amount className="text-shadow-text-secondary caption line-through">
+                {product.originalPrice}
+              </Amount>
             )}
-            <p className="subtitle2">{formatCurrency(product.price)}</p>
+            <Amount className="subtitle2">{product.price}</Amount>
           </div>
         </div>
       </div>
@@ -76,7 +72,6 @@ export const ProductCard: FC<ProductCardProps> = (props) => {
       <div className="flex items-center p-2">
         <div className="relative flex aspect-square w-full max-w-10">
           <AppImage
-            priority
             src={product.platform.logo.public_id}
             alt={product.platform.name}
             sizes="

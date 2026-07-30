@@ -1,13 +1,11 @@
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface AuthLayoutProps {
   children: ReactNode;
   text?: string;
 }
 
-export const AuthLayout: FC<AuthLayoutProps> = (props) => {
-  const { children, text = '' } = props;
-
+export const AuthLayout = ({ children, text = '' }: AuthLayoutProps) => {
   return (
     <div className="grid min-h-screen grid-flow-col grid-cols-1 md:grid-cols-[480px_1fr]">
       <div>

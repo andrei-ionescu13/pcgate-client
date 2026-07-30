@@ -1,10 +1,9 @@
 'use client';
 
 import { IconButton } from '@/components/icon-button';
-import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
-import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
 import type { Article } from '@/types/articles';
-import { FC, useEffect, useState } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BlogSlideshowArticle } from './blog-slideshow-article';
@@ -14,8 +13,7 @@ interface BlogSlideshowProps {
   articles: Article[];
 }
 
-export const BlogSlideshow: FC<BlogSlideshowProps> = (props) => {
-  const { articles } = props;
+export const BlogSlideshow = ({ articles }: BlogSlideshowProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

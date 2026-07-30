@@ -1,11 +1,12 @@
+'use client';
+
 import { Badge } from '@/components/badge';
 import { Link } from '@/i18n/navigation';
-import { Heart as HeartIcon } from '@/icons/heart';
-import type { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useWishlist } from '@/store/wishlist';
+import { HeartIcon } from 'lucide-react';
 
-export const WishlistLink: FC = () => {
-  const wishlistProducts = useSelector((state) => state.wishlist.products);
+export const WishlistLink = () => {
+  const wishlistProducts = useWishlist((state) => state.products);
 
   return (
     <Badge content={wishlistProducts?.length}>

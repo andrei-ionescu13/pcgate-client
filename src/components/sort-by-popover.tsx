@@ -1,9 +1,6 @@
-import { useOpen } from '@/hooks/use-open';
-import { ChevronDown as ChevronDownIcon } from '@/icons/chevron-down';
 import { cn } from '@/utils/cn';
 import { Button, Popover } from '@mui/material';
-import type { SxProps } from '@mui/system';
-import type { FC } from 'react';
+import { ChevronDownIcon } from 'lucide-react';
 import { useRef } from 'react';
 import { ListButton } from './dropdown-button';
 
@@ -13,21 +10,28 @@ export interface SortByPopoverItem {
 }
 
 interface SortByPopoverProps {
-  sx?: SxProps;
   items: SortByPopoverItem[];
   value: string;
   onChange: (value: string) => void;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }
 
-export const SortByPopover: FC<SortByPopoverProps> = (props) => {
-  const { items, value, onChange } = props;
+export const SortByPopover = ({
+  items,
+  value,
+  onChange,
+  open,
+  onOpen,
+  onClose,
+}: SortByPopoverProps) => {
   const anchorRef = useRef<HTMLButtonElement | null>(null);
-  const [open, handleOpen, handleClose] = useOpen();
   const itemSelected = items.find((item) => item.value === value);
 
   const handleChange = (value: string): void => {
     onChange(value);
-    handleClose();
+    onClose();
   };
 
   return (
@@ -38,7 +42,7 @@ export const SortByPopover: FC<SortByPopoverProps> = (props) => {
           color="white"
           variant="outlined"
           ref={anchorRef}
-          onClick={handleOpen}
+          onClick={onOpen}
         >
           <p className="body2 mr-2">{itemSelected?.label}</p>
           <ChevronDownIcon
@@ -52,12 +56,14 @@ export const SortByPopover: FC<SortByPopoverProps> = (props) => {
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        onClose={handleClose}
+        onClose={onClose}
         open={open}
-        PaperProps={{
-          sx: {
-            maxWidth: 160,
-            width: '100%',
+        slotProps={{
+          paper: {
+            sx: {
+              maxWidth: 160,
+              width: '100%',
+            },
           },
         }}
       >

@@ -1,6 +1,6 @@
 import { cn } from '@/utils/cn';
-import { cva, VariantProps } from 'class-variance-authority';
-import type { FC, ReactNode } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { ReactNode } from 'react';
 
 interface BadgeProps extends VariantProps<typeof badge> {
   content: string | number;
@@ -24,9 +24,7 @@ const badge = cva(
   }
 );
 
-export const Badge: FC<BadgeProps> = (props) => {
-  const { children, content, color, className } = props;
-
+export const Badge = ({ children, content, color, className }: BadgeProps) => {
   return (
     <div className="relative">
       {!!content && (

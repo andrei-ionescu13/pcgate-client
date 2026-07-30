@@ -1,8 +1,9 @@
 import { cn } from '@/utils/cn';
 import { CircularProgress } from '@mui/material';
 import { Slot } from '@radix-ui/react-slot';
-import { cva, VariantProps } from 'class-variance-authority';
-import { ComponentProps, FC, Fragment } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { ComponentProps } from 'react';
+import { Fragment } from 'react/jsx-runtime';
 
 const button = cva(
   'inline-flex rounded-lg font-semibold text-sm items-center transition duration-150 ease-in-out gap-2 relative text-center',
@@ -18,6 +19,7 @@ const button = cva(
         secondary: '',
         neutral: '',
         paper: 'bg-paper hover:bg-white/5',
+        error: 'bg-error hover:bg-error-dark',
       },
       size: {
         small: 'px-2.5 py-1',
@@ -64,19 +66,17 @@ export interface ButtonProps
   isLoading?: boolean;
 }
 
-export const Button: FC<ButtonProps> = (props) => {
-  const {
-    variant,
-    color,
-    className,
-    size,
-    asChild,
-    children,
-    isLoading = false,
-    disabled,
-    ...rest
-  } = props;
-
+export const Button = ({
+  variant,
+  color,
+  className,
+  size,
+  asChild,
+  children,
+  isLoading = false,
+  disabled,
+  ...rest
+}: ButtonProps) => {
   const Comp = asChild ? Slot : 'button';
 
   return (

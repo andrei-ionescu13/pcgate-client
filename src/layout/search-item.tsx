@@ -1,19 +1,22 @@
 import { AppImage } from '@/components/app-image';
-import { useFormatCurrency } from '@/hooks/use-format-currency';
+import { useAmountFormatter } from '@/hooks/use-amount-formatter';
 import { Link } from '@/i18n/navigation';
-import { Steam as SteamIcon } from '@/icons/steam';
-import { Product } from '@/types/product';
+import { SteamIcon } from '@/icons/steam';
+import type { Product } from '@/types/product';
 import { cn } from '@/utils/cn';
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps } from 'react';
 import { ProductDiscount } from '../components/product-discount';
 
 interface SearchItemProps extends Omit<ComponentProps<typeof Link>, 'href'> {
   product: Product;
 }
 
-export const SearchItem: FC<SearchItemProps> = (props) => {
-  const { product, className, ...rest } = props;
-  const formatCurrency = useFormatCurrency();
+export const SearchItem = ({
+  product,
+  className,
+  ...rest
+}: SearchItemProps) => {
+  const formatCurrency = useAmountFormatter();
 
   return (
     <Link
@@ -42,17 +45,17 @@ export const SearchItem: FC<SearchItemProps> = (props) => {
       </div>
       <div className="flex-1" />
       <div className="flex items-center">
-        {product?.initialPrice && (
+        {product?.originalPrice && (
           <ProductDiscount
-            initialPrice={product.initialPrice}
+            initialPrice={product.originalPrice}
             price={product.price}
             variant="small"
           />
         )}
         <div className="ml-2">
-          {product?.initialPrice && (
+          {product?.originalPrice && (
             <p className="text-text-secondary caption text-center line-through">
-              {formatCurrency(product.initialPrice)}
+              {formatCurrency(product.originalPrice)}
             </p>
           )}
           <p className="subtitle1 text-center">

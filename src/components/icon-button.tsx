@@ -1,6 +1,6 @@
 import { cn } from '@/utils/cn';
-import { cva, VariantProps } from 'class-variance-authority';
-import { ComponentProps, FC } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { ComponentProps } from 'react';
 
 const button = cva(
   'inline-flex rounded-full items-center transition duration-150 ease-in-out gap-2 relative hover:bg-white/5 disabled:opacity-40',
@@ -23,9 +23,7 @@ export interface IconButtonProps
   extends Omit<ComponentProps<'button'>, 'color'>,
     VariantProps<typeof button> {}
 
-export const IconButton: FC<IconButtonProps> = (props) => {
-  const { className, size, ...rest } = props;
-
+export const IconButton = ({ className, size, ...rest }: IconButtonProps) => {
   return (
     <button
       className={cn(

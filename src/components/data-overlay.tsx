@@ -1,22 +1,19 @@
-import { cn } from '@/utils/cn';
-import type { FC } from 'react';
+'use client';
 
-export interface DataOverlayProps extends React.HTMLAttributes<HTMLDivElement> {
-  isBlured: boolean;
+import { usePageLoading } from '@/store/page-loading';
+import { cn } from '@/utils/cn';
+import type { ReactNode } from 'react';
+
+export interface DataOverlayProps {
+  children: ReactNode;
 }
 
-export const DataOverlay: FC<DataOverlayProps> = (props) => {
-  const { children, className, isBlured } = props;
+export const DataOverlay = ({ children }: DataOverlayProps) => {
+  const { isPageLoading } = usePageLoading();
 
   return (
-    <div
-      className={cn(
-        'relative',
-        isBlured ? 'blur-sm saturate-100' : '',
-        className
-      )}
-    >
-      {isBlured && <div className="absolute inset-0 z-50" />}
+    <div className={cn(isPageLoading ? 'blur-xs saturate-100' : '')}>
+      {isPageLoading && <div className="absolute inset-0 z-50" />}
       {children}
     </div>
   );

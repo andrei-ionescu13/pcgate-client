@@ -11,7 +11,6 @@ import { Popover } from '@mui/material';
 import type { SxProps } from '@mui/system';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
-import type { FC } from 'react';
 import { useRef, useState } from 'react';
 
 interface AccountPopoverProps {
@@ -37,7 +36,7 @@ const links = [
   },
 ];
 
-export const AccountPopover: FC<AccountPopoverProps> = (props) => {
+export const AccountPopover = (props: AccountPopoverProps) => {
   const { user, logout } = useAuth();
   const mutation = useMutation<void, ApiError>({ mutationFn: logout });
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -97,10 +96,12 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
         }}
         onClose={handleClose}
         open={open}
-        PaperProps={{
-          sx: {
-            maxWidth: 160,
-            width: '100%',
+        slotProps={{
+          paper: {
+            sx: {
+              maxWidth: 160,
+              width: '100%',
+            },
           },
         }}
       >
@@ -108,7 +109,12 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
           {links.map((link) => (
             <li key={link.href}>
               <ListButton asChild>
-                <Link href={link.href}>{link.label}</Link>
+                <Link
+                  onClick={handleClose}
+                  href={link.href}
+                >
+                  {link.label}
+                </Link>
               </ListButton>
             </li>
           ))}

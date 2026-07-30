@@ -4,14 +4,9 @@ import { Button } from '@/components/button';
 import { Card } from '@/components/card';
 import { LanguageCurrencyDialog } from '@/components/language-currency-dialog';
 import { useSettings } from '@/contexts/settings-context';
-import type { FC } from 'react';
 import { useState } from 'react';
 
-interface AccountWebsiteSettingsProps {}
-
-export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (
-  props
-) => {
+export const AccountWebsiteSettings = () => {
   const { settings, saveSettings } = useSettings();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
@@ -28,7 +23,7 @@ export const AccountWebsiteSettings: FC<AccountWebsiteSettingsProps> = (
 
   return (
     <>
-      <div {...props}>
+      <div>
         <h5 className="mb-3">Website Settings</h5>
         <Card
           color="default"

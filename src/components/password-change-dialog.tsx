@@ -1,4 +1,4 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Button,
   Dialog,
@@ -7,24 +7,32 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import type { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
+import * as z from 'zod';
 import { Divider } from './divider';
 
-interface FormValues {
-  confirmNewPassword: string;
-  newPassword: string;
-  password: string;
-}
+const schema = z
+  .object({
+    password: z.string(),
+    newPassword: z.string().max(255),
+    confirmNewPassword: z.string().max(255),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    error: 'Passwords must match',
+    path: ['confirmNewPassword'],
+  });
+
+type FormValues = z.infer<typeof schema>;
 
 interface PasswordChangeDialogProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
-  const { open, onClose } = props;
+export const PasswordChangeDialog = ({
+  open,
+  onClose,
+}: PasswordChangeDialogProps) => {
   const {
     register,
     handleSubmit,
@@ -37,16 +45,7 @@ export const PasswordChangeDialog: FC<PasswordChangeDialogProps> = (props) => {
       newPassword: '',
       password: '',
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        confirmNewPassword: Yup.string()
-          .max(255)
-          .oneOf([Yup.ref('newPassword')], 'Passwords must match')
-          .required('Confirm new password is required'),
-        newPassword: Yup.string().max(255).required('New password is required'),
-        password: Yup.string().max(255).required('Old password is required'),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {};

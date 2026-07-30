@@ -1,5 +1,4 @@
 import { Link } from '@/i18n/navigation';
-import { type FC } from 'react';
 
 interface LinkListProps {
   items: Array<{
@@ -8,9 +7,7 @@ interface LinkListProps {
   }>;
 }
 
-export const LinkList: FC<LinkListProps> = (props) => {
-  const { items } = props;
-
+export const LinkList = ({ items }: LinkListProps) => {
   return (
     <div className="flex flex-wrap">
       {items.map((item, index) => (

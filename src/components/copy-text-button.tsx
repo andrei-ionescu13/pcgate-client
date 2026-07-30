@@ -1,8 +1,8 @@
 'use client';
 
-import { ContentCopy as CopyIcon } from '@/icons/content-copy';
 import { Tooltip } from '@mui/material';
-import { useState, type FC } from 'react';
+import { CopyIcon } from 'lucide-react';
+import { useState } from 'react';
 import { IconButton } from './icon-button';
 
 interface CopyTextButtonProps {
@@ -10,8 +10,10 @@ interface CopyTextButtonProps {
   disabled?: boolean;
 }
 
-export const CopyTextButton: FC<CopyTextButtonProps> = (props) => {
-  const { text, disabled = false } = props;
+export const CopyTextButton = ({
+  text,
+  disabled = false,
+}: CopyTextButtonProps) => {
   const [hasCopied, setHasCopied] = useState(false);
 
   const handleCopyToClipboard = () => {
@@ -23,9 +25,11 @@ export const CopyTextButton: FC<CopyTextButtonProps> = (props) => {
     <Tooltip
       title={hasCopied ? 'Copied' : 'Copy'}
       placement="top"
-      TransitionProps={{
-        onExited: () => {
-          setHasCopied(false);
+      slotProps={{
+        transition: {
+          onExited: () => {
+            setHasCopied(false);
+          },
         },
       }}
     >

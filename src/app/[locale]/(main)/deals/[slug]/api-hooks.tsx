@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { listDealProducts } from './api';

@@ -1,18 +1,17 @@
 'use client';
+
+import { Amount } from '@/components/amount';
 import { Card } from '@/components/card';
 import { IconButton } from '@/components/icon-button';
-import { useFormatCurrency } from '@/hooks/use-format-currency';
 import { Link } from '@/i18n/navigation';
-import { Steam as SteamIcon } from '@/icons/steam';
-import { X as XIcon } from '@/icons/x';
-import { setCart } from '@/store/slices/cart';
-import { Cart, CartLineItem } from '@/types/cart';
+import { SteamIcon } from '@/icons/steam';
+import { useCart } from '@/store/cart';
+import type { Cart, CartLineItem } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import { XIcon } from 'lucide-react';
 import { AppImage } from '../../../../components/app-image';
 import { CartItemQuantity } from './cart-item-quantity';
 
@@ -24,41 +23,41 @@ interface CartItemProps {
 export const useRemoveFromCart = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (itemId) =>
-      appFetchAuth({
+      appFetch({
         url: '/auth/cart',
         config: {
           method: 'DELETE',
           body: JSON.stringify({ itemId }),
         },
+        withAuth: true,
       }),
   });
 
 export const useUpdateQuantity = () =>
   useMutation<Cart, ApiError, { productId: string; quantity: number }>({
     mutationFn: ({ productId, quantity }) =>
-      appFetchAuth({
+      appFetch({
         url: '/auth/cart/quantity',
         config: {
           method: 'PUT',
           body: JSON.stringify({ productId, quantity }),
         },
+        withAuth: true,
       }),
   });
 
-export const CartItem: FC<CartItemProps> = (props) => {
-  const { item, className } = props;
-  const dispatch = useDispatch();
+export const CartItem = ({ item, className }: CartItemProps) => {
   const queryClient = useQueryClient();
   const removeFromCart = useRemoveFromCart();
-  const { product } = item;
   const updateQuantity = useUpdateQuantity();
-  const formatCurrency = useFormatCurrency();
+  const setCart = useCart((state) => state.setCart);
+  const { product } = item;
 
   const handleRemoveFromCart = () => {
     removeFromCart.mutate(item._id, {
       onSuccess: (data) => {
         queryClient.setQueryData(['cart'], data);
-        dispatch(setCart(data));
+        setCart(data);
       },
     });
   };
@@ -69,7 +68,7 @@ export const CartItem: FC<CartItemProps> = (props) => {
       {
         onSuccess: (data) => {
           queryClient.setQueryData(['cart'], data);
-          dispatch(setCart(data));
+          setCart(data);
         },
       }
     );
@@ -88,7 +87,7 @@ export const CartItem: FC<CartItemProps> = (props) => {
         (updateQuantity.isPending && <div className="absolute inset-0 z-50" />)}
       <Link
         className={cn(
-          'relative block w-full overflow-hidden rounded-lg sm:max-w-[140px]',
+          'relative block w-full overflow-hidden rounded-lg sm:max-w-35',
           item.isUnavailable && 'grayscale-75'
         )}
         href={`/products/${product.slug}`}
@@ -129,18 +128,18 @@ export const CartItem: FC<CartItemProps> = (props) => {
             />
             <div className="mx-4 flex min-w-[60px] flex-col justify-center">
               {item.originalLinePrice !== item.finalLinePrice && (
-                <p className="text-text-secondary body2 text-center line-through">
-                  {formatCurrency(item.originalLinePrice)}
-                </p>
+                <Amount className="text-text-secondary body2 text-center line-through">
+                  {item.originalLinePrice}
+                </Amount>
               )}
-              <p
+              <Amount
                 className={cn(
                   'subtitle1 text-center',
                   item.promoCodeIsApplied ? 'text-success' : 'text-primary'
                 )}
               >
-                {formatCurrency(item.finalLinePrice)}
-              </p>
+                {item.finalLinePrice}
+              </Amount>
             </div>
           </>
         )}

@@ -1,24 +1,30 @@
-import { Article, ArticleCategory, ArticleTag } from '@/types/articles';
-import { appFetchAuth } from '@/utils/app-fetch';
-import { ParsedUrlQuery } from 'querystring';
+import type { Article, ArticleCategory, ArticleTag } from '@/types/articles';
+import { appFetch } from '@/utils/app-fetch';
+import type { ParsedUrlQuery } from 'querystring';
 
 interface GetArticlesData {
   articles: Article[];
   count: number;
 }
 
-export const getArticles = (query: ParsedUrlQuery) =>
-  appFetchAuth<GetArticlesData>({
+export const listArticles = () =>
+  appFetch<Article[]>({
     url: '/articles',
+    shouldAddCookies: false,
+  });
+
+export const searchArticles = (query: ParsedUrlQuery) =>
+  appFetch<GetArticlesData>({
+    url: '/articles/search',
     query,
   });
 
 export const listCategories = () =>
-  appFetchAuth<ArticleCategory[]>({
+  appFetch<ArticleCategory[]>({
     url: '/article-categories',
   });
 
 export const listTags = () =>
-  appFetchAuth<ArticleTag[]>({
+  appFetch<ArticleTag[]>({
     url: '/article-tags',
   });

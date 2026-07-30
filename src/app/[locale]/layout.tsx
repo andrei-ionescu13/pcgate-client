@@ -1,5 +1,6 @@
 import { getSession } from '@/utils/get-session';
 import { getMessages } from 'next-intl/server';
+import { Roboto } from 'next/font/google';
 import { cookies } from 'next/headers';
 import NextTopLoader from 'nextjs-toploader';
 import 'nprogress/nprogress.css';
@@ -9,33 +10,36 @@ import 'swiper/css/pagination';
 import Providers from '../providers';
 import './global.css';
 
-export default async function RootLayout(
-  props: Readonly<{
-    children: React.ReactNode;
-    params: { locale: string };
-  }>
-) {
-  const params = await props.params;
+const roboto = Roboto({
+  subsets: ['latin'],
+});
 
-  const { children } = props;
-
-  const session = await getSession();
+export default async function RootLayout({
+  params,
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}>) {
+  const { locale } = await params;
+  const { user } = await getSession();
   const cookieStore = await cookies();
   const currency = cookieStore.get('currency')?.value;
   const messages = await getMessages();
 
   return (
     <html
-      lang={params.locale}
+      lang={'en'}
       suppressHydrationWarning
+      className={roboto.className}
     >
       <body className="flex flex-col">
         <NextTopLoader showSpinner={false} />
         <Providers
-          user={session}
+          user={user}
           currency={currency}
           messages={messages}
-          locale={params.locale}
+          locale={locale}
         >
           {children}
         </Providers>

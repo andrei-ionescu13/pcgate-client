@@ -1,4 +1,4 @@
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+import type { TypographyVariantsOptions } from '@mui/material';
 
 const H1 = {
   fontFamily: 'Barlow, sans-serif',
@@ -105,7 +105,7 @@ const BUTTON = {
   lineHeight: 1.71429,
 };
 
-export const typography: TypographyOptions = {
+export const typography: TypographyVariantsOptions = {
   h1: H1,
   h2: H2,
   h3: H3,

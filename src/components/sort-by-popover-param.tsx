@@ -1,12 +1,11 @@
 'use client';
 
 import { useOpen } from '@/hooks/use-open';
-import { ChevronDown as ChevronDownIcon } from '@/icons/chevron-down';
 import { cn } from '@/utils/cn';
 import { Button, Popover } from '@mui/material';
 import type { SxProps } from '@mui/system';
+import { ChevronDownIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import type { FC } from 'react';
 import { useRef } from 'react';
 import { ListButton } from './dropdown-button';
 
@@ -20,8 +19,7 @@ interface SortByPopoverProps {
   items: SortByPopoverItem[];
 }
 
-export const SortByPopoverParam: FC<SortByPopoverProps> = (props) => {
-  const { items } = props;
+export const SortByPopoverParam = ({ items }: SortByPopoverProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();

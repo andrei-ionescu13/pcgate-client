@@ -1,7 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import type { Dispatch, SetStateAction, RefObject } from 'react';
+'use client';
 
-export const useFocused = (initialFocused = false): [RefObject<HTMLDivElement>, boolean, Dispatch<SetStateAction<boolean>>] => {
+import type { Dispatch, RefObject, SetStateAction } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+export const useFocused = (
+  initialFocused = false
+): [RefObject<HTMLDivElement>, boolean, Dispatch<SetStateAction<boolean>>] => {
   const [focused, setFocused] = useState(initialFocused);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -9,7 +13,7 @@ export const useFocused = (initialFocused = false): [RefObject<HTMLDivElement>, 
     if (initialFocused) {
       ref?.current?.focus();
     }
-  }, [initialFocused])
+  }, [initialFocused]);
 
   const handleClickOutside = (event: Event) => {
     if (ref.current && !ref.current.contains(event.target as Node)) {

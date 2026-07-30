@@ -5,10 +5,9 @@ import { Card } from '@/components/card';
 import { Divider } from '@/components/divider';
 import { Progress } from '@/components/progress';
 import { useScrollTo } from '@/hooks/use-scroll-to';
-import { Pencil as PencilIcon } from '@/icons/pencil';
 import type { Product } from '@/types/product';
 import { CircularProgress } from '@mui/material';
-import type { FC } from 'react';
+import { PencilIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useListProductReviews } from '../api-hooks';
 import { ProductRatingReviewForm } from './product-rating-review-form';
@@ -18,8 +17,7 @@ interface ProductRatingProps {
   product: Product;
 }
 
-export const ProductRating: FC<ProductRatingProps> = (props) => {
-  const { product } = props;
+export const ProductRating = ({ product }: ProductRatingProps) => {
   const scrollTo = useScrollTo();
   const [formOpen, setFormOpen] = useState(false);
   const formContainerRef = useRef<HTMLDivElement>(null);

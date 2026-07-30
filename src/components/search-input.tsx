@@ -1,9 +1,9 @@
 'use client';
-import { Search as SearchIcon } from '@/icons/search';
+
 import { cn } from '@/utils/cn';
 import type { InputBaseComponentProps } from '@mui/material';
-import type { FC } from 'react';
-import { InputBase, InputBaseProps } from './input-base';
+import { SearchIcon } from 'lucide-react';
+import { InputBase, type InputBaseProps } from './input-base';
 
 interface SearchProps extends InputBaseProps {
   inputProps?: InputBaseComponentProps;
@@ -11,15 +11,13 @@ interface SearchProps extends InputBaseProps {
   value: string;
 }
 
-export const Search: FC<SearchProps> = (props) => {
-  const {
-    placeholder = 'Search...',
-    value,
-    inputProps,
-    className,
-    ...rest
-  } = props;
-
+export const Search = ({
+  placeholder = 'Search...',
+  value,
+  inputProps,
+  className,
+  ...rest
+}: SearchProps) => {
   return (
     <InputBase
       className={cn('w-full bg-[rgb(28,33,41)]', className)}

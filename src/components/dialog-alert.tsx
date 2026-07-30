@@ -1,6 +1,6 @@
 import type { DialogProps } from '@mui/material';
 import { Dialog } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Button } from './button';
 
 export interface DialogAlertProps extends DialogProps {
@@ -13,19 +13,17 @@ export interface DialogAlertProps extends DialogProps {
   error?: boolean;
 }
 
-export const DialogAlert: FC<DialogAlertProps> = (props) => {
-  const {
-    open,
-    children,
-    content,
-    error = false,
-    isLoading = false,
-    onClose,
-    onSubmit,
-    title,
-    ...rest
-  } = props;
-
+export const DialogAlert = ({
+  open,
+  children,
+  content,
+  error = false,
+  isLoading = false,
+  onClose,
+  onSubmit,
+  title,
+  ...rest
+}: DialogAlertProps) => {
   return (
     <Dialog
       open={open}

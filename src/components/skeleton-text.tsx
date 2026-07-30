@@ -1,6 +1,5 @@
 import { cn } from '@/utils/cn';
-import { cva, VariantProps } from 'class-variance-authority';
-import type { FC } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 interface SkeletonProps extends VariantProps<typeof skeleton> {
   className?: string;
@@ -13,7 +12,8 @@ const skeleton = cva('flex items-center', {
       false: '',
     },
     text: {
-      body2: 'h-[26px] [&_div]:h-1/2',
+      body2: 'h-6.5 [&_div]:h-1/2',
+      h4: 'h-9 [&_div]:h-1/2',
     },
   },
   defaultVariants: {
@@ -22,9 +22,7 @@ const skeleton = cva('flex items-center', {
   },
 });
 
-export const SkeletonText: FC<SkeletonProps> = (props) => {
-  const { animation, text, className } = props;
-
+export const SkeletonText = ({ animation, text, className }: SkeletonProps) => {
   return (
     <div className={cn(skeleton({ animation, text, className }))}>
       <div className="bg-skeleton flex-1 rounded-lg" />

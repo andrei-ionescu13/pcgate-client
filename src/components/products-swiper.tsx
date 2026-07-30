@@ -1,12 +1,11 @@
 'use client';
 
-import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
-import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
-import { Product } from '@/types/product';
-import { useEffect, useState, type FC } from 'react';
+import { BREAKPOINTS } from '@/theme';
+import type { Product } from '@/types/product';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { BREAKPOINTS } from 'theme';
 import { IconButton } from './icon-button';
 import { ProductCard } from './product-card';
 import './products-swiper.scss';
@@ -15,8 +14,7 @@ interface ProductsSwiperProps {
   products?: Product[];
 }
 
-export const ProductsSwiper: FC<ProductsSwiperProps> = (props) => {
-  const { products } = props;
+export const ProductsSwiper = ({ products }: ProductsSwiperProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

@@ -1,15 +1,15 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { ContentCopy } from '@/icons/content-copy';
-import { Steam as SteamIcon } from '@/icons/steam';
+import { SteamIcon } from '@/icons/steam';
 import type { ProductKey } from '@/types/common';
 import type { Product } from '@/types/product';
 import { ApiError } from '@/utils/api-error';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { Tooltip } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { FC, MouseEvent, useState } from 'react';
+import { CopyIcon } from 'lucide-react';
+import { useState } from 'react';
 import { AppImage } from './app-image';
 import { Button } from './button';
 import { Card } from './card';
@@ -19,8 +19,7 @@ interface ProductKeyProps {
   value: string;
 }
 
-const ProductKey: FC<ProductKeyProps> = (props) => {
-  const { value } = props;
+const ProductKey = ({ value }: ProductKeyProps) => {
   const [hasCopied, setHasCopied] = useState(false);
 
   const handleCopyToClipboard = () => {
@@ -36,9 +35,11 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
           <Tooltip
             title={hasCopied ? 'Copied' : 'Copy'}
             placement="top"
-            TransitionProps={{
-              onExited: () => {
-                setHasCopied(false);
+            slotProps={{
+              transition: {
+                onExited: () => {
+                  setHasCopied(false);
+                },
               },
             }}
           >
@@ -46,7 +47,7 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
               size="small"
               onClick={handleCopyToClipboard}
             >
-              <ContentCopy />
+              <CopyIcon />
             </IconButton>
           </Tooltip>
         </div>
@@ -84,11 +85,12 @@ const ProductKey: FC<ProductKeyProps> = (props) => {
 export const useRevealKey = () =>
   useMutation<any, ApiError, string>({
     mutationFn: (keyId) =>
-      appFetchAuth({
+      appFetch({
         url: `/keys/reveal/${keyId}`,
         config: {
           method: 'POST',
         },
+        withAuth: true,
       }),
   });
 
@@ -97,12 +99,14 @@ interface LibraryProductProps {
   productKey: ProductKey;
 }
 
-export const LibraryProduct: FC<LibraryProductProps> = (props) => {
-  const { product, productKey } = props;
+export const LibraryProduct = ({
+  product,
+  productKey,
+}: LibraryProductProps) => {
   const revealKey = useRevealKey();
   const [productKeyValue, setProductKeyValue] = useState(productKey.value);
 
-  const handleRevealKey = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleRevealKey = () => {
     revealKey.mutate(productKey._id, {
       onSuccess: (data) => {
         setProductKeyValue(data);

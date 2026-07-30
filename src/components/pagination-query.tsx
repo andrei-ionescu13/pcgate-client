@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import type { ChangeEvent, FC } from 'react';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 interface PaginationQueryProps extends MuiPaginationProps {}
@@ -23,8 +23,7 @@ const initializePage = (query: ParsedUrlQuery): number => {
   }
 };
 
-export const PaginationQuery: FC<PaginationQueryProps> = (props) => {
-  const { ...rest } = props;
+export const PaginationQuery = (props: PaginationQueryProps) => {
   const { pathname, query, push } = useRouter();
   const [page, setPage] = useState(initializePage(query));
 
@@ -58,7 +57,7 @@ export const PaginationQuery: FC<PaginationQueryProps> = (props) => {
       color="primary"
       page={page}
       onChange={handleChange}
-      {...rest}
+      {...props}
     />
   );
 };

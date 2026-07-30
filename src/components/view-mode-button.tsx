@@ -1,6 +1,7 @@
-import { GridView as GridViewIcon } from '@/icons/grid-view';
-import { ViewHeadline as ViewHeadlineIcon } from '@/icons/view-headline';
-import type { FC, MouseEvent } from 'react';
+'use client';
+
+import { Grid3X3Icon, Rows3Icon } from 'lucide-react';
+import { useState, type MouseEvent } from 'react';
 import { Button } from './button';
 
 interface ViewModeButtonProps {
@@ -8,16 +9,17 @@ interface ViewModeButtonProps {
   onViewModeChange: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const ViewModeButton: FC<ViewModeButtonProps> = (props) => {
-  const { viewMode, onViewModeChange } = props;
-
+export const ViewModeButton = () => {
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const handleViewModeChange = () => {
+    setViewMode((prev) => (prev === 'grid' ? 'list' : 'grid'));
+  };
   return (
     <Button
       variant="outlined"
-      onClick={onViewModeChange}
       className="min-w-auto p-1.5"
     >
-      {viewMode === 'grid' ? <GridViewIcon /> : <ViewHeadlineIcon />}
+      {viewMode === 'grid' ? <Grid3X3Icon /> : <Rows3Icon />}
     </Button>
   );
 };

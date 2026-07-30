@@ -1,6 +1,6 @@
 'use client';
+
 import { NEXT_PUBLIC_FACEBOOK_APP_ID } from '@/constants';
-import type { FC } from 'react';
 import {
   EmailIcon,
   EmailShareButton,
@@ -10,10 +10,10 @@ import {
   FacebookShareButton,
   RedditIcon,
   RedditShareButton,
-  TwitterIcon,
-  TwitterShareButton,
   WhatsappIcon,
   WhatsappShareButton,
+  XIcon,
+  XShareButton,
 } from 'react-share';
 
 interface ShareProps {
@@ -22,8 +22,7 @@ interface ShareProps {
   borderRadius?: number;
 }
 
-export const Share: FC<ShareProps> = (props) => {
-  const { url, size = 32, borderRadius = 16 } = props;
+export const Share = ({ url, size = 32, borderRadius = 16 }: ShareProps) => {
   const iconProps = { size, borderRadius };
 
   return (
@@ -39,9 +38,9 @@ export const Share: FC<ShareProps> = (props) => {
           <FacebookMessengerIcon {...iconProps} />
         </FacebookMessengerShareButton>
       )}
-      <TwitterShareButton url={url}>
-        <TwitterIcon {...iconProps} />
-      </TwitterShareButton>
+      <XShareButton url={url}>
+        <XIcon {...iconProps} />
+      </XShareButton>
       <EmailShareButton url={url}>
         <EmailIcon {...iconProps} />
       </EmailShareButton>

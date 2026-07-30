@@ -1,22 +1,24 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@mui/material';
-import type { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
+import * as z from 'zod';
 import { DialogAlert } from './dialog-alert';
 
-interface FormValues {
-  email: string;
-}
+const schema = z.object({
+  email: z.email().max(255),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 interface EmailChangeDialogProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
-  const { open, onClose } = props;
-
+export const EmailChangeDialog = ({
+  open,
+  onClose,
+}: EmailChangeDialogProps) => {
   const {
     register,
     handleSubmit,
@@ -27,11 +29,7 @@ export const EmailChangeDialog: FC<EmailChangeDialogProps> = (props) => {
     defaultValues: {
       email: '',
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        email: Yup.string().max(255).email().required('Email is required'),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {};

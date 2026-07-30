@@ -2,7 +2,6 @@
 'use client';
 
 import { useScrollTo } from '@/hooks/use-scroll-to';
-import type { FC } from 'react';
 import { Button } from './button';
 
 interface LinkCategoriesButtonProps {
@@ -10,8 +9,9 @@ interface LinkCategoriesButtonProps {
   category: any;
 }
 
-export const LinkCategoriesButton: FC<LinkCategoriesButtonProps> = (props) => {
-  const { category } = props;
+export const LinkCategoriesButton = ({
+  category,
+}: LinkCategoriesButtonProps) => {
   const scrollTo = useScrollTo();
 
   return (

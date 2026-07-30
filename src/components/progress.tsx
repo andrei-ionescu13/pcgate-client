@@ -1,13 +1,11 @@
 import { cn } from '@/utils/cn';
-import type { FC } from 'react';
 
 interface ProgressProps {
   value: number;
   className?: string;
 }
 
-export const Progress: FC<ProgressProps> = (props) => {
-  const { value, className } = props;
+export const Progress = ({ value, className }: ProgressProps) => {
   return (
     <div
       className={cn(

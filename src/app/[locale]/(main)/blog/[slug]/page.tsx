@@ -3,26 +3,38 @@ import { Container } from '@/components/container';
 import { Divider } from '@/components/divider';
 import { Markdown } from '@/components/markdown';
 import { Share } from '@/components/share';
+import { locales } from '@/i18n/routing';
 import { markdownToHtml } from '@/utils/markdown-to-html';
 import { format } from 'date-fns';
 import Head from 'next/head';
+import { listArticles } from '../(blog)/api';
 import { getArticle } from './api';
 import { ArticleLabel } from './article-label';
 
 interface ArticleProps {
   params: Promise<{
     slug: string;
+    locale: string;
   }>;
 }
 
-const Article = async (props: ArticleProps) => {
-  const { params } = props;
-  const { slug } = await params;
+export async function generateStaticParams() {
+  const articles = await listArticles();
+
+  return locales.flatMap((locale) =>
+    articles.map(({ slug }) => ({
+      locale,
+      slug,
+    }))
+  );
+}
+
+const Article = async ({ params }: ArticleProps) => {
+  const { slug, locale } = await params;
   const { article } = await getArticle(slug);
   const { title, cover, meta, category } = article;
   const createdAt = new Date(article.createdAt);
   const content = await markdownToHtml(article.markdown);
-  const href = typeof window !== 'undefined' && window.location.href;
 
   return (
     <>
@@ -42,15 +54,13 @@ const Article = async (props: ArticleProps) => {
           <div className="flex flex-col overflow-hidden rounded-lg">
             <div className="relative flex aspect-video">
               <AppImage
-                priority={true}
                 src={cover.public_id}
                 alt={title}
-                quality={100}
                 fill
               />
             </div>
             <div className="bg-paper p-4">
-              <ArticleLabel category={category} />
+              {category && <ArticleLabel category={category} />}
               <div className="mb-4 flex items-center justify-between gap-10">
                 <h1 className="h2">{title}</h1>
                 <div className="bg-primary grid place-items-center rounded-lg p-2">
@@ -64,7 +74,9 @@ const Article = async (props: ArticleProps) => {
               <Divider className="my-3" />
               <div>
                 <p className="subtitle1">Share this post</p>
-                {href && <Share url={href} />}
+                <Share
+                  url={`${process.env.NEXT_PUBLIC_API_PATH}/${locale}/blog/${slug}`}
+                />
               </div>
             </div>
           </div>

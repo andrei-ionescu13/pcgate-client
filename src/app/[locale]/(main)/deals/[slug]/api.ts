@@ -1,6 +1,6 @@
-import { Deal } from '@/types/deal';
-import { Product } from '@/types/product';
-import { appFetchAuth } from '@/utils/app-fetch';
+import type { Deal } from '@/types/deal';
+import type { Product } from '@/types/product';
+import { appFetch } from '@/utils/app-fetch';
 
 interface ListDealProductsData {
   products: Product[];
@@ -8,12 +8,12 @@ interface ListDealProductsData {
 }
 
 export const getDeal = (slug: string) =>
-  appFetchAuth<Deal>({
+  appFetch<Deal>({
     url: `/deals/${slug}`,
   });
 
 export const listDealProducts = (slug: string, page: number) =>
-  appFetchAuth<ListDealProductsData>({
+  appFetch<ListDealProductsData>({
     url: `/deals/${slug}/products`,
     query: { page },
   });

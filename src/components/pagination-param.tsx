@@ -1,20 +1,21 @@
 'use client';
 
+import { usePageLoading } from '@/store/page-loading';
 import { Pagination as MuiPagination } from '@mui/material';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import type { FC } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useTransition } from 'react';
 
 interface PaginationProps {
   count: number;
 }
 
-export const PaginationParam: FC<PaginationProps> = (props) => {
-  const { count } = props;
+export const PaginationParam = ({ count }: PaginationProps) => {
+  const { setIsPageLoading } = usePageLoading();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const { push } = useRouter();
   const pageParam = searchParams.get('page');
   const page = pageParam ? Number.parseInt(pageParam) : 1;
+  const [isPending, startTransition] = useTransition();
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -28,10 +29,14 @@ export const PaginationParam: FC<PaginationProps> = (props) => {
       params.delete('page');
     }
 
-    // push(`${pathname}?${params.toString()}`);
-    //shallow routing
-    window.history.pushState(null, '', '?' + params.toString());
+    startTransition(() => {
+      push(`?${params.toString()}`);
+    });
   };
+
+  useEffect(() => {
+    setIsPageLoading(isPending);
+  }, [isPending]);
 
   return (
     <MuiPagination

@@ -1,7 +1,8 @@
-import { Order } from '@/types/orders';
-import { appFetchAuth } from '@/utils/app-fetch';
+import type { Order } from '@/types/orders';
+import { appFetch } from '@/utils/app-fetch';
 
 export const getUserOrderByStripeId = (id: string) =>
-  appFetchAuth<Order>({
+  appFetch<Order>({
     url: `/orders/checkout/${id}`,
+    withAuth: true,
   });

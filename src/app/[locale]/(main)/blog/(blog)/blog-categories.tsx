@@ -1,14 +1,11 @@
 import { Link } from '@/i18n/navigation';
 import { ArticleCategory } from '@/types/articles';
-import type { FC } from 'react';
 
 interface BlogCategoriesProps {
   categories: ArticleCategory[];
 }
 
-export const BlogCategories: FC<BlogCategoriesProps> = (props) => {
-  const { categories } = props;
-
+export const BlogCategories = ({ categories }: BlogCategoriesProps) => {
   const mappedCategories = [
     {
       label: 'All',

@@ -1,11 +1,9 @@
 import { cn } from '@/utils/cn';
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps } from 'react';
 
 interface DividerProps extends ComponentProps<'hr'> {}
 
-export const Divider: FC<DividerProps> = (props) => {
-  const { className, ...rest } = props;
-
+export const Divider = ({ className, ...rest }: DividerProps) => {
   return (
     <hr
       className={cn('border-t-divider', className)}

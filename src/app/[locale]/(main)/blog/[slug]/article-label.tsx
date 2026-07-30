@@ -1,6 +1,5 @@
 import { Link } from '@/i18n/navigation';
 import type { ArticleCategory } from '@/types/articles';
-import type { FC } from 'react';
 
 interface ArticleLabelProps {
   category: ArticleCategory;
@@ -21,9 +20,7 @@ const cateogryColorsMap: Record<string, { color: string; label: string }> = {
   },
 };
 
-export const ArticleLabel: FC<ArticleLabelProps> = (props) => {
-  const { category } = props;
-
+export const ArticleLabel = ({ category }: ArticleLabelProps) => {
   return (
     <Link
       href={`/blog?category=${category.slug}`}

@@ -1,32 +1,21 @@
 'use client';
-import { Cloudinary } from '@cloudinary/url-gen';
-import { Delivery } from '@cloudinary/url-gen/actions';
-import { fill } from '@cloudinary/url-gen/actions/resize';
+
 import type { ImageLoaderProps, ImageProps } from 'next/image';
 import Image from 'next/image';
-import type { FC } from 'react';
 
-const cld = new Cloudinary({
-  cloud: {
-    cloudName: 'desubtoqp',
-  },
-});
+const normalizeSrc = (src: string) => src.replace(/^\//, '');
 
 const myLoader = ({ src, width, quality }: ImageLoaderProps): string => {
-  let image = cld.image(src).resize(fill().width(width));
-
-  if (quality) {
-    image = image.delivery(Delivery.quality(quality));
-  }
-
-  return image.toURL();
+  const cloudName = 'desubtoqp';
+  const params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto'}`];
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${params.join(',')}/${normalizeSrc(src)}`;
 };
 
 interface AppImageProps extends ImageProps {
   alt: string;
 }
 
-export const AppImage: FC<AppImageProps> = (props) => {
+export const AppImage = (props: AppImageProps) => {
   return (
     <Image
       loader={myLoader}

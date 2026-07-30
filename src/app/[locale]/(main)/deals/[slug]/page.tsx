@@ -1,6 +1,6 @@
 import { AppImage } from '@/components/app-image';
-import { Container } from '@/components/container';
 import { cn } from '@/utils/cn';
+import { Container } from 'lucide-react';
 import { getDeal, listDealProducts } from './api';
 import { CollectionProducts } from './collection-products';
 import { CollectionTimer } from './collection-timer';
@@ -21,9 +21,8 @@ const Deal = async (props: { params: Promise<{ slug: string }> }) => {
       >
         <AppImage
           fill
-          priority
           src={deal.cover.public_id}
-          alt=""
+          alt={deal.title}
           className="object-cover"
         />
         <div className="bg-deal absolute inset-0" />

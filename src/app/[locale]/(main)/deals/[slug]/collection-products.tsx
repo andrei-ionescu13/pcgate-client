@@ -4,7 +4,7 @@ import { ProductCard } from '@/components/product-card';
 import { useInView } from '@/hooks/use-in-view';
 import { Product } from '@/types/product';
 import { CircularProgress } from '@mui/material';
-import { Fragment, useEffect, type FC } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useDealProducts } from './api-hooks';
 
 interface CollectionProductsProps {
@@ -14,8 +14,9 @@ interface CollectionProductsProps {
   };
 }
 
-export const CollectionProducts: FC<CollectionProductsProps> = (props) => {
-  const { initialProducts } = props;
+export const CollectionProducts = ({
+  initialProducts,
+}: CollectionProductsProps) => {
   const { ref, inView } = useInView<HTMLDivElement>();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =

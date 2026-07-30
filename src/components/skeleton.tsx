@@ -1,12 +1,11 @@
 import { cn } from '@/utils/cn';
 import { cva, VariantProps } from 'class-variance-authority';
-import type { FC } from 'react';
 
 interface SkeletonProps extends VariantProps<typeof skeleton> {
   className?: string;
 }
 
-const skeleton = cva('bg-skeleton', {
+const skeleton = cva('bg-skeleton w-full h-full rounded-lg', {
   variants: {
     variant: {
       circular: 'rounded-full',
@@ -23,8 +22,6 @@ const skeleton = cva('bg-skeleton', {
   },
 });
 
-export const Skeleton: FC<SkeletonProps> = (props) => {
-  const { animation, className, variant } = props;
-
+export const Skeleton = ({ animation, className, variant }: SkeletonProps) => {
   return <div className={cn(skeleton({ animation, variant, className }))} />;
 };

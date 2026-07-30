@@ -1,12 +1,13 @@
+'use client';
+
 import { useFocused } from '@/hooks/use-focused';
-import { Product } from '@/types/product';
+import type { Product } from '@/types/product';
 import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import type { ChangeEvent, ComponentProps, FC, FormEvent } from 'react';
+import type { ChangeEvent, ComponentProps, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { Search } from '../components/search-input';
 import { SearchItem } from './search-item';
@@ -22,8 +23,7 @@ const getProducts = (keyword: string) => () =>
     query: { keyword },
   });
 
-export const SearchProducts: FC<SearchProductsProps> = (props) => {
-  const { className, ...rest } = props;
+export const SearchProducts = ({ className, ...rest }: SearchProductsProps) => {
   const { push } = useRouter();
   const query: any = {};
   const searchParams = useSearchParams();
@@ -75,8 +75,6 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
     });
   }, [keyword]);
 
-  const theme = useTheme();
-
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event?.target.value);
     setFocused(true);
@@ -84,6 +82,7 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
 
   const handleSearch = () => {
     setFocused(false);
+    push(`/products?keyword=${keyword}`);
   };
 
   const handleSubmit = (event: FormEvent<EventTarget>) => {
@@ -110,7 +109,7 @@ export const SearchProducts: FC<SearchProductsProps> = (props) => {
             color="primary"
             variant="contained"
             onClick={() => {
-              push('/search');
+              push('/products');
               setKeyword('');
               setFocused(false);
             }}

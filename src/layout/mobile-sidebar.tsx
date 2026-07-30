@@ -1,9 +1,11 @@
+'use client';
+
 import { ListButton } from '@/components/dropdown-button';
 import { IconButton } from '@/components/icon-button';
 import { Link } from '@/i18n/navigation';
-import { X } from '@/icons/x';
+import { useLayout } from '@/store/layout';
 import { Drawer, List } from '@mui/material';
-import type { FC } from 'react';
+import { XIcon } from 'lucide-react';
 import { Logo } from './logo';
 
 interface LinkI {
@@ -26,13 +28,8 @@ const links: LinkI[] = [
   },
 ];
 
-interface MobileSidebarProps {
-  onClose: () => void;
-  open: boolean;
-}
-
-export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
-  const { open, onClose } = props;
+export const MobileSidebar = () => {
+  const { openSidebar, handleCloseSidebar } = useLayout();
 
   return (
     <Drawer
@@ -44,16 +41,16 @@ export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
         },
       }}
       onClose={() => {
-        onClose();
+        handleCloseSidebar();
       }}
-      open={open}
+      open={openSidebar}
     >
       <div>
         <div className="bg-default flex min-h-14 items-center px-4">
           <Logo className="w-16" />
           <div className="flex-1" />
-          <IconButton onClick={() => onClose()}>
-            <X />
+          <IconButton onClick={() => handleCloseSidebar()}>
+            <XIcon />
           </IconButton>
         </div>
         <List disablePadding>
@@ -61,7 +58,7 @@ export const MobileSidebar: FC<MobileSidebarProps> = (props) => {
             <ListButton
               key={link.href}
               onClick={() => {
-                onClose();
+                handleCloseSidebar();
               }}
             >
               <Link href={link.href}>{link.translation}</Link>

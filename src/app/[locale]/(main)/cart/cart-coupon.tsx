@@ -1,39 +1,41 @@
 'use client';
+
 import { Button } from '@/components/button';
 import { Card } from '@/components/card';
 import { IconButton } from '@/components/icon-button';
 import { InputBase } from '@/components/input-base';
-import { X as XIcon } from '@/icons/x';
-import { setCart } from '@/store/slices/cart';
-import { useAppDispatch } from '@/store/use-store-dispatch';
+import { useCart } from '@/store/cart';
 import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { ChangeEvent, FC } from 'react';
+import { X } from 'lucide-react';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export const useApplyCoupon = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (code) =>
-      appFetchAuth<Cart>({
+      appFetch<Cart>({
         url: '/auth/cart/promo-code',
         config: {
           method: 'POST',
           body: JSON.stringify({ code }),
         },
+        withAuth: true,
       }),
   });
 
 export const useRemoveCoupon = () =>
   useMutation<Cart, ApiError>({
     mutationFn: () =>
-      appFetchAuth<Cart>({
+      appFetch<Cart>({
         url: '/auth/cart/promo-code',
         config: {
           method: 'DELETE',
         },
+        withAuth: true,
       }),
   });
 
@@ -41,11 +43,10 @@ interface CartCouponProps {
   cart: Cart;
 }
 
-export const CartCoupon: FC<CartCouponProps> = (props) => {
-  const { cart } = props;
+export const CartCoupon = ({ cart }: CartCouponProps) => {
   const promoCodeApplied = cart.promoCodeUsed;
+  const setCart = useCart((state) => state.setCart);
   const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
   const [code, setCode] = useState(promoCodeApplied?.code || '');
   const [isApplied, setIsApplied] = useState(!!promoCodeApplied);
   const applyCoupon = useApplyCoupon();
@@ -71,7 +72,7 @@ export const CartCoupon: FC<CartCouponProps> = (props) => {
             applyCoupon.mutate(code, {
               onSuccess: (data) => {
                 queryClient.setQueryData(['cart'], data);
-                dispatch(setCart(data));
+                setCart(data);
                 setIsApplied(true);
               },
               onError: (error) => {
@@ -109,13 +110,13 @@ export const CartCoupon: FC<CartCouponProps> = (props) => {
               removeCoupon.mutate(undefined, {
                 onSuccess: (data) => {
                   queryClient.setQueryData(['cart'], data);
-                  dispatch(setCart(data));
+                  setCart(data);
                   setIsApplied(false);
                 },
               });
             }}
           >
-            <XIcon fontSize="small" />
+            <X fontSize="small" />
           </IconButton>
         </div>
       )}

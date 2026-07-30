@@ -1,42 +1,59 @@
 'use client';
 
-import { Search as SearchIcon } from '@/icons/search';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { FormEventHandler, useState, type ChangeEvent, type FC } from 'react';
+import { usePageLoading } from '@/store/page-loading';
+import { SearchIcon } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  useEffect,
+  useState,
+  useTransition,
+  type ChangeEvent,
+  type FormEventHandler,
+} from 'react';
 import { InputBase, type InputBaseProps } from './input-base';
 
 interface SearchInputProps extends InputBaseProps {}
 
-export const SearchParam: FC<SearchInputProps> = (props) => {
-  const [keyword, setKeyword] = useState('');
-  const { placeholder = 'Search...', ...rest } = props;
+export const SearchParam = ({
+  placeholder = 'Search...',
+  ...rest
+}: SearchInputProps) => {
+  const { push } = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
+  const { setIsPageLoading } = usePageLoading();
+  const urlSearchParams = new URLSearchParams(searchParams);
+  const [keyword, setKeyword] = useState(urlSearchParams.get('keyword') || '');
+  const [isPending, startTransition] = useTransition();
 
   const handleSearch: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const params = new URLSearchParams(searchParams);
 
     if (keyword) {
-      params.set('keyword', keyword);
+      urlSearchParams.set('keyword', keyword);
     } else {
-      params.delete('keyword');
+      urlSearchParams.delete('keyword');
     }
 
-    params.delete('page');
-    replace(`${pathname}?${params.toString()}`);
+    urlSearchParams.delete('page');
+
+    startTransition(() => {
+      push(`?${urlSearchParams.toString()}`);
+    });
   };
 
   const handleKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
 
+  useEffect(() => {
+    setIsPageLoading(isPending);
+  }, [isPending]);
+
   return (
     <form onSubmit={handleSearch}>
       <InputBase
         className="w-full bg-[rgb(28,33,41)]"
-        endAdornment={<SearchIcon className="text-text-secondary" />}
+        endAdornment={<SearchIcon />}
         onChange={handleKeywordChange}
         value={keyword}
         placeholder={placeholder}

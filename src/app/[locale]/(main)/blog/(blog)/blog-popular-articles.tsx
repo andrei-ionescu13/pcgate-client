@@ -2,15 +2,12 @@ import { AppImage } from '@/components/app-image';
 import { Link } from '@/i18n/navigation';
 import type { Article } from '@/types/articles';
 import { format } from 'date-fns';
-import type { FC } from 'react';
 
 interface BlogPopularArticlesProps {
   articles: Article[];
 }
 
-export const BlogPopularArticles: FC<BlogPopularArticlesProps> = (props) => {
-  const { articles } = props;
-
+export const BlogPopularArticles = ({ articles }: BlogPopularArticlesProps) => {
   return (
     <div>
       <h4>Popular articles</h4>

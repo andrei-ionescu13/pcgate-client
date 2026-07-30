@@ -5,13 +5,13 @@ import { Container } from '@/components/container';
 import { PaginationParam } from '@/components/pagination-param';
 import { SortByPopoverQuery } from '@/components/sort-by-popover-query';
 import { ViewModeButton } from '@/components/view-mode-button';
-import { AdjustmentsHorizontal as AdjustmentsHorizontalIcon } from '@/icons/adjustments-horizontal';
 import { Drawer } from '@mui/material';
-import { useSearchProducts } from 'app/[locale]/(main)/api-calls-hooks';
+import { SlidersHorizontalIcon } from 'lucide-react';
 import Head from 'next/head';
 import { useSearchParams } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { ProductList } from '../../../../../components/product-list';
+import { useSearchProducts } from '../../api-calls-hooks';
 import { ProductsFilterChip } from './products-filter-chip';
 import { ProductsFilters } from './products-filters';
 
@@ -155,7 +155,7 @@ export const ProductsContent = ({ initialData }) => {
                   className="md:hidden"
                 >
                   <p className="body2 mr-2">Filters</p>
-                  <AdjustmentsHorizontalIcon />
+                  <SlidersHorizontalIcon />
                 </Button>
                 <div className="flex-1" />
                 <div className="hidden md:block">

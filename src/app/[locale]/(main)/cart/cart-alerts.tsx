@@ -1,15 +1,14 @@
 'use client';
+
 import { Cart } from '@/types/cart';
 import { Alert } from '@mui/material';
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CartAlertsProps {
   cart: Cart;
 }
 
-export const CartAlerts: FC<CartAlertsProps> = (props) => {
-  const { cart } = props;
-
+export const CartAlerts = ({ cart }: CartAlertsProps) => {
   const [showAlert, setShowAlert] = useState(
     cart?.hasPriceChanged || cart?.hasQuantityChanged || cart?.hasUnavailable
   );

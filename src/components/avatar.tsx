@@ -1,7 +1,7 @@
-import { User as UserIcon } from '@/icons/user';
 import { cn } from '@/utils/cn';
-import { cva, VariantProps } from 'class-variance-authority';
-import type { ComponentProps, FC } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { UserIcon } from 'lucide-react';
+import type { ComponentProps } from 'react';
 
 interface AvatarProps
   extends ComponentProps<'div'>,
@@ -23,9 +23,7 @@ const avatar = cva(
   }
 );
 
-export const Avatar: FC<AvatarProps> = (props) => {
-  const { size, className, children, ...rest } = props;
-
+export const Avatar = ({ size, className, children }: AvatarProps) => {
   return (
     <div className={cn(avatar({ size, className }))}>
       {children ? children : <UserIcon />}

@@ -5,22 +5,23 @@ import { GoogleAuthButton } from '@/components/google-auth-button';
 import { IconButton } from '@/components/icon-button';
 import { useAuth } from '@/contexts/auth-context';
 import { Link, useRouter } from '@/i18n/navigation';
-import { Eye as EyeIcon } from '@/icons/eye';
-import { EyeSlash as EyeSlashIcon } from '@/icons/eye-slash';
+import { AuthLayout } from '@/layout/auth/AuthLayout';
 import { ApiError } from '@/utils/api-error';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FormHelperText, InputAdornment, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { AuthLayout } from 'layout/auth/AuthLayout';
+import { Eye, EyeOffIcon } from 'lucide-react';
 import Head from 'next/head';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import * as z from 'zod';
 
-interface FormValues {
-  email: string;
-  password: string;
-}
+const schema = z.object({
+  email: z.email().max(255),
+  password: z.string().max(255),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 export default function Login() {
   const { login } = useAuth();
@@ -45,12 +46,7 @@ export default function Login() {
       email: 'gegag51027@7tul.com',
       password: 'Masinarie1',
     },
-    resolver: yupResolver(
-      Yup.object({
-        email: Yup.string().email().max(255).required(),
-        password: Yup.string().max(255).required(),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
@@ -128,21 +124,23 @@ export default function Login() {
               label="Password"
               name="password"
               variant="filled"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleShowPasswordChange}
-                      size="small"
-                    >
-                      {showPassword ? (
-                        <EyeSlashIcon className="text-secondary" />
-                      ) : (
-                        <EyeIcon className="text-secondary" />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleShowPasswordChange}
+                        size="small"
+                      >
+                        {showPassword ? (
+                          <EyeOffIcon className="text-secondary" />
+                        ) : (
+                          <Eye className="text-secondary" />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
             <div className="flex content-end">

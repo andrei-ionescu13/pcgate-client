@@ -3,14 +3,12 @@ import { Card } from '@/components/card';
 import { Link } from '@/i18n/navigation';
 import type { Article } from '@/types/articles';
 import { format } from 'date-fns';
-import type { FC } from 'react';
 
 interface ArticleCardProps {
   article: Article;
 }
 
-export const ArticleCard: FC<ArticleCardProps> = (props) => {
-  const { article } = props;
+export const ArticleCard = ({ article }: ArticleCardProps) => {
   const { cover, title, slug, createdAt, category } = article;
 
   return (
@@ -18,13 +16,8 @@ export const ArticleCard: FC<ArticleCardProps> = (props) => {
       <div className="relative aspect-video transition-all duration-300 group-hover:scale-125">
         <AppImage
           fill
-          priority
           src={cover.public_id}
           alt={title}
-          sizes="
-        (min-width: 1200px) 400px,
-        (min-width: 900px) 33vw,
-        (min-width: 600px) 50vw"
         />
       </div>
       <div className="bg-article absolute inset-0" />

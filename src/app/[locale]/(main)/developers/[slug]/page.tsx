@@ -1,9 +1,33 @@
 import { Container } from '@/components/container';
+import { PaginationParam } from '@/components/pagination-param';
+import { ProductList } from '@/components/product-list';
 import { SortByPopoverQuery } from '@/components/sort-by-popover-query';
-import { searchProducts } from 'app/[locale]/(main)/api-calls';
 import Head from 'next/head';
+import { searchProducts } from '../../api-calls';
 import { getDeveloper } from './api';
-import { DeveloperProducts } from './developer-products';
+
+const sortByitems = [
+  {
+    value: 'name',
+    label: 'Name',
+  },
+  {
+    value: 'price_asc',
+    label: 'Price low',
+  },
+  {
+    value: 'price_desc',
+    label: 'Price heigh',
+  },
+  {
+    value: 'discount',
+    label: 'Discount',
+  },
+  {
+    value: 'release_date',
+    label: 'Release Date',
+  },
+];
 
 interface DeveloperProps {
   params: Promise<{
@@ -15,40 +39,16 @@ interface DeveloperProps {
   }>;
 }
 
-const Developer = async (props: DeveloperProps) => {
-  const { params, searchParams } = props;
+const Developer = async ({ params, searchParams }: DeveloperProps) => {
   const { slug } = await params;
   const { page, sortBy } = await searchParams;
   const developer = await getDeveloper(slug);
-
   const data = await searchProducts({
     developer: developer?.name,
     page,
     sortBy,
   });
-
-  const sortByitems = [
-    {
-      value: 'name',
-      label: 'Name',
-    },
-    {
-      value: 'price_asc',
-      label: 'Price low',
-    },
-    {
-      value: 'price_desc',
-      label: 'Price heigh',
-    },
-    {
-      value: 'discount',
-      label: 'Discount',
-    },
-    {
-      value: 'release_date',
-      label: 'Release Date',
-    },
-  ];
+  const { products, count } = data;
 
   return (
     <>
@@ -65,10 +65,14 @@ const Developer = async (props: DeveloperProps) => {
               defaultValue={'name'}
             />
           </div>
-          <DeveloperProducts
-            developer={developer.name}
-            initialData={data}
-          />
+          <div>
+            <ProductList products={products} />
+            {Math.ceil(count / 36) > 1 && (
+              <div className="mt-20 flex justify-center">
+                <PaginationParam count={Math.ceil(count / 36)} />
+              </div>
+            )}
+          </div>
         </Container>
       </div>
     </>

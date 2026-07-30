@@ -1,134 +1,144 @@
-import { isServer } from '@tanstack/react-query';
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import { ApiError } from './api-error';
 
-const hasClient = typeof window !== 'undefined';
-const apiUrl = hasClient ? `/api` : process.env.NEXT_PUBLIC_API_PATH;
-
-const buildSearchParams = (query: Record<string, any>): string => {
-  const searchParams: URLSearchParams = new URLSearchParams();
-  Object.keys(query).forEach((key) => {
-    query[key] && searchParams.append(key, query[key]);
-  });
-
-  return `${searchParams.toString()}`;
+const DEFAULT_HEADERS = {
+  'Content-Type': 'application/json',
 };
 
-const refreshAccessToken = async () => {
-  const res = await fetch('/api/refresh-token', {
-    method: 'POST',
+const isServer = typeof window === 'undefined';
+const apiUrl = process.env.NEXT_PUBLIC_API_PATH;
+
+const buildQueryString = (query: Record<string, any>): string => {
+  const finalQuery: URLSearchParams = new URLSearchParams();
+
+  Object.keys(query).forEach((key) => {
+    if (Array.isArray(query[key])) {
+      query[key].forEach((item) => finalQuery.append(key, item));
+    } else finalQuery.append(key, query[key]);
+  });
+
+  return finalQuery.toString();
+};
+
+export const getNewAccesToken = async (): Promise<string> => {
+  const respose = await fetch(`${apiUrl}/access-token`, {
     credentials: 'include',
   });
+  const data = await respose.json();
 
-  if (!res.ok) {
-    window.location.href = '/login';
-    throw new Error('Unable to refresh token');
+  if (respose.ok) {
+    return data;
   }
 
-  return res.json();
+  throw new ApiError(respose.status, data.message);
 };
 
-type Response = Awaited<ReturnType<typeof fetch>>;
-
-const handleSuccessResponse = async <T>(response: Response) => {
-  const contentType = response.headers.get('content-type');
-
-  if (contentType?.includes('application/json')) {
-    return response.json();
-  }
-
-  const text = await response.text();
-
-  return text as T;
-};
+type ReturnType<T> = T extends Blob ? Blob : T;
 
 export const appFetch = async <T>({
   url,
   config = {},
-  query = {},
+  query = undefined,
+  withAuth = false,
+  responseType = 'json',
+  shouldAddCookies = true,
 }: {
   url: string;
   config?: RequestInit;
   query?: Record<string, any>;
-}): Promise<T> => {
-  const constructedUrl = `${apiUrl}${url}?${buildSearchParams(query)}`;
+  withAuth?: boolean;
+  responseType?: string;
+  shouldRedirect?: boolean;
+  shouldAddCookies?: boolean;
+}): Promise<ReturnType<T>> => {
+  const { headers = {}, ...restConfig } = config;
   let cookieStore: ReadonlyRequestCookies | undefined;
 
-  if (isServer) {
-    const { cookies } = await import('next/headers');
-    cookieStore = await cookies();
-  }
-
-  const response = await fetch(constructedUrl, {
-    ...config,
-    headers: {
-      'Content-Type': 'application/json',
-      ...config.headers,
-      ...(isServer && cookieStore && { Cookie: cookieStore.toString() }),
-    },
-    cache: 'no-store',
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    const data = await response.json();
-
-    throw new ApiError(response.status, data.message);
-  }
-
-  return handleSuccessResponse<T>(response);
-};
-
-export const appFetchAuth = async <T>({
-  url,
-  config = {},
-  query = {},
-}: {
-  url: string;
-  config?: RequestInit;
-  query?: Record<string, any>;
-}): Promise<T> => {
-  const constructedUrl = `${apiUrl}${url}?${buildSearchParams(query)}`;
-  let cookieStore: ReadonlyRequestCookies | undefined;
-
-  if (isServer) {
+  if (isServer && shouldAddCookies) {
     const { cookies } = await import('next/headers');
     cookieStore = await cookies();
   }
 
   const request = () =>
-    fetch(constructedUrl, {
-      ...config,
+    fetch(`${apiUrl}${url}${query ? `?${buildQueryString(query)}` : ''}`, {
       headers: {
-        'Content-Type': 'application/json',
-        ...config.headers,
-        ...(isServer && cookieStore && { Cookie: cookieStore.toString() }),
+        ...DEFAULT_HEADERS,
+        ...headers,
+        ...(isServer &&
+          cookieStore &&
+          shouldAddCookies && { Cookie: cookieStore.toString() }),
       },
-      cache: 'no-store',
+      ...restConfig,
       credentials: 'include',
     });
 
-  let response = await request();
+  const handleSuccessResponse = async (response: any) => {
+    if (responseType === 'json') {
+      let data: any = await response.text();
+      data = data ? JSON.parse(data) : {};
 
-  if (!response.ok) {
+      return data;
+    }
+
+    if (responseType === 'blob') {
+      const data = await response.blob();
+      return data as ReturnType<T>;
+    }
+  };
+
+  const appFetch = async () => {
+    const response = await request();
+
+    if (response.ok) {
+      return await handleSuccessResponse(response);
+    }
+
+    const data = await response.json();
+    throw new ApiError(response.status, data.message);
+  };
+
+  const appAuthFetch = async () => {
+    let response = await request();
+    if (response.ok) {
+      return await handleSuccessResponse(response);
+    }
+
     let data = await response.json();
-
     if (response.status !== 401) {
       throw new ApiError(response.status, data.message);
     }
 
-    await refreshAccessToken();
+    try {
+      await getNewAccesToken();
+    } catch (error) {
+      if (isServer && shouldAddCookies) {
+        const { redirect } = await import('next/navigation');
+        redirect('/login');
+        return;
+      }
+      window.location.replace('/login');
+      return;
+    }
 
     response = await request();
 
     if (response.ok) {
-      return handleSuccessResponse<T>(response);
+      return await handleSuccessResponse(response);
     }
 
     data = await response.json();
 
-    throw new ApiError(response.status, data.message);
-  }
+    if (response.status === 401) {
+      if (isServer && shouldAddCookies) {
+        const { redirect } = await import('next/navigation');
+        redirect('/login');
+        return;
+      }
+      window.location.replace('/login');
+    }
 
-  return handleSuccessResponse<T>(response);
+    throw new ApiError(response.status, data.message);
+  };
+
+  return withAuth ? appAuthFetch() : appFetch();
 };

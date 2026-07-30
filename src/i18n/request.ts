@@ -1,11 +1,11 @@
-import { Language } from '@/contexts/settings-context';
-import { appFetchAuth } from '@/utils/app-fetch';
+import type { Language } from '@/contexts/settings-context';
+import { appFetch } from '@/utils/app-fetch';
 import { hasLocale } from 'next-intl';
 import { getRequestConfig } from 'next-intl/server';
 import { routing } from './routing';
 
 export const listLanguages = () =>
-  appFetchAuth<Language[]>({
+  appFetch<Language[]>({
     url: '/languages',
   });
 

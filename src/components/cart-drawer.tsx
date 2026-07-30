@@ -1,89 +1,84 @@
-import { useFormatCurrency } from '@/hooks/use-format-currency';
+'use client';
+
+import { CartItem } from '@/app/[locale]/(main)/cart/cart-item';
 import { Link } from '@/i18n/navigation';
-import { X } from '@/icons/x';
-import { useStoreSelector } from '@/store/use-store-selector';
+import { useCart } from '@/store/cart';
+import { useLayout } from '@/store/layout';
 import { Drawer } from '@mui/material';
-import { CartItem } from 'app/[locale]/(main)/cart/cart-item';
-import type { FC } from 'react';
+import { XIcon } from 'lucide-react';
+import { Amount } from './amount';
 import { Button } from './button';
 import { Divider } from './divider';
 import { IconButton } from './icon-button';
 
-interface CartDrawerProps {
-  onClose: () => void;
-  open: boolean;
-}
-
-export const CartDrawer: FC<CartDrawerProps> = (props) => {
-  const { open, onClose } = props;
-  const cart = useStoreSelector((state) => state.cart);
-  const hasItems = !!cart.items.length;
-  const formatCurrency = useFormatCurrency();
+export const CartDrawer = () => {
+  const cart = useCart((state) => state.cart);
+  const { openCartDrawer, handleCloseCartDrawer } = useLayout();
+  const hasItems = !!cart?.items.length;
 
   return (
     <Drawer
       variant="temporary"
       anchor="right"
-      sx={{
-        '& .MuiDrawer-paper': {
-          maxWidth: 600,
-          width: '100%',
+      slotProps={{
+        paper: {
+          sx: {
+            maxWidth: 600,
+            width: '100%',
+            overflow: 'hidden',
+          },
         },
       }}
+
       onClose={() => {
-        onClose();
+        handleCloseCartDrawer();
       }}
-      open={open}
+      open={openCartDrawer}
     >
-      <div className="flex h-full flex-col p-5">
+      <div className="flex h-full flex-1 flex-col p-5">
         <div className="mb-5 flex items-center justify-between">
           <h3>My cart</h3>
           <IconButton
-            onClick={onClose}
+            onClick={handleCloseCartDrawer}
             className="-mr-2"
           >
-            <X />
+            <XIcon />
           </IconButton>
         </div>
-        <ul className="flex flex-col gap-2">
-          {hasItems ? (
-            cart.items.map((item) => (
+        {hasItems ? (
+          <ul className="flex flex-1 flex-col gap-2 overflow-auto">
+            {cart.items.map((item) => (
               <li key={item._id}>
                 <CartItem
                   className="bg-neutral"
                   item={item}
                 />
               </li>
-            ))
-          ) : (
-            <div>
-              <p>Cart is empty</p>
-            </div>
-          )}
-        </ul>
-        <div className="flex-1"></div>
-        {hasItems && (
+            ))}
+          </ul>
+        ) : (
           <div>
+            <p>Cart is empty</p>
+          </div>
+        )}
+        {hasItems && (
+          <div className="mt-5">
             <div className="mb-5">
               <div className="body2 text-text-secondary flex items-center">
                 <p>Full Price:</p>
                 <div className="flex-1" />
-                <p>{formatCurrency(cart.originalTotalPrice)}</p>
+                <Amount>{cart.originalTotalPrice}</Amount>
               </div>
               <div className="body2 flex items-center">
                 <p className="text-text-secondary">Your saving:</p>
                 <div className="flex-1" />
-                <p className="text-success">
-                  {formatCurrency(cart.totalDiscount)}
-                </p>
+                <Amount className="text-success">{cart.totalDiscount}</Amount>
               </div>
               <Divider className="my-2" />
               <div className="subtitle1 flex items-center">
                 <p className="text-text-secondary">TOTAL</p>
                 <div className="flex-1" />
-                <p className="text-primary">
-                  {formatCurrency(cart.totalPrice)}
-                </p>
+                <Amount className="text-primary">{cart.totalPrice}</Amount>
               </div>
             </div>
             <Button
@@ -95,7 +90,7 @@ export const CartDrawer: FC<CartDrawerProps> = (props) => {
             >
               <Link
                 href="/cart"
-                onClick={onClose}
+                onClick={handleCloseCartDrawer}
               >
                 Checkout
               </Link>

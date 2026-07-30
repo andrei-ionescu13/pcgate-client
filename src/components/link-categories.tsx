@@ -1,5 +1,4 @@
 import { Link } from '@/i18n/navigation';
-import type { FC } from 'react';
 import { LinkCategoriesButton } from './link-categories-button';
 
 interface LinkCategoriesProps {
@@ -9,8 +8,7 @@ interface LinkCategoriesProps {
   }>;
 }
 
-export const LinkCategories: FC<LinkCategoriesProps> = (props) => {
-  const { items } = props;
+export const LinkCategories = ({ items }: LinkCategoriesProps) => {
   const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const categories = [
     {
@@ -31,7 +29,7 @@ export const LinkCategories: FC<LinkCategoriesProps> = (props) => {
 
   return (
     <div>
-      <div className="mb-10 flex flex-wrap">
+      <div className="mb-10 flex flex-wrap gap-1">
         {filteredCategories.map((category) => (
           <LinkCategoriesButton
             key={category.char}

@@ -1,13 +1,12 @@
-import type { FC } from 'react';
-
 interface ProductRequirementsProps {
   min: string;
   recommended: string;
 }
 
-export const ProductRequirements: FC<ProductRequirementsProps> = (props) => {
-  const { min, recommended } = props;
-
+export const ProductRequirements = ({
+  min,
+  recommended,
+}: ProductRequirementsProps) => {
   return (
     <div className="mt-10">
       <h5 className="mb-5">System Requirements</h5>

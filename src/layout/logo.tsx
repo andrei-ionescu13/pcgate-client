@@ -1,6 +1,6 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps } from 'react';
 
-export const Logo: FC<ComponentProps<'svg'>> = (props) => (
+export const Logo = (props: ComponentProps<'svg'>) => (
   <svg
     width="166"
     height="33"

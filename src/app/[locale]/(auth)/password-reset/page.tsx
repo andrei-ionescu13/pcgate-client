@@ -3,20 +3,27 @@
 import { Button } from '@/components/button';
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from '@/i18n/navigation';
+import { AuthLayout } from '@/layout/auth/AuthLayout';
 import { ApiError } from '@/utils/api-error';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FormHelperText, TextField } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { AuthLayout } from 'layout/auth/AuthLayout';
 import Head from 'next/head';
 import { useSearchParams } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import * as z from 'zod';
 
-interface FormValues {
-  password: string;
-  confirmPassword: string;
-}
+const schema = z
+  .object({
+    password: z.string().max(255),
+    confirmPassword: z.string().max(255),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    error: 'Passwords must match',
+    path: ['confirmPassword'],
+  });
+
+type FormValues = z.infer<typeof schema>;
 
 const PasswordReset = () => {
   const { passwordReset } = useAuth();
@@ -41,15 +48,7 @@ const PasswordReset = () => {
       password: '',
       confirmPassword: '',
     },
-    resolver: yupResolver(
-      Yup.object().shape({
-        confirmPassword: Yup.string()
-          .max(255)
-          .oneOf([Yup.ref('password')], 'Passwords must match')
-          .required('Confirm password is required'),
-        password: Yup.string().min(8).max(255).required('Password is required'),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {

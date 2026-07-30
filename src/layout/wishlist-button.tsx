@@ -2,29 +2,25 @@
 
 import { IconButton } from '@/components/icon-button';
 import { useRouter } from '@/i18n/navigation';
-import { Heart as HeartIcon } from '@/icons/heart';
-import { HeartOutlined as HeartOutlinedIcon } from '@/icons/heart-outlined';
-import {
-  addWishlistProduct,
-  removeWishlistProduct,
-} from '@/store/slices/wishlist';
-import { useStoreSelector } from '@/store/use-store-selector';
+import { useWishlist } from '@/store/wishlist';
 import { ApiError } from '@/utils/api-error';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation } from '@tanstack/react-query';
-import type { FC, MouseEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { HeartIcon } from 'lucide-react';
+import type { MouseEvent } from 'react';
+import { toast } from 'sonner';
 
 export const useAddToWishlist = (onSuccess?: any) =>
   useMutation<string, ApiError, string>({
     mutationFn: (productId) =>
-      appFetchAuth({
+      appFetch({
         url: '/auth/wishlist',
         config: {
           body: JSON.stringify({ productId }),
           method: 'POST',
         },
+        withAuth: true,
       }),
     onSuccess,
   });
@@ -32,12 +28,13 @@ export const useAddToWishlist = (onSuccess?: any) =>
 export const useRemoveFromWishlist = (onSuccess?: any) =>
   useMutation<string, ApiError, string>({
     mutationFn: (productId) =>
-      appFetchAuth({
+      appFetch({
         url: '/auth/wishlist',
         config: {
           body: JSON.stringify({ productId }),
           method: 'DELETE',
         },
+        withAuth: true,
       }),
     onSuccess,
   });
@@ -47,19 +44,25 @@ interface WishlistButtonProps {
   refreshOnRemove?: boolean;
 }
 
-export const WishlistButton: FC<WishlistButtonProps> = (props) => {
+export const WishlistButton = ({
+  productId,
+  refreshOnRemove,
+}: WishlistButtonProps) => {
   const router = useRouter();
-  const { productId, refreshOnRemove } = props;
-  const dispatch = useDispatch();
   const addToWishlist = useAddToWishlist();
   const removeFromWishlist = useRemoveFromWishlist();
-  const wishlistProducts = useStoreSelector((state) => state.wishlist.products);
+  const {
+    addWishlistProduct,
+    removeWishlistProduct,
+    products: wishlistProducts,
+  } = useWishlist();
   const isWishlisted = wishlistProducts.includes(productId);
 
   const handleAddToWishlist = async () => {
     addToWishlist.mutate(productId, {
       onSuccess: (data) => {
-        dispatch(addWishlistProduct(data));
+        addWishlistProduct(data);
+        toast.success('Product added to wishlist');
       },
       onError: (error) => {
         if (error.status === 401) router.push('/login');
@@ -70,7 +73,8 @@ export const WishlistButton: FC<WishlistButtonProps> = (props) => {
   const handleRemoveFromWishlist = async () => {
     removeFromWishlist.mutate(productId, {
       onSuccess: (data) => {
-        dispatch(removeWishlistProduct(data));
+        removeWishlistProduct(data);
+        toast.success('Product removed from wishlist');
         refreshOnRemove && router.refresh();
       },
       onError: (error) => {
@@ -91,11 +95,14 @@ export const WishlistButton: FC<WishlistButtonProps> = (props) => {
   return (
     <IconButton
       onClick={handleClick}
-      size="small"
-      className={cn('-mt-1', isWishlisted && 'text-error-dark')}
+      className="-mt-1"
       disabled={isPending}
     >
-      {isWishlisted ? <HeartIcon /> : <HeartOutlinedIcon />}
+      <HeartIcon
+        className={cn(
+          isWishlisted ? 'fill-error-dark text-error-dark' : 'hover:fill-white'
+        )}
+      />
     </IconButton>
   );
 };

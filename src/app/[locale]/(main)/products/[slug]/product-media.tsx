@@ -1,10 +1,9 @@
 'use client';
 
 import { AppImage } from '@/components/app-image';
-import { Youtube as YoutubeIcon } from '@/icons/youtube';
+import { YoutubeIcon } from '@/icons/youtube';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
-import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -35,8 +34,7 @@ interface ProductMediaProps {
   slides: ProductMediaSlide[];
 }
 
-export const ProductMedia: FC<ProductMediaProps> = (props) => {
-  const { slides } = props;
+export const ProductMedia = ({ slides }: ProductMediaProps) => {
   const theme = useTheme();
   const breakpoints = theme.breakpoints.values;
   const [selectedSlide, setSelectedSlide] = useState<ProductMediaSlide>(
@@ -114,15 +112,14 @@ export const ProductMedia: FC<ProductMediaProps> = (props) => {
                         layout="responsive"
                       />
                       <div className="absolute inset-0 grid place-items-center">
-                        <YoutubeIcon fontSize="large" />
+                        <YoutubeIcon className="w-10 fill-white" />
                       </div>
                     </div>
                   ) : (
                     <div className="relative flex aspect-video">
                       <AppImage
-                        priority
                         src={slide.public_id}
-                        alt={''}
+                        alt={slide.public_id}
                         fill
                       />
                     </div>

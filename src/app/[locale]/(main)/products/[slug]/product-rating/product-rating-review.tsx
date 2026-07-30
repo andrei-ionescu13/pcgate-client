@@ -6,14 +6,12 @@ import { Rating } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import type { FC } from 'react';
 import { useDeleteReview } from '../api-hooks';
 
 interface ProductRatingReviewProps {
   review: ProductReview;
 }
-export const ProductRatingReview: FC<ProductRatingReviewProps> = (props) => {
-  const { review } = props;
+export const ProductRatingReview = ({ review }: ProductRatingReviewProps) => {
   const { slug } = useParams();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -45,7 +43,6 @@ export const ProductRatingReview: FC<ProductRatingReviewProps> = (props) => {
           <div className="mt-2 flex justify-end">
             <Button
               color="error"
-              variant="text"
               isLoading={deleteReview.isPending}
               onClick={() => {
                 deleteReview.mutate(review._id);

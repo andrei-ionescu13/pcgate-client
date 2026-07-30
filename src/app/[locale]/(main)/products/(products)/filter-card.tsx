@@ -3,7 +3,7 @@
 import { Card } from '@/components/card';
 import type { CardProps } from '@mui/material';
 import { Chip } from '@mui/material';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface FilterCardCheckboxProps extends CardProps {
   title: string;
@@ -12,9 +12,11 @@ interface FilterCardCheckboxProps extends CardProps {
   onClear?: () => void;
 }
 
-export const FilterCard: FC<FilterCardCheckboxProps> = (props) => {
-  const { title, children, onClear } = props;
-
+export const FilterCard = ({
+  title,
+  children,
+  onClear,
+}: FilterCardCheckboxProps) => {
   return (
     <Card className="border-neutral border">
       <div className="bg-neutral flex items-center px-4 py-2">
@@ -29,7 +31,7 @@ export const FilterCard: FC<FilterCardCheckboxProps> = (props) => {
           />
         )}
       </div>
-      <div className="[&::-webkit-scrollbar-thumb]:bg-grey-500 [&::-webkit-scrollbar]:bg-neutral max-h-[360px] overflow-auto px-4 py-2 [&::-webkit-scrollbar]:w-[3px] [&::-webkit-scrollbar-thumb]:rounded-2xl">
+      <div className="[&::-webkit-scrollbar-thumb]:bg-grey-500 [&::-webkit-scrollbar]:bg-neutral max-h-90 overflow-auto px-4 py-2 [&::-webkit-scrollbar]:w-0.75 [&::-webkit-scrollbar-thumb]:rounded-2xl">
         {children}
       </div>
     </Card>

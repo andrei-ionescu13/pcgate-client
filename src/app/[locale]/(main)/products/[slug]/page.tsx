@@ -1,24 +1,23 @@
 import { Container } from '@/components/container';
 import { Markdown } from '@/components/markdown';
 import { markdownToHtml } from '@/utils/markdown-to-html';
+import { getProduct } from './api';
+import { ProductDetails } from './product-details';
 import {
-  ProductMedia,
   type ProductMediaSlide,
   type ProductMediaSlideImage,
   type ProductMediaSlideVideo,
-} from 'app/[locale]/(main)/products/[slug]/product-media';
-import { ProductRating } from 'app/[locale]/(main)/products/[slug]/product-rating/product-rating';
-import { getProduct } from './api';
-import { ProductDetails } from './product-details';
+  ProductMedia,
+} from './product-media';
 import { ProductPricing } from './product-pricing';
+import { ProductRating } from './product-rating/product-rating';
 import { ProductRequirements } from './product-requirements';
 
 interface ProductProps {
   params: Promise<{ slug: string }>;
 }
 
-const Product = async (props: ProductProps) => {
-  const { params } = props;
+const Product = async ({ params }: ProductProps) => {
   const { slug } = await params;
   const product = await getProduct(slug);
   const content = await markdownToHtml(product.markdown);
@@ -43,7 +42,6 @@ const Product = async (props: ProductProps) => {
     <div className="flex flex-1 flex-col">
       <div className="py-10">
         <Container maxWidth="lg">
-          <h4 className="mb-8">{product.title}</h4>
           <div className="grid gap-4 pb-10 md:grid-cols-[8fr_4fr]">
             <div className="flex min-w-0 flex-col gap-4">
               <div className="md:hidden">

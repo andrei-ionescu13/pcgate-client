@@ -1,9 +1,11 @@
+'use client';
+
 import { useSettings } from '@/contexts/settings-context';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { MenuItem, TextField } from '@mui/material';
 import { setCookie } from 'cookies-next';
-import { useParams, useSearchParams } from 'next/navigation';
-import type { ChangeEvent, FC } from 'react';
+import { useSearchParams } from 'next/navigation';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState, useTransition } from 'react';
 import { DialogAlert } from './dialog-alert';
 
@@ -14,12 +16,11 @@ interface LanguageCurrencyDialogProps {
   onClose: () => void;
 }
 
-export const LanguageCurrencyDialog: FC<LanguageCurrencyDialogProps> = (
-  props
-) => {
-  const { open, onClose } = props;
+export const LanguageCurrencyDialog = ({
+  open,
+  onClose,
+}: LanguageCurrencyDialogProps) => {
   const router = useRouter();
-  const params = useParams();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   const [refreshTriggered, setRefreshTriggered] = useState(false);

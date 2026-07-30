@@ -1,5 +1,4 @@
 import { Link } from '@/i18n/navigation';
-import type { FC } from 'react';
 import { Button } from './button';
 
 const items = [
@@ -65,7 +64,7 @@ const items = [
   },
 ];
 
-export const BrowseSection: FC = () => (
+export const BrowseSection = () => (
   <div className="py-16">
     <h4 className="mb-6">Browse</h4>
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">

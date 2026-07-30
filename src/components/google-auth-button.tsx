@@ -1,11 +1,8 @@
 import { useAuth } from '@/contexts/auth-context';
-import { Google as GoogleIcon } from '@/icons/google';
+import { GoogleIcon } from '@/icons/google';
 import { Button } from '@mui/material';
-import type { FC } from 'react';
 
-interface GoogleAuthButtonProps {}
-
-export const GoogleAuthButton: FC<GoogleAuthButtonProps> = (props) => {
+export const GoogleAuthButton = () => {
   const { googleAuth } = useAuth();
 
   return (
@@ -18,7 +15,7 @@ export const GoogleAuthButton: FC<GoogleAuthButtonProps> = (props) => {
       variant="contained"
       size="large"
     >
-      <GoogleIcon />
+      <GoogleIcon className="w-6" />
     </Button>
   );
 };

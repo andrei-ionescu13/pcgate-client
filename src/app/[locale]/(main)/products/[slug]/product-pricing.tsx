@@ -1,21 +1,17 @@
 'use client';
 
 import { AddButton } from '@/components/add-button';
+import { Amount } from '@/components/amount';
 import { AppImage } from '@/components/app-image';
 import { Card } from '@/components/card';
 import { ProductDiscount } from '@/components/product-discount';
-import { useFormatCurrency } from '@/hooks/use-format-currency';
 import type { Product } from '@/types/product';
-import type { FC } from 'react';
 
 interface ProductPricingProps {
   product: Product;
 }
 
-export const ProductPricing: FC<ProductPricingProps> = (props) => {
-  const { product } = props;
-  const formatCurrency = useFormatCurrency();
-
+export const ProductPricing = ({ product }: ProductPricingProps) => {
   return (
     <Card>
       <AppImage
@@ -26,6 +22,7 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
         width={16}
       />
       <div className="grid grid-flow-row gap-4 p-4">
+        <h4>{product.title}</h4>
         <div className="relative flex aspect-square max-w-10">
           <AppImage
             priority
@@ -41,11 +38,11 @@ export const ProductPricing: FC<ProductPricingProps> = (props) => {
         <div className="flex items-center gap-2">
           <div className="flex flex-col">
             {product.originalPrice && (
-              <p className="text-text-secondary line-through">
-                {formatCurrency(product.originalPrice)}
-              </p>
+              <Amount className="text-text-secondary line-through">
+                {product.originalPrice}
+              </Amount>
             )}
-            <p className="h5">{formatCurrency(product.price)}</p>
+            <Amount className="h5">{product.price}</Amount>
           </div>
           {product.originalPrice && (
             <ProductDiscount

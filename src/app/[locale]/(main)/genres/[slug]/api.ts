@@ -1,7 +1,7 @@
-import { Genre } from '@/types/common';
-import { appFetchAuth } from '@/utils/app-fetch';
+import type { Genre } from '@/types/common';
+import { appFetch } from '@/utils/app-fetch';
 
 export const getGenre = (slug: string) =>
-  appFetchAuth<Genre>({
+  appFetch<Genre>({
     url: `/genres/${slug}`,
   });

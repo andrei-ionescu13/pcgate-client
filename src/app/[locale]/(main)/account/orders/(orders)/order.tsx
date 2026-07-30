@@ -5,15 +5,13 @@ import { Link } from '@/i18n/navigation';
 import type { Order as OrderI } from '@/types/orders';
 import { cn } from '@/utils/cn';
 import { format } from 'date-fns';
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps } from 'react';
 
 interface OrderProps extends ComponentProps<'div'> {
   order: OrderI;
 }
 
-export const Order: FC<OrderProps> = (props) => {
-  const { order, className, ...rest } = props;
-
+export const Order = ({ order, className, ...rest }: OrderProps) => {
   return (
     <div
       className={cn(

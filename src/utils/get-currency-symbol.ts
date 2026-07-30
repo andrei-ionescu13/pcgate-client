@@ -3,7 +3,8 @@ type CurrencySymbol = '€' | '$';
 
 const currencySymbols: Record<Currency, CurrencySymbol> = {
   EUR: '€',
-  USD: '$'
+  USD: '$',
 };
 
-export const getCurrencySymbol = (currency: Currency): CurrencySymbol => currencySymbols[currency];
+export const getCurrencySymbol = (currency: Currency): CurrencySymbol =>
+  currencySymbols[currency];

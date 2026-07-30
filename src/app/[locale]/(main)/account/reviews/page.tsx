@@ -1,8 +1,11 @@
+import { DataOverlay } from '@/components/data-overlay';
+import { NoData } from '@/components/no-data';
+import { PaginationParam } from '@/components/pagination-param';
 import { SortByPopoverQuery } from '@/components/sort-by-popover-query';
 import Head from 'next/head';
 import { SearchParam } from '../../../../../components/search-param';
 import { searchUserReviews } from './api';
-import { ReviewList } from './review-list';
+import { Review } from './review';
 
 type ReviewsProps = {
   searchParams: Promise<{
@@ -21,9 +24,10 @@ const sortByitems = [
   },
 ];
 
-const Reviews = async (props: ReviewsProps) => {
-  const { searchParams } = props;
-  const data = await searchUserReviews(searchParams);
+const Reviews = async ({ searchParams }: ReviewsProps) => {
+  const params = await searchParams;
+  const data = await searchUserReviews(params);
+  const { reviews, count } = data;
 
   return (
     <>
@@ -39,7 +43,29 @@ const Reviews = async (props: ReviewsProps) => {
             defaultValue={'createdAt'}
           />
         </div>
-        <ReviewList initialData={data} />
+        <div>
+          {!reviews.length ? (
+            <NoData />
+          ) : (
+            <>
+              <DataOverlay>
+                <div className="grid gap-4">
+                  {reviews.map((review) => (
+                    <Review
+                      review={review}
+                      key={review._id}
+                    />
+                  ))}
+                </div>
+              </DataOverlay>
+              {count > 2 && (
+                <div className="mt-10 flex justify-center">
+                  <PaginationParam count={Math.ceil(count / 2)} />
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

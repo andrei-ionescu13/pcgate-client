@@ -1,13 +1,8 @@
-'use client';
-import type { FC } from 'react';
-
 interface MarkdownProps {
   content: string;
 }
 
-export const Markdown: FC<MarkdownProps> = (props) => {
-  const { content } = props;
-
+export const Markdown = ({ content }: MarkdownProps) => {
   return (
     <div
       className="body2 [&>p]:mb-8"

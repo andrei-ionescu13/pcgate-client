@@ -1,14 +1,13 @@
 'use client';
 
 import { IconButton } from '@/components/icon-button';
-import { Search as SearchIcon } from '@/icons/search';
 import { Drawer } from '@mui/material';
-import { SearchProducts } from 'layout/search-products';
+import { SearchIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import type { FC } from 'react';
 import { useEffect, useState } from 'react';
+import { SearchProducts } from './search-products';
 
-export const SearchMobile: FC = () => {
+export const SearchMobile = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -33,9 +32,9 @@ export const SearchMobile: FC = () => {
         anchor="top"
         onClose={handleClose}
         open={open}
-        PaperProps={{
-          sx: {
-            p: 1,
+        slotProps={{
+          paper: {
+            sx: { p: 1 },
           },
         }}
       >

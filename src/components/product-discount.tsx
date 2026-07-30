@@ -3,7 +3,7 @@
 
 import { cn } from '@/utils/cn';
 import { cva, VariantProps } from 'class-variance-authority';
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps } from 'react';
 
 const productDiscount = cva(
   'items-center bg-success rounded-2xl flex text-white max-h-6',
@@ -25,9 +25,13 @@ interface ProductDiscountProps
   price: number;
 }
 
-export const ProductDiscount: FC<ProductDiscountProps> = (props) => {
-  const { variant = 'medium', className, initialPrice, price, ...rest } = props;
-
+export const ProductDiscount = ({
+  variant = 'medium',
+  className,
+  initialPrice,
+  price,
+  ...rest
+}: ProductDiscountProps) => {
   return (
     <div
       className={cn(productDiscount({ variant, className }))}

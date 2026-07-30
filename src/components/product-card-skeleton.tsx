@@ -1,6 +1,5 @@
 'use client';
 import { cn } from '@/utils/cn';
-import type { FC } from 'react';
 import { Card } from './card';
 import { Divider } from './divider';
 import { Skeleton } from './skeleton';
@@ -10,9 +9,9 @@ interface ProductCardSkeletonProps {
   className?: string;
 }
 
-export const ProductCardSkeleton: FC<ProductCardSkeletonProps> = (props) => {
-  const { className } = props;
-
+export const ProductCardSkeleton = ({
+  className,
+}: ProductCardSkeletonProps) => {
   return (
     <Card
       className={cn(

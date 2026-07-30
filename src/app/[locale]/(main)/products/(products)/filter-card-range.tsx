@@ -3,12 +3,14 @@
 
 import { Button } from '@/components/button';
 import { InputBase } from '@/components/input-base';
-import { ChevronRight } from '@/icons/chevron-right';
+import { useRouter } from '@/i18n/navigation';
+import { usePageLoading } from '@/store/page-loading';
 import type { CardProps } from '@mui/material';
 import { Slider } from '@mui/material';
+import { ChevronRightIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import type { ChangeEvent, FC } from 'react';
-import { MouseEvent, useEffect, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { FilterCard } from './filter-card';
 
 interface FilterCardProps extends CardProps {
@@ -41,14 +43,20 @@ function valuetext(value: number) {
   return `${value}312`;
 }
 
-export const FilterCardRange: FC<FilterCardProps> = (props) => {
-  const { title, field, minOption, maxOption, ...rest } = props;
+export const FilterCardRange = ({
+  title,
+  field,
+  minOption,
+  maxOption,
+}: FilterCardProps) => {
+  const { push } = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const { setIsPageLoading } = usePageLoading();
   const fieldMin = `${field}_min`;
   const fieldMax = `${field}_max`;
   const searchParams = useSearchParams();
   const queryMin = searchParams.get(fieldMin);
   const queryMax = searchParams.get(fieldMax);
-
   const [range, setRange] = useState<number[]>(
     initializeRange(
       searchParams.get(fieldMin),
@@ -96,7 +104,7 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
     } catch (error) {}
   };
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
+  const handleClick = (): void => {
     const params = new URLSearchParams(searchParams);
 
     range[0] !== minOption
@@ -106,7 +114,9 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
       ? params.set(fieldMax, range[1].toString())
       : params.delete(fieldMax);
 
-    window.history.pushState(null, '', '?' + params.toString());
+    startTransition(() => {
+      push(`?${params.toString()}`);
+    });
   };
 
   const handleClear = () => {
@@ -115,7 +125,9 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
     params.delete(fieldMin);
     params.delete(fieldMax);
 
-    window.history.pushState(null, '', '?' + params.toString());
+    startTransition(() => {
+      push(`?${params.toString()}`);
+    });
   };
 
   useEffect(() => {
@@ -135,6 +147,10 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
   }, [range]);
 
   const showClearButton = !!queryMin || !!queryMax;
+
+  useEffect(() => {
+    setIsPageLoading(isPending);
+  }, [isPending]);
 
   return (
     <FilterCard
@@ -160,7 +176,7 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
           placeholder="Min"
           value={inputMin}
           onChange={handleMinChange}
-          className="border-divider max-w-12 rounded-lg border py-0.5"
+          className="border-divider max-w-14 rounded-lg border py-0.5"
         />
         <p className="text-text-secondary align-middle">-</p>
         <InputBase
@@ -168,14 +184,14 @@ export const FilterCardRange: FC<FilterCardProps> = (props) => {
           placeholder="Max"
           value={inputMax}
           onChange={handleMaxChange}
-          className="border-divider max-w-12 rounded-lg border py-0.5"
+          className="border-divider max-w-14 rounded-lg border py-0.5"
         />
         <Button
-          className="bg-dark-grey hover:bg-dark-grey-dark min-w-fit py-1"
+          className="bg-dark-grey hover:bg-dark-grey-dark min-w-fit flex-1 py-1"
           variant="contained"
           onClick={handleClick}
         >
-          <ChevronRight fontSize="small" />
+          <ChevronRightIcon />
         </Button>
       </div>
     </FilterCard>

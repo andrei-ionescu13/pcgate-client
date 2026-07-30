@@ -11,11 +11,10 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NextIntlClientProvider } from 'next-intl';
-import { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import { AuthProvider } from '../contexts/auth-context';
 import { SettingsProvider } from '../contexts/settings-context';
-import { StoreProvider } from '../store';
 import { createCustomTheme } from '../theme';
 
 function makeQueryClient() {
@@ -55,8 +54,13 @@ interface ProvidersProps {
   locale?: string;
 }
 
-const Providers: FC<ProvidersProps> = (props) => {
-  const { children, user, currency, messages, locale } = props;
+const Providers = ({
+  children,
+  user,
+  currency,
+  messages,
+  locale,
+}: ProvidersProps) => {
   const queryClient = getQueryClient();
   const theme = createCustomTheme('dark');
 
@@ -69,19 +73,17 @@ const Providers: FC<ProvidersProps> = (props) => {
       <AppRouterCacheProvider>
         <GoogleOAuthProvider clientId="750036915548-bdi2e09ms0r0sotdfrb0bi4098156qnr.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
-            <StoreProvider>
-              <AuthProvider decoded={user}>
-                <SettingsProvider currency={currency}>
-                  <InitColorSchemeScript attribute="class" />
-                  <ThemeProvider theme={theme}>
-                    <Toaster richColors />
-                    <ReactQueryDevtools initialIsOpen={false} />
-                    <CssBaseline />
-                    {children}
-                  </ThemeProvider>
-                </SettingsProvider>
-              </AuthProvider>
-            </StoreProvider>
+            <AuthProvider decoded={user}>
+              <SettingsProvider currency={currency}>
+                <InitColorSchemeScript attribute="class" />
+                <ThemeProvider theme={theme}>
+                  <Toaster richColors />
+                  <ReactQueryDevtools initialIsOpen={false} />
+                  <CssBaseline />
+                  {children}
+                </ThemeProvider>
+              </SettingsProvider>
+            </AuthProvider>
           </QueryClientProvider>
         </GoogleOAuthProvider>
       </AppRouterCacheProvider>

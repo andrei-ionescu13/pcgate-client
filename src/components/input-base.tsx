@@ -1,13 +1,17 @@
 import { cn } from '@/utils/cn';
-import { ComponentProps, FC, ReactNode, useRef } from 'react';
+import { ComponentProps, ReactNode, useRef } from 'react';
 
 export interface InputBaseProps extends ComponentProps<'input'> {
   endAdornment?: ReactNode;
   startAdornment?: ReactNode;
 }
 
-export const InputBase: FC<InputBaseProps> = (props) => {
-  const { endAdornment, startAdornment, className, ...rest } = props;
+export const InputBase = ({
+  endAdornment,
+  startAdornment,
+  className,
+  ...rest
+}: InputBaseProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {

@@ -1,11 +1,8 @@
-import { Badge } from '@/components/badge';
 import { Container } from '@/components/container';
 import { useAuth } from '@/contexts/auth-context';
-import { ShoppingCart as ShoppingCartIcon } from '@/icons/shopping-cart';
-import { useStoreSelector } from '@/store/use-store-selector';
 import { useTranslations } from 'next-intl';
-import type { FC } from 'react';
 import { NavLink } from '../components/nav-link';
+import { CartButton } from './cart-button';
 import { WishlistLink } from './wishlist-link';
 
 interface LinkI {
@@ -28,13 +25,7 @@ const links: LinkI[] = [
   },
 ];
 
-interface NavbarSecondaryProps {
-  onOpenCartDrawer: () => void;
-}
-
-export const NavbarSecondary: FC<NavbarSecondaryProps> = (props) => {
-  const { onOpenCartDrawer } = props;
-  const cart = useStoreSelector((state) => state.cart);
+export const NavbarSecondary = () => {
   const { isAuthenticated } = useAuth();
   const t = useTranslations('general');
 
@@ -59,14 +50,7 @@ export const NavbarSecondary: FC<NavbarSecondaryProps> = (props) => {
           {isAuthenticated && (
             <div className="flex gap-3">
               <WishlistLink />
-              <Badge content={cart.itemCount}>
-                <button
-                  className="flex cursor-pointer items-center rounded-lg bg-[#1E4582] p-2 text-[#FFF]"
-                  onClick={onOpenCartDrawer}
-                >
-                  <ShoppingCartIcon />
-                </button>
-              </Badge>
+              <CartButton />
             </div>
           )}
         </div>

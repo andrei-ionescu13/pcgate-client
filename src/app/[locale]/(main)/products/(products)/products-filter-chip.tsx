@@ -1,23 +1,41 @@
+'use client';
+
 import { Button } from '@/components/button';
-import { useRouter, useSearchParams } from 'next/navigation';
-import type { FC, MouseEvent } from 'react';
+import { useRouter } from '@/i18n/navigation';
+import { usePageLoading } from '@/store/page-loading';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useTransition } from 'react';
 
 interface ProductsFilterChipProps {
   field: string;
   value: string;
 }
 
-export const ProductsFilterChip: FC<ProductsFilterChipProps> = (props) => {
-  const { field, value } = props;
+export const ProductsFilterChip = ({
+  field,
+  value,
+}: ProductsFilterChipProps) => {
   const searchParams = useSearchParams();
   const { push } = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const { setIsPageLoading } = usePageLoading();
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
+  const handleClick = () => {
     const params = new URLSearchParams(searchParams);
     params.delete(field, value);
 
-    window.history.pushState(null, '', '?' + params.toString());
+    startTransition(() => {
+      push(`?${params.toString()}`);
+    });
   };
+
+  useEffect(() => {
+    setIsPageLoading(isPending);
+
+    return () => {
+      setIsPageLoading(false);
+    };
+  }, [isPending]);
 
   return (
     <Button

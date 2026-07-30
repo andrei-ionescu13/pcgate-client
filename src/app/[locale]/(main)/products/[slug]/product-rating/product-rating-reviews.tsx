@@ -2,7 +2,7 @@ import { useIsMounted } from '@/hooks/use-is-mounted';
 import { useScrollTo } from '@/hooks/use-scroll-to';
 import type { ProductReview } from '@/types/product';
 import { Pagination } from '@mui/material';
-import type { ChangeEvent, FC } from 'react';
+import type { ChangeEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { ProductRatingReview } from './product-rating-review';
 
@@ -12,8 +12,9 @@ interface ProductRatingReviewsProps {
   reviews: ProductReview[];
 }
 
-export const ProductRatingReviews: FC<ProductRatingReviewsProps> = (props) => {
-  const { reviews } = props;
+export const ProductRatingReviews = ({
+  reviews,
+}: ProductRatingReviewsProps) => {
   const scrollTo = useScrollTo();
   const [page, setPage] = useState(1);
   const isMounted = useIsMounted();

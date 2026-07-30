@@ -1,21 +1,22 @@
 import { DialogAlert } from '@/components/dialog-alert';
-import { Dropzone, DropzoneFile } from '@/components/dropzone';
+import { Dropzone, type DropzoneFile } from '@/components/dropzone';
 import { useAuth } from '@/contexts/auth-context';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { buildFormData } from '@/utils/build-form-data';
 import { useMutation } from '@tanstack/react-query';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 export const useUpdateAvatar = () =>
   useMutation<string, Error, BodyInit>({
     mutationFn: (values) =>
-      appFetchAuth({
+      appFetch({
         url: '/auth/avatar',
         config: {
           body: values,
           method: 'PUT',
         },
+        withAuth: true,
       }),
   });
 
@@ -23,8 +24,7 @@ interface AvatarDialogProps {
   onClose: () => void;
 }
 
-export const AvatarDialog: FC<AvatarDialogProps> = (props) => {
-  const { onClose } = props;
+export const AvatarDialog = ({ onClose }: AvatarDialogProps) => {
   const { updateUser } = useAuth();
   const [avatar, setAvatar] = useState<DropzoneFile>();
   const updateAvatar = useUpdateAvatar();

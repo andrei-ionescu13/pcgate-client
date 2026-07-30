@@ -1,7 +1,7 @@
 import { Divider } from '@/components/divider';
-import { AccountWebsiteSettings } from 'app/[locale]/(main)/account/account-website-settings';
 import Head from 'next/head';
 import { AccountSecurity } from './account-security';
+import { AccountWebsiteSettings } from './account-website-settings';
 
 export default function Account() {
   return (

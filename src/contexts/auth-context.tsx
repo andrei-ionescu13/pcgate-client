@@ -1,11 +1,12 @@
+'use client';
+
 import { useRouter } from '@/i18n/navigation';
-import { setCart } from '@/store/slices/cart';
-import { setWishlistProducts } from '@/store/slices/wishlist';
-import { useAppDispatch } from '@/store/use-store-dispatch';
-import { Cart } from '@/types/cart';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { useCart } from '@/store/cart';
+import { useWishlist } from '@/store/wishlist';
+import type { Cart } from '@/types/cart';
+import { appFetch } from '@/utils/app-fetch';
 import { useGoogleLogin } from '@react-oauth/google';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface Decoded {
@@ -71,7 +72,7 @@ const defaultSessionContext = {
   register: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   passwordReset: () => Promise.resolve(),
-  requestPasswordReset: (email: string) => Promise.resolve(),
+  requestPasswordReset: () => Promise.resolve(),
   updateUser: () => {},
 };
 
@@ -90,12 +91,12 @@ export const login = ({
   email: string;
   password: string;
 }) =>
-  appFetchAuth<void>({
+  appFetch<void>({
     url: '/auth/login',
     config: {
       method: 'POST',
       body: JSON.stringify({ email, password }),
-      credentials: 'include', // <-- this is CRUCIAL
+      credentials: 'include',
     },
   });
 
@@ -108,7 +109,7 @@ export const register = ({
   password: string;
   confirmPassword: string;
 }) =>
-  appFetchAuth<void>({
+  appFetch<void>({
     url: '/auth/register',
     config: {
       method: 'POST',
@@ -117,7 +118,7 @@ export const register = ({
   });
 
 export const logout = () =>
-  appFetchAuth<void>({
+  appFetch<void>({
     url: '/auth/logout',
     config: {
       method: 'POST',
@@ -125,7 +126,7 @@ export const logout = () =>
   });
 
 export const requestPasswordReset = (email: string) =>
-  appFetchAuth<void>({
+  appFetch<void>({
     url: '/auth/password-reset-token',
     config: {
       method: 'POST',
@@ -144,7 +145,7 @@ export const passwordReset = ({
   password: string;
   confirmPassword: string;
 }) =>
-  appFetchAuth<void>({
+  appFetch<void>({
     url: '/auth/password-reset',
     config: {
       method: 'PUT',
@@ -152,18 +153,18 @@ export const passwordReset = ({
     },
   });
 
-export const AuthProvider: FC<AuthProviderProps> = (props) => {
-  const { decoded, children } = props;
-  const isAuthenticated = !!decoded;
-  const [user, setUser] = useState<User | null | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useAppDispatch();
+export const AuthProvider = ({ decoded, children }: AuthProviderProps) => {
   const { refresh, push } = useRouter();
+  const setWishlistProducts = useWishlist((state) => state.setWishlistProducts);
+  const setCart = useCart((state) => state.setCart);
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null | undefined>();
+  const isAuthenticated = !!decoded;
 
   const googleAuth = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       const { code } = codeResponse;
-      await appFetchAuth<void>({
+      await appFetch<void>({
         url: '/auth/google',
         config: {
           method: 'POST',
@@ -184,12 +185,13 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     const getUser = async () => {
       try {
         setIsLoading(true);
-        const user = await appFetchAuth<User>({
+        const user = await appFetch<User>({
           url: '/auth/me',
+          withAuth: true,
         });
         setUser(user);
-        dispatch(setWishlistProducts(user.wishlist));
-        dispatch(setCart(user.cart));
+        setWishlistProducts(user.wishlist);
+        setCart(user.cart);
       } catch (error) {
         setUser(null);
       } finally {

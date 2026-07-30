@@ -2,17 +2,15 @@
 
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from '@/i18n/navigation';
-import { ShoppingCart } from '@/icons/shopping-cart';
-import { setCart } from '@/store/slices/cart';
-import { Cart } from '@/types/cart';
+import { useCart } from '@/store/cart';
+import type { Cart } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
-import { appFetchAuth } from '@/utils/app-fetch';
+import { appFetch } from '@/utils/app-fetch';
 import { cn } from '@/utils/cn';
 import { useMutation } from '@tanstack/react-query';
-import type { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import { ShoppingCartIcon } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button, ButtonProps } from './button';
+import { Button, type ButtonProps } from './button';
 
 interface AddButtonProps extends ButtonProps {
   productId: string;
@@ -21,22 +19,25 @@ interface AddButtonProps extends ButtonProps {
 export const useAddToCart = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (productId) =>
-      appFetchAuth({
+      appFetch({
         url: '/auth/cart',
         config: {
           method: 'POST',
           body: JSON.stringify({ productId }),
         },
+        withAuth: true,
       }),
   });
 
-export const AddButton: FC<AddButtonProps> = (props) => {
+export const AddButton = ({
+  productId,
+  className,
+  ...rest
+}: AddButtonProps) => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
-
-  const { productId, className, ...rest } = props;
   const addToCart = useAddToCart();
-  const dispatch = useDispatch();
+  const setCart = useCart((state) => state.setCart);
 
   const handleAddToCart = (): void => {
     if (!isAuthenticated) {
@@ -46,7 +47,8 @@ export const AddButton: FC<AddButtonProps> = (props) => {
 
     addToCart.mutate(productId, {
       onSuccess: (data) => {
-        dispatch(setCart(data));
+        setCart(data);
+        toast.success('Product added to cart');
       },
       onError: (error) => {
         toast.error(error.message);
@@ -64,7 +66,7 @@ export const AddButton: FC<AddButtonProps> = (props) => {
       isLoading={addToCart.isPending}
       {...rest}
     >
-      <ShoppingCart />
+      <ShoppingCartIcon />
       Add
     </Button>
   );

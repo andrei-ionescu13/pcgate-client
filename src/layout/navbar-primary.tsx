@@ -2,23 +2,16 @@
 
 import { Button } from '@/components/button';
 import { Container } from '@/components/container';
-import { IconButton } from '@/components/icon-button';
 import { useAuth } from '@/contexts/auth-context';
 import { Link } from '@/i18n/navigation';
-import { Menu as MenuIcon } from '@/icons/menu';
-import type { FC } from 'react';
 import { AccountPopover } from './account-popover';
 import { Logo } from './logo';
+import { MenuButton } from './menu-button';
 import { SearchMobile } from './search-mobile';
 import { SearchProducts } from './search-products';
 
-interface NavbarPrimaryProps {
-  onOpenSidebar: () => void;
-}
-
-export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
+export const NavbarPrimary = () => {
   const { isAuthenticated } = useAuth();
-  const { onOpenSidebar } = props;
 
   return (
     <div>
@@ -32,12 +25,9 @@ export const NavbarPrimary: FC<NavbarPrimaryProps> = (props) => {
               <Logo />
             </div>
           </Link>
-          <IconButton
-            onClick={onOpenSidebar}
-            className="sm:hidden"
-          >
-            <MenuIcon />
-          </IconButton>
+          <div className="sm:hidden">
+            <MenuButton />
+          </div>
           <div className="mr-4 ml-10 hidden w-full max-w-sm md:block">
             <SearchProducts />
           </div>

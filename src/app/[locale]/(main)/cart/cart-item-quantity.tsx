@@ -2,9 +2,8 @@
 import { IconButton } from '@/components/icon-button';
 import { useIsMounted } from '@/hooks/use-is-mounted';
 import { useTimeout } from '@/hooks/use-timeout';
-import { Minus as MinusIcon } from '@/icons/minus';
-import { Plus as PlusIcon } from '@/icons/plus';
-import { FC, useEffect, useState } from 'react';
+import { MinusIcon, PlusIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface CartItemQuantityProps {
   quantity: number;
@@ -13,13 +12,12 @@ interface CartItemQuantityProps {
   hideButtons?: boolean;
 }
 
-export const CartItemQuantity: FC<CartItemQuantityProps> = (props) => {
-  const {
-    quantity: quantityProp,
-    onUpdateQuantity,
-    maxQuantity,
-    hideButtons,
-  } = props;
+export const CartItemQuantity = ({
+  quantity: quantityProp,
+  onUpdateQuantity,
+  maxQuantity,
+  hideButtons,
+}: CartItemQuantityProps) => {
   const isMounted = useIsMounted();
   const [quantity, setQuantity] = useState<number>(quantityProp);
   const { reset } = useTimeout(() => onUpdateQuantity(quantity), 1000);
@@ -51,7 +49,7 @@ export const CartItemQuantity: FC<CartItemQuantityProps> = (props) => {
         onClick={handleRemove}
         disabled={quantity <= 1}
       >
-        <MinusIcon fontSize="small" />
+        <MinusIcon />
       </IconButton>
       <p>{quantity}</p>
       <IconButton
@@ -60,7 +58,7 @@ export const CartItemQuantity: FC<CartItemQuantityProps> = (props) => {
         disabled={quantity >= maxQuantity}
         onClick={handleAdd}
       >
-        <PlusIcon fontSize="small" />
+        <PlusIcon />
       </IconButton>
     </div>
   );

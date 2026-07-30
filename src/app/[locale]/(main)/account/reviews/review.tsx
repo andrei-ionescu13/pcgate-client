@@ -1,23 +1,22 @@
 'use client';
+
 import { AppImage } from '@/components/app-image';
 import { Card } from '@/components/card';
 import { DialogAlert } from '@/components/dialog-alert';
 import { useOpen } from '@/hooks/use-open';
 import { Link } from '@/i18n/navigation';
-import { Steam as SteamIcon } from '@/icons/steam';
+import { SteamIcon } from '@/icons/steam';
 import type { UserReview as UserReviewI } from '@/types/user';
 import { Button, Rating } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import type { FC } from 'react';
 import { useDeleteReview } from './api-hooks';
 
 interface UserReview {
   review: UserReviewI;
 }
 
-export const Review: FC<UserReview> = (props) => {
-  const { review } = props;
+export const Review = ({ review }: UserReview) => {
   const queryClient = useQueryClient();
   const [open, handleOpen, handleClose] = useOpen();
   const deleteReview = useDeleteReview(() => {

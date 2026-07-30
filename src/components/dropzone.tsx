@@ -1,7 +1,6 @@
 import { cn } from '@/utils/cn';
 import { CircularProgress } from '@mui/material';
 import Image from 'next/image';
-import type { FC } from 'react';
 import { useState } from 'react';
 import type { FileWithPath } from 'react-dropzone';
 import { useDropzone } from 'react-dropzone';
@@ -21,8 +20,13 @@ interface DropzoneProps {
   placeholder: string;
 }
 
-export const Dropzone: FC<DropzoneProps> = (props) => {
-  const { file, onDrop, resolution, onError, placeholder } = props;
+export const Dropzone = ({
+  file,
+  onDrop,
+  resolution,
+  onError,
+  placeholder,
+}: DropzoneProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { getRootProps, getInputProps, isFocused } = useDropzone({

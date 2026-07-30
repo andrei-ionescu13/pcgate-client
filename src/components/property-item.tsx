@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface PropertyItemProps {
   align?: 'horizontal' | 'vertical';
@@ -7,9 +7,11 @@ interface PropertyItemProps {
   label: string;
 }
 
-export const PropertyItem: FC<PropertyItemProps> = (props) => {
-  const { label, content, align = 'horizontal' } = props;
-
+export const PropertyItem = ({
+  label,
+  content,
+  align = 'horizontal',
+}: PropertyItemProps) => {
   return (
     <li
       className={cn(

@@ -1,9 +1,8 @@
 'use client';
 
 import { Link } from '@/i18n/navigation';
-import { ChevronLeft as ChevronLeftIcon } from '@/icons/chevron-left';
-import { ChevronRight as ChevronRightIcon } from '@/icons/chevron-right';
-import { useEffect, useState, type FC } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AppImage } from './app-image';
@@ -23,8 +22,7 @@ interface SlideshowProps {
   items: SlideshowItem[];
 }
 
-export const Slideshow: FC<SlideshowProps> = (props) => {
-  const { items } = props;
+export const Slideshow = ({ items }: SlideshowProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -46,7 +44,6 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
         className="relative block aspect-video"
       >
         <AppImage
-          priority
           src={slide.image}
           alt={slide.title}
           fill
@@ -76,7 +73,7 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
         }}
       >
         <Button className="slideshow-swiper-button-prev absolute top-0 bottom-0 left-0 z-20 rounded-r-none px-3">
-          <ChevronLeftIcon fontSize="large" />
+          <ChevronLeftIcon />
         </Button>
         {slides.map((slide) => (
           <SwiperSlide key={slide.href}>
@@ -85,7 +82,6 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
               className="relative block aspect-video"
             >
               <AppImage
-                priority
                 src={slide.image}
                 alt={slide.title}
                 fill
@@ -100,7 +96,7 @@ export const Slideshow: FC<SlideshowProps> = (props) => {
           </SwiperSlide>
         ))}
         <Button className="slideshow-swiper-button-next absolute top-0 right-0 bottom-0 z-20 rounded-l-none px-3">
-          <ChevronRightIcon fontSize="large" />
+          <ChevronRightIcon />
         </Button>
       </Swiper>
     </div>

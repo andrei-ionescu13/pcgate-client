@@ -1,14 +1,16 @@
 import { cn } from '@/utils/cn';
 import { Slot } from '@radix-ui/react-slot';
-import type { ComponentProps, FC } from 'react';
+import type { ComponentProps } from 'react';
 
 interface ListButtonProps extends ComponentProps<'button'> {
   asChild?: boolean;
 }
 
-export const ListButton: FC<ListButtonProps> = (props) => {
-  const { className, asChild = false, ...rest } = props;
-
+export const ListButton = ({
+  className,
+  asChild = false,
+  ...rest
+}: ListButtonProps) => {
   const Comp = asChild ? Slot : 'button';
 
   return (

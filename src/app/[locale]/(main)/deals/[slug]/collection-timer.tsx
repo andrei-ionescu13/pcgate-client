@@ -3,7 +3,6 @@ import { Card } from '@/components/card';
 import { useCountdown } from '@/hooks/use-countdown';
 import { useRouter } from '@/i18n/navigation';
 import { Meta } from '@/types/common';
-import type { FC } from 'react';
 
 interface DealI {
   _id: string;
@@ -25,8 +24,7 @@ interface CollectionTimerProps {
   deal: DealI;
 }
 
-export const CollectionTimer: FC<CollectionTimerProps> = (props) => {
-  const { deal } = props;
+export const CollectionTimer = ({ deal }: CollectionTimerProps) => {
   const router = useRouter();
   const timeDiff = useCountdown(new Date(deal.endDate), () => {
     router.refresh();

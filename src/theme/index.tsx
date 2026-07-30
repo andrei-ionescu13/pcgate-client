@@ -1,4 +1,3 @@
-import { Star as StarIcon } from '@/icons/star';
 import type { Theme, ThemeOptions } from '@mui/material/styles';
 import { alpha, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import * as PALETTE from './palette';
@@ -19,6 +18,13 @@ const baseThemeOptions: ThemeOptions = {
     values: BREAKPOINTS,
   },
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#12171E',
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -109,12 +115,6 @@ const baseThemeOptions: ThemeOptions = {
         root: {
           backgroundImage: 'initial',
         },
-      },
-    },
-    MuiRating: {
-      defaultProps: {
-        icon: <StarIcon />,
-        emptyIcon: <StarIcon />,
       },
     },
   },

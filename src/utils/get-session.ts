@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { cookies, headers } from 'next/headers';
 
 const parseCookies = (rawCookies: string | null) => {
@@ -21,7 +21,10 @@ interface Decoded {
   exp: number;
 }
 
-export const getSession = async (): Promise<Decoded | null> => {
+export const getSession = async (): Promise<{
+  user: Decoded | null;
+  isAuthenticated: boolean;
+}> => {
   const cookieStore = await cookies();
   const headerStore = await headers();
   const setCookies: any = parseCookies(headerStore.get('set-cookie'));
@@ -32,9 +35,9 @@ export const getSession = async (): Promise<Decoded | null> => {
     const decoded: Decoded = jwtDecode(accessToken);
 
     if (decoded.exp > Date.now() / 1000) {
-      return jwtDecode(accessToken);
+      return { user: jwtDecode(accessToken), isAuthenticated: true };
     }
   }
 
-  return null;
+  return { user: null, isAuthenticated: false };
 };

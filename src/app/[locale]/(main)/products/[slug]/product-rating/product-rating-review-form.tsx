@@ -5,28 +5,29 @@ import { Card } from '@/components/card';
 import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from '@/i18n/navigation';
 import type { Product } from '@/types/product';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Rating, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import type { FC } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
+import * as z from 'zod';
 import { useCreateReview } from '../api-hooks';
 
-interface FormValues {
-  content: string;
-  rating: number;
-}
+const schema = z.object({
+  content: z.string(),
+  rating: z.number(),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 interface ProductRatingReviewFormProps {
   onClose: () => void;
   product: Product;
 }
 
-export const ProductRatingReviewForm: FC<ProductRatingReviewFormProps> = (
-  props
-) => {
-  const { onClose, product } = props;
+export const ProductRatingReviewForm = ({
+  onClose,
+  product,
+}: ProductRatingReviewFormProps) => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
@@ -53,12 +54,7 @@ export const ProductRatingReviewForm: FC<ProductRatingReviewFormProps> = (
       content: '',
       rating: 0,
     },
-    resolver: yupResolver(
-      Yup.object({
-        content: Yup.string().required('Required'),
-        rating: Yup.number().required('Required'),
-      })
-    ),
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {

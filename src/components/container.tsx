@@ -1,6 +1,6 @@
 import { cn } from '@/utils/cn';
-import { cva, VariantProps } from 'class-variance-authority';
-import type { ComponentProps, FC } from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type { ComponentProps } from 'react';
 
 const container = cva('mx-auto', {
   variants: {
@@ -24,9 +24,12 @@ interface ContainerProps
   extends ComponentProps<'div'>,
     VariantProps<typeof container> {}
 
-export const Container: FC<ContainerProps> = (props) => {
-  const { className, maxWidth, disableGutters = false, ...rest } = props;
-
+export const Container = ({
+  className,
+  maxWidth,
+  disableGutters = false,
+  ...rest
+}: ContainerProps) => {
   return (
     <div
       className={cn(container({ maxWidth, disableGutters, className }))}

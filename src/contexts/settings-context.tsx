@@ -1,8 +1,11 @@
 'use client';
-import { appFetchAuth } from '@/utils/app-fetch';
+
+import { appFetch } from '@/utils/app-fetch';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
 import { useLocale } from 'next-intl';
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface Currency {
@@ -18,19 +21,18 @@ export interface Language {
 }
 
 export const listLanguages = () =>
-  appFetchAuth<Language[]>({
+  appFetch<Language[]>({
     url: '/languages',
   });
 
 const listCurrencies = () =>
-  appFetchAuth<Currency[]>({
+  appFetch<Currency[]>({
     url: '/currencies',
   });
 
 interface Settings {
   currency: string;
   language: string;
-  theme: string;
 }
 
 export interface SettingsContextValue {
@@ -46,9 +48,8 @@ interface SettingsProviderProps {
 }
 
 const initialSettings: Settings = {
-  currency: '',
-  language: '',
-  theme: 'light',
+  currency: Cookies.get('currency') || 'usd',
+  language: Cookies.get('NEXT_LOCALE') || 'en',
 };
 
 export const SettingsContext = createContext<SettingsContextValue>({
@@ -66,8 +67,10 @@ export const SettingsContext = createContext<SettingsContextValue>({
       : []),
 });
 
-export const SettingsProvider: FC<SettingsProviderProps> = (props) => {
-  const { children, currency } = props;
+export const SettingsProvider = ({
+  children,
+  currency,
+}: SettingsProviderProps) => {
   const queryClient = useQueryClient();
   const language = useLocale();
   const [settings, setSettings] = useState<Settings>({

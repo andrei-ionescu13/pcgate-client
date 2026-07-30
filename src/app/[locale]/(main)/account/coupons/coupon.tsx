@@ -5,15 +5,13 @@ import { Coupon as CouponI } from '@/types/common';
 import { cn } from '@/utils/cn';
 import { Button } from '@mui/material';
 import { format } from 'date-fns';
-import type { FC } from 'react';
 import { Fragment } from 'react';
 
 interface CouponProps {
   coupon: CouponI;
 }
 
-export const Coupon: FC<CouponProps> = (props) => {
-  const { coupon: promoCode } = props;
+export const Coupon = ({ coupon: promoCode }: CouponProps) => {
   const active = promoCode.status === 'active';
 
   return (
