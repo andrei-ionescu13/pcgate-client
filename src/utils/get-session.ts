@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 const parseCookies = (rawCookies: string | null) => {
   const pairs = rawCookies?.split(';');
@@ -26,10 +26,7 @@ export const getSession = async (): Promise<{
   isAuthenticated: boolean;
 }> => {
   const cookieStore = await cookies();
-  const headerStore = await headers();
-  const setCookies: any = parseCookies(headerStore.get('set-cookie'));
-  const accessToken =
-    cookieStore.get('accessToken')?.value || setCookies?.accessToken;
+  const accessToken = cookieStore.get('accessToken')?.value;
 
   if (accessToken) {
     const decoded: Decoded = jwtDecode(accessToken);
