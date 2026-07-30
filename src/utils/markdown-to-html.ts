@@ -1,9 +1,11 @@
-import DOMPurify from 'isomorphic-dompurify';
 import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
-export const markdownToHtml = async (markdown: string) => {
+export async function markdownToHtml(markdown: string) {
   const parsed = await marked.parse(markdown);
-  return DOMPurify.sanitize(parsed, {
-    USE_PROFILES: { html: true },
+
+  return sanitizeHtml(parsed, {
+    allowedTags: sanitizeHtml.defaults.allowedTags,
+    allowedAttributes: sanitizeHtml.defaults.allowedAttributes,
   });
-};
+}
