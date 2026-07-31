@@ -3,11 +3,9 @@ import { Container } from '@/components/container';
 import { Divider } from '@/components/divider';
 import { Markdown } from '@/components/markdown';
 import { Share } from '@/components/share';
-import { locales } from '@/i18n/routing';
 import { markdownToHtml } from '@/utils/markdown-to-html';
 import { format } from 'date-fns';
 import Head from 'next/head';
-import { listArticles } from '../(blog)/api';
 import { getArticle } from './api';
 import { ArticleLabel } from './article-label';
 
@@ -16,17 +14,6 @@ interface ArticleProps {
     slug: string;
     locale: string;
   }>;
-}
-
-export async function generateStaticParams() {
-  const articles = await listArticles();
-
-  return locales.flatMap((locale) =>
-    articles.map(({ slug }) => ({
-      locale,
-      slug,
-    }))
-  );
 }
 
 const Article = async ({ params }: ArticleProps) => {
