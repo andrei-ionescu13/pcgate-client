@@ -57,6 +57,9 @@ export const AccountPopover = (props: AccountPopoverProps) => {
         router.push('/');
         router.refresh();
       },
+      onError: (error) => {
+        console.log(error);
+      },
     });
   };
 

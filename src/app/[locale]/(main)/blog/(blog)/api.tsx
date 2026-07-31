@@ -10,7 +10,6 @@ interface GetArticlesData {
 export const listArticles = () =>
   appFetch<Article[]>({
     url: '/articles',
-    shouldAddCookies: false,
   });
 
 export const searchArticles = (query: ParsedUrlQuery) =>

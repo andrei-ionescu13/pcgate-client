@@ -41,7 +41,6 @@ export const appFetch = async <T>({
   query = undefined,
   withAuth = false,
   responseType = 'json',
-  shouldAddCookies = true,
 }: {
   url: string;
   config?: RequestInit;
@@ -49,12 +48,11 @@ export const appFetch = async <T>({
   withAuth?: boolean;
   responseType?: string;
   shouldRedirect?: boolean;
-  shouldAddCookies?: boolean;
 }): Promise<ReturnType<T>> => {
   const { headers = {}, ...restConfig } = config;
   let cookieStore: ReadonlyRequestCookies | undefined;
 
-  if (isServer && shouldAddCookies) {
+  if (isServer) {
     const { cookies } = await import('next/headers');
     cookieStore = await cookies();
   }
@@ -64,9 +62,7 @@ export const appFetch = async <T>({
       headers: {
         ...DEFAULT_HEADERS,
         ...headers,
-        ...(isServer &&
-          cookieStore &&
-          shouldAddCookies && { Cookie: cookieStore.toString() }),
+        ...(isServer && cookieStore && { Cookie: cookieStore.toString() }),
       },
       ...restConfig,
       credentials: 'include',
@@ -111,7 +107,7 @@ export const appFetch = async <T>({
     try {
       await getNewAccesToken();
     } catch (error) {
-      if (isServer && shouldAddCookies) {
+      if (isServer) {
         const { redirect } = await import('next/navigation');
         redirect('/login');
         return;
@@ -129,7 +125,7 @@ export const appFetch = async <T>({
     data = await response.json();
 
     if (response.status === 401) {
-      if (isServer && shouldAddCookies) {
+      if (isServer) {
         const { redirect } = await import('next/navigation');
         redirect('/login');
         return;

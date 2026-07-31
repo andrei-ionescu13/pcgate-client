@@ -121,6 +121,7 @@ export const logout = () =>
     config: {
       method: 'POST',
     },
+    responseType: 'no-content',
   });
 
 export const requestPasswordReset = (email: string) =>
