@@ -91,12 +91,13 @@ export const login = ({
   email: string;
   password: string;
 }) =>
-  fetch('/api/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-    credentials: 'include',
+  appFetch<void>({
+    url: '/auth/login',
+    config: {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    },
   });
-
 export const register = ({
   email,
   password,
@@ -157,7 +158,7 @@ export const AuthProvider = ({ decoded, children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null | undefined>();
   const isAuthenticated = !!decoded;
-  console.log(decoded);
+
   const googleAuth = useGoogleLogin({
     onSuccess: async (codeResponse) => {
       const { code } = codeResponse;
