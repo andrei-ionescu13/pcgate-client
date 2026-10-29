@@ -14,7 +14,7 @@ interface SlideshowItem {
   description: string;
   isDeal: boolean;
   cover: {
-    public_id: string;
+    publicId: string;
   };
 }
 
@@ -32,7 +32,7 @@ export const Slideshow = ({ items }: SlideshowProps) => {
   const slides = items.map((item) => ({
     ...item,
     href: `/deals/${item.slug}`,
-    image: item.cover.public_id,
+    image: item.cover.publicId,
   }));
 
   if (!isMounted) {

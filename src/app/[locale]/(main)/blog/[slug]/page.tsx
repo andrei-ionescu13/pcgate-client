@@ -41,7 +41,7 @@ const Article = async ({ params }: ArticleProps) => {
           <div className="flex flex-col overflow-hidden rounded-lg">
             <div className="relative flex aspect-video">
               <AppImage
-                src={cover.public_id}
+                src={cover.publicId}
                 alt={title}
                 fill
               />

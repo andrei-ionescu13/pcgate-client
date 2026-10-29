@@ -1,14 +1,11 @@
 import { appFetch } from '@/utils/app-fetch';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import { listProductReviews } from './api';
+import { searchProductReviews } from './api';
 
-export const useListProductReviews = () => {
-  const { slug } = useParams<{ slug: string }>();
-
+export const useSearchProductReviews = (productId: string) => {
   return useQuery({
-    queryKey: ['product', slug, 'reviews'],
-    queryFn: listProductReviews(slug),
+    queryKey: ['product', productId, 'reviews'],
+    queryFn: searchProductReviews(productId),
   });
 };
 

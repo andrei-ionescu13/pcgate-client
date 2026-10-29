@@ -28,7 +28,7 @@ const Product = async ({ params }: ProductProps) => {
 
   const imageSlides: ProductMediaSlideImage[] = product.images.map((image) => ({
     type: 'image',
-    public_id: image.public_id,
+    publicId: image.publicId,
   }));
 
   const videoSlides: ProductMediaSlideVideo[] = product.videos.map((video) => ({

@@ -40,7 +40,7 @@ export const CartSummary = ({ cart }: CartSummaryProps) => {
 
   const checkout = async () => {
     const url = await appFetch<string>({
-      url: '/auth/checkout',
+      url: '/checkout',
       config: {
         method: 'POST',
       },

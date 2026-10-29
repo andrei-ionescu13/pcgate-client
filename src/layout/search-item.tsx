@@ -31,7 +31,7 @@ export const SearchItem = ({
       <div className="relative aspect-video w-full max-w-[160px]">
         <AppImage
           priority
-          src={product.cover.public_id}
+          src={product.cover.publicId}
           alt={product.title}
           sizes="120px"
           fill

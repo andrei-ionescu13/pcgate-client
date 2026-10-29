@@ -66,6 +66,7 @@ export const appFetch = async <T>({
       },
       ...restConfig,
       credentials: 'include',
+      // cache: 'no-store',
     });
 
   const handleSuccessResponse = async (response: any) => {
@@ -80,6 +81,8 @@ export const appFetch = async <T>({
       const data = await response.blob();
       return data as ReturnType<T>;
     }
+
+    return response;
   };
 
   const appFetch = async () => {

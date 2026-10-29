@@ -16,7 +16,7 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
       <div className="relative aspect-video transition-all duration-300 group-hover:scale-125">
         <AppImage
           fill
-          src={cover.public_id}
+          src={cover.publicId}
           alt={title}
         />
       </div>

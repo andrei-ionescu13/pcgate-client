@@ -36,7 +36,7 @@ export const ProductCard = ({
         <div className="relative aspect-video">
           <AppImage
             fill
-            src={product.cover.public_id}
+            src={product.cover.publicId}
             alt={product.title}
           />
         </div>
@@ -72,7 +72,7 @@ export const ProductCard = ({
       <div className="flex items-center p-2">
         <div className="relative flex aspect-square w-full max-w-10">
           <AppImage
-            src={product.platform.logo.public_id}
+            src={product.platform.logo.publicId}
             alt={product.platform.name}
             sizes="
                 (min-width: 1200px) 400px,

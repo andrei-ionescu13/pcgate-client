@@ -20,10 +20,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale;
 
-  const response = await fetch(
-    `https://res.cloudinary.com/desubtoqp/raw/upload/locales/${locale}.json`
-  );
-  const messages = await response.json();
+  let messages = {};
+
+  try {
+    const response = await fetch(
+      `https://res.cloudinary.com/desubtoqp/raw/upload/locales/${locale}.json`
+    );
+    messages = await response.json();
+  } catch (error) {
+    console.log(error);
+  }
 
   return {
     locale,

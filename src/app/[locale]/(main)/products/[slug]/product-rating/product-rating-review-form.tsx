@@ -8,13 +8,14 @@ import type { Product } from '@/types/product';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Rating, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import * as z from 'zod';
 import { useCreateReview } from '../api-hooks';
+import { toast } from 'sonner';
 
 const schema = z.object({
-  content: z.string(),
-  rating: z.number(),
+  content: z.string().min(12),
+  rating: z.number().min(1).max(5),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -31,16 +32,11 @@ export const ProductRatingReviewForm = ({
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
-
   const createReview = useCreateReview(() => {
     router.refresh();
-
-    return Promise.all([
-      // queryClient.invalidateQueries({ queryKey: ['product', product.slug] }),
-      queryClient.invalidateQueries({
-        queryKey: ['product', product.slug, 'reviews'],
-      }),
-    ]);
+    return queryClient.invalidateQueries({
+      queryKey: ['product', product._id, 'reviews'],
+    });
   });
 
   const {
@@ -69,7 +65,9 @@ export const ProductRatingReviewForm = ({
         onSuccess: () => {
           onClose();
         },
-        onError: (error) => console.log(error.message),
+        onError: (error) => {
+          toast.error(error.message);
+        },
       }
     );
   };

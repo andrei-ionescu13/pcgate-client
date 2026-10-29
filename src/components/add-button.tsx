@@ -20,7 +20,7 @@ export const useAddToCart = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (productId) =>
       appFetch({
-        url: '/auth/cart',
+        url: '/cart',
         config: {
           method: 'POST',
           body: JSON.stringify({ productId }),

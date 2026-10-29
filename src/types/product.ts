@@ -1,4 +1,5 @@
-import type { Asset, Review } from "./common";
+import type { Asset, Review } from './common';
+import type { User } from './user';
 
 interface Platform {
   name: string;
@@ -36,7 +37,8 @@ interface Feature {
   slug: string;
 }
 
-export interface ProductReview extends Review {
+export interface ProductReview extends Omit<Review, 'user'> {
+  user: Pick<User, '_id' | 'avatar'>;
   product: string;
   hasDelete: boolean;
 }

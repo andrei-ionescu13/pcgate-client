@@ -1,5 +1,6 @@
 'use client';
 
+import { getCart } from '@/app/[locale]/(main)/cart/api';
 import { useRouter } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useWishlist } from '@/store/wishlist';
@@ -127,6 +128,7 @@ export const logout = () =>
 export const requestPasswordReset = (email: string) =>
   appFetch<void>({
     url: '/auth/password-reset-token',
+    responseType: 'no-content',
     config: {
       method: 'POST',
       body: JSON.stringify({ email }),
@@ -146,6 +148,7 @@ export const passwordReset = ({
 }) =>
   appFetch<void>({
     url: '/auth/password-reset',
+    responseType: 'no-content',
     config: {
       method: 'PUT',
       body: JSON.stringify({ userId, token, password, confirmPassword }),
@@ -185,12 +188,13 @@ export const AuthProvider = ({ decoded, children }: AuthProviderProps) => {
       try {
         setIsLoading(true);
         const user = await appFetch<User>({
-          url: '/auth/me',
+          url: '/me',
           withAuth: true,
         });
+        const cart = await getCart();
         setUser(user);
         setWishlistProducts(user.wishlist);
-        setCart(user.cart);
+        setCart(cart);
       } catch (error) {
         setUser(null);
       } finally {

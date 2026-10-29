@@ -2,7 +2,7 @@ import type { Product } from './product';
 
 export interface Asset {
   asset_id: string;
-  public_id: string;
+  publicId: string;
   version: number;
   version_id: string;
   signature: string;
@@ -27,7 +27,7 @@ export interface Review {
   _id: string;
   userName: string;
   user: string;
-  rating: 2;
+  rating: number;
   content: string;
   createdAt: string;
 }

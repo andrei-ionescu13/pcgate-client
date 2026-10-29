@@ -3,6 +3,6 @@ import { appFetch } from '@/utils/app-fetch';
 
 export const getWishlist = () =>
   appFetch<Product[]>({
-    url: '/auth/wishlist',
+    url: '/wishlist',
     withAuth: true,
   });

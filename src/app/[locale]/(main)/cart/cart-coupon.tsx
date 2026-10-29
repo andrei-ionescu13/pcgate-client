@@ -18,7 +18,7 @@ export const useApplyCoupon = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (code) =>
       appFetch<Cart>({
-        url: '/auth/cart/promo-code',
+        url: '/cart/promo-code',
         config: {
           method: 'POST',
           body: JSON.stringify({ code }),
@@ -31,7 +31,7 @@ export const useRemoveCoupon = () =>
   useMutation<Cart, ApiError>({
     mutationFn: () =>
       appFetch<Cart>({
-        url: '/auth/cart/promo-code',
+        url: '/cart/promo-code',
         config: {
           method: 'DELETE',
         },

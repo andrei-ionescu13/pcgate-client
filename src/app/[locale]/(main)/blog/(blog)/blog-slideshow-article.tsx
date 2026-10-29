@@ -17,7 +17,7 @@ export const BlogSlideshowArticle = ({
         <div className="relative flex aspect-video">
           <AppImage
             priority
-            src={article.cover.public_id}
+            src={article.cover.publicId}
             alt={article.title}
             fill
           />

@@ -125,7 +125,7 @@ export const LibraryProduct = ({
           width={16}
           height={9}
           priority
-          src={product.cover.public_id}
+          src={product.cover.publicId}
           alt={product.title}
           sizes="
                 (min-width: 1200px) 400px,

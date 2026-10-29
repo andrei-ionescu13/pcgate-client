@@ -11,32 +11,30 @@ import { HeartIcon } from 'lucide-react';
 import type { MouseEvent } from 'react';
 import { toast } from 'sonner';
 
-export const useAddToWishlist = (onSuccess?: any) =>
+export const useAddToWishlist = () =>
   useMutation<string, ApiError, string>({
     mutationFn: (productId) =>
       appFetch({
-        url: '/auth/wishlist',
+        url: '/wishlist',
         config: {
           body: JSON.stringify({ productId }),
           method: 'POST',
         },
         withAuth: true,
       }),
-    onSuccess,
   });
 
-export const useRemoveFromWishlist = (onSuccess?: any) =>
+export const useRemoveFromWishlist = () =>
   useMutation<string, ApiError, string>({
     mutationFn: (productId) =>
       appFetch({
-        url: '/auth/wishlist',
+        url: '/wishlist',
         config: {
           body: JSON.stringify({ productId }),
           method: 'DELETE',
         },
         withAuth: true,
       }),
-    onSuccess,
   });
 
 interface WishlistButtonProps {

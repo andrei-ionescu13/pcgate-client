@@ -18,7 +18,7 @@ export const ProductPricing = ({ product }: ProductPricingProps) => {
         layout="responsive"
         alt={product.title}
         height={9}
-        src={product.cover.public_id}
+        src={product.cover.publicId}
         width={16}
       />
       <div className="grid grid-flow-row gap-4 p-4">
@@ -26,7 +26,7 @@ export const ProductPricing = ({ product }: ProductPricingProps) => {
         <div className="relative flex aspect-square max-w-10">
           <AppImage
             priority
-            src={product.platform.logo.public_id}
+            src={product.platform.logo.publicId}
             alt={product.platform.name}
             sizes="
                 (min-width: 1200px) 400px,

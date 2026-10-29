@@ -21,7 +21,7 @@ const Deal = async (props: { params: Promise<{ slug: string }> }) => {
       >
         <AppImage
           fill
-          src={deal.cover.public_id}
+          src={deal.cover.publicId}
           alt={deal.title}
           className="object-cover"
         />

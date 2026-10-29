@@ -7,7 +7,7 @@ import { Meta } from '@/types/common';
 interface DealI {
   _id: string;
   cover: {
-    public_id: string;
+    publicId: string;
     width: number;
     height: number;
     _id: string;

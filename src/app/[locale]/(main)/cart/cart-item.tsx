@@ -24,7 +24,7 @@ export const useRemoveFromCart = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (itemId) =>
       appFetch({
-        url: '/auth/cart',
+        url: '/cart',
         config: {
           method: 'DELETE',
           body: JSON.stringify({ itemId }),
@@ -37,7 +37,7 @@ export const useUpdateQuantity = () =>
   useMutation<Cart, ApiError, { productId: string; quantity: number }>({
     mutationFn: ({ productId, quantity }) =>
       appFetch({
-        url: '/auth/cart/quantity',
+        url: '/cart/quantity',
         config: {
           method: 'PUT',
           body: JSON.stringify({ productId, quantity }),
@@ -95,7 +95,7 @@ export const CartItem = ({ item, className }: CartItemProps) => {
         <div className="relative aspect-video">
           <AppImage
             fill
-            src={product.cover.public_id}
+            src={product.cover.publicId}
             alt={product.title}
           />
         </div>

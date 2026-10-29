@@ -1,9 +1,9 @@
-import { Meta } from "./common";
+import { Meta } from './common';
 
 export interface Deal {
   _id: string;
   cover: {
-    public_id: string;
+    publicId: string;
     width: number;
     height: number;
     _id: string;

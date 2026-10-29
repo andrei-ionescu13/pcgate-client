@@ -25,7 +25,7 @@ export type ProductMediaSlideVideo = {
 
 export type ProductMediaSlideImage = {
   type: 'image';
-  public_id: string;
+  publicId: string;
 };
 
 export type ProductMediaSlide = ProductMediaSlideVideo | ProductMediaSlideImage;
@@ -67,7 +67,7 @@ export const ProductMedia = ({ slides }: ProductMediaProps) => {
           <div className="relative flex aspect-video">
             <AppImage
               alt=""
-              src={selectedSlide.public_id}
+              src={selectedSlide.publicId}
               fill
               style={{
                 objectFit: 'contain',
@@ -118,8 +118,8 @@ export const ProductMedia = ({ slides }: ProductMediaProps) => {
                   ) : (
                     <div className="relative flex aspect-video">
                       <AppImage
-                        src={slide.public_id}
-                        alt={slide.public_id}
+                        src={slide.publicId}
+                        alt={slide.publicId}
                         fill
                       />
                     </div>

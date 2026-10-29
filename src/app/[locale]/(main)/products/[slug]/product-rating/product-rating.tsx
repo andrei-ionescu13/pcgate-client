@@ -9,7 +9,7 @@ import type { Product } from '@/types/product';
 import { CircularProgress } from '@mui/material';
 import { PencilIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useListProductReviews } from '../api-hooks';
+import { useSearchProductReviews } from '../api-hooks';
 import { ProductRatingReviewForm } from './product-rating-review-form';
 import { ProductRatingReviews } from './product-rating-reviews';
 
@@ -21,7 +21,8 @@ export const ProductRating = ({ product }: ProductRatingProps) => {
   const scrollTo = useScrollTo();
   const [formOpen, setFormOpen] = useState(false);
   const formContainerRef = useRef<HTMLDivElement>(null);
-  const { data: reviews, isLoading } = useListProductReviews();
+  const { data, isLoading } = useSearchProductReviews(product._id);
+  const { reviews, count } = data || {};
 
   const handleOpenForm = () => {
     setFormOpen(true);
@@ -48,34 +49,36 @@ export const ProductRating = ({ product }: ProductRatingProps) => {
           </h2>
         </div>
         <div className="grid items-center p-6">
-          {Object.keys(product.rating.distribution).map((key) => (
-            <div
-              key={key}
-              className="grid grid-flow-col grid-cols-[auto_1fr_auto] items-center gap-2 sm:grid-cols-[20%_1fr_10%]"
-            >
-              <p className="subtitle2 text-nowrap">{`${key} Star`}</p>
-              <div className="flex-1">
-                <Progress
-                  value={
-                    reviews?.length
-                      ? (product.rating.distribution[
-                          key as '1' | '2' | '3' | '4' | '5'
-                        ] /
-                          reviews.length) *
-                        100
-                      : 0
+          {Object.keys(product.rating.distribution)
+            .reverse()
+            .map((key) => (
+              <div
+                key={key}
+                className="grid grid-flow-col grid-cols-[auto_1fr_auto] items-center gap-2 sm:grid-cols-[20%_1fr_10%]"
+              >
+                <p className="subtitle2 text-nowrap">{`${key} Star`}</p>
+                <div className="flex-1">
+                  <Progress
+                    value={
+                      count
+                        ? (product.rating.distribution[
+                            key as '1' | '2' | '3' | '4' | '5'
+                          ] /
+                            count) *
+                          100
+                        : 0
+                    }
+                  />
+                </div>
+                <p className="body2 text-right">
+                  {
+                    product.rating.distribution[
+                      key as '1' | '2' | '3' | '4' | '5'
+                    ]
                   }
-                />
+                </p>
               </div>
-              <p className="body2 text-right">
-                {
-                  product.rating.distribution[
-                    key as '1' | '2' | '3' | '4' | '5'
-                  ]
-                }
-              </p>
-            </div>
-          ))}
+            ))}
         </div>
         <div className="grid items-center justify-center p-6">
           <Button

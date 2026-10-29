@@ -6,5 +6,7 @@ export const getProduct = (slug: string) =>
     url: `/products/${slug}`,
   });
 
-export const listProductReviews = (slug: string) => () =>
-  appFetch<ProductReview[]>({ url: `/products/${slug}/reviews` });
+export const searchProductReviews = (slug: string) => () =>
+  appFetch<{ reviews: ProductReview[]; count: number }>({
+    url: `/products/${slug}/reviews`,
+  });

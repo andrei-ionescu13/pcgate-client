@@ -43,7 +43,7 @@ export default function Login() {
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      email: 'gegag51027@7tul.com',
+      email: 'andrei.ionescu3535@gmail.com',
       password: 'Masinarie1',
     },
     resolver: zodResolver(schema),

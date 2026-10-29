@@ -17,7 +17,7 @@ export const BlogPopularArticles = ({ articles }: BlogPopularArticlesProps) => {
             <div className="flex w-full gap-3">
               <div className="relative aspect-video min-w-32 overflow-hidden rounded-lg">
                 <AppImage
-                  src={article.cover.public_id}
+                  src={article.cover.publicId}
                   alt={article.title}
                   fill
                   style={{ objectFit: 'contain' }}

@@ -17,7 +17,7 @@ export const AccountWebsiteSettings = () => {
   const handleSwitchTheme = () => {
     saveSettings({
       ...settings,
-      theme: settings.theme === 'light' ? 'dark' : 'light',
+      // theme: settings.theme === 'light' ? 'dark' : 'light',
     });
   };
 
