@@ -1,5 +1,5 @@
 import type { Cart } from './cart';
-import type { Coupon, Review } from './common';
+import type { Asset, Coupon, Review } from './common';
 import type { Product } from './product';
 
 export interface User {
@@ -7,7 +7,7 @@ export interface User {
   cart: Cart;
   email: string;
   wishlist: string[];
-  avatar: string;
+  avatar: Asset;
   [key: string]: any;
 }
 

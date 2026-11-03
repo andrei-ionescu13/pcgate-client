@@ -12,22 +12,14 @@ import { ProductDiscount } from './product-discount';
 interface ProductCardProps {
   loading?: boolean;
   product: Product;
-  refreshOnRemoveFromWislist?: boolean;
   className?: string;
 }
 
-export const ProductCard = ({
-  product,
-  refreshOnRemoveFromWislist,
-  className,
-}: ProductCardProps) => {
+export const ProductCard = ({ product, className }: ProductCardProps) => {
   return (
     <Card className={cn('relative flex h-full flex-col', className)}>
       <div className="absolute top-4 right-4 z-50">
-        <WishlistButton
-          refreshOnRemove={refreshOnRemoveFromWislist}
-          productId={product._id}
-        />
+        <WishlistButton productId={product._id} />
       </div>
       <Link
         href={`/products/${product.slug}`}
@@ -74,10 +66,6 @@ export const ProductCard = ({
           <AppImage
             src={product.platform.logo.publicId}
             alt={product.platform.name}
-            sizes="
-                (min-width: 1200px) 400px,
-                (min-width: 900px) 33vw,
-                (min-width: 600px) 50vw"
             fill
           />
         </div>

@@ -39,13 +39,9 @@ export const useRemoveFromWishlist = () =>
 
 interface WishlistButtonProps {
   productId: string;
-  refreshOnRemove?: boolean;
 }
 
-export const WishlistButton = ({
-  productId,
-  refreshOnRemove,
-}: WishlistButtonProps) => {
+export const WishlistButton = ({ productId }: WishlistButtonProps) => {
   const router = useRouter();
   const addToWishlist = useAddToWishlist();
   const removeFromWishlist = useRemoveFromWishlist();
@@ -73,7 +69,6 @@ export const WishlistButton = ({
       onSuccess: (data) => {
         removeWishlistProduct(data);
         toast.success('Product removed from wishlist');
-        refreshOnRemove && router.refresh();
       },
       onError: (error) => {
         if (error.status === 401) router.push('/login');

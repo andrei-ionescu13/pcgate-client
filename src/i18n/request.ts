@@ -26,7 +26,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
     const response = await fetch(
       `https://res.cloudinary.com/desubtoqp/raw/upload/locales/${locale}.json`
     );
-    messages = await response.json();
+
+    if (!response.ok) {
+      console.log(response.statusText);
+    } else {
+      messages = await response.json();
+    }
   } catch (error) {
     console.log(error);
   }

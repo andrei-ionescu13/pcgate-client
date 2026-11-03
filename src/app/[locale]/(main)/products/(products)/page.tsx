@@ -7,6 +7,7 @@ import { searchProducts } from '../../api-calls';
 import { ProductsDrawer } from './products-drawer';
 import { ProductsFilterChip } from './products-filter-chip';
 import { ProductsFilters } from './products-filters';
+import { PaginationParam } from '@/components/pagination-param';
 
 const sortByitems = [
   {
@@ -20,10 +21,6 @@ const sortByitems = [
   {
     value: 'price_desc',
     label: 'Price heigh',
-  },
-  {
-    value: 'discount',
-    label: 'Discount',
   },
   {
     value: 'release_date',
@@ -42,11 +39,13 @@ interface ProductsProps {
     sortBy?: string;
     price_min?: string;
     price_max?: string;
+    view_mode?: string;
   }>;
 }
 
 export default async function Products(props: ProductsProps) {
   const searchParams = await props.searchParams;
+
   const query = Object.fromEntries(
     Object.entries(searchParams).map(([key, value]) => [
       key,
@@ -131,7 +130,7 @@ export default async function Products(props: ProductsProps) {
               <div>
                 <ProductList
                   products={products}
-                  // viewMode={viewMode}
+                  viewMode={searchParams?.view_mode || 'grid'}
                 />
                 {Math.ceil(productCount / 36) > 1 && (
                   <div className="mt-20 flex justify-center">

@@ -28,10 +28,6 @@ const sortByitems = [
     label: 'Price heigh',
   },
   {
-    value: 'discount',
-    label: 'Discount',
-  },
-  {
     value: 'release_date',
     label: 'Release Date',
   },

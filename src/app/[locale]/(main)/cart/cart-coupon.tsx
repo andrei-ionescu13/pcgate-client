@@ -18,7 +18,7 @@ export const useApplyCoupon = () =>
   useMutation<Cart, ApiError, string>({
     mutationFn: (code) =>
       appFetch<Cart>({
-        url: '/cart/promo-code',
+        url: '/cart/coupon',
         config: {
           method: 'POST',
           body: JSON.stringify({ code }),
@@ -31,7 +31,7 @@ export const useRemoveCoupon = () =>
   useMutation<Cart, ApiError>({
     mutationFn: () =>
       appFetch<Cart>({
-        url: '/cart/promo-code',
+        url: '/cart/coupon',
         config: {
           method: 'DELETE',
         },
@@ -44,11 +44,11 @@ interface CartCouponProps {
 }
 
 export const CartCoupon = ({ cart }: CartCouponProps) => {
-  const promoCodeApplied = cart.promoCodeUsed;
+  const couponApplied = cart.coupon;
   const setCart = useCart((state) => state.setCart);
   const queryClient = useQueryClient();
-  const [code, setCode] = useState(promoCodeApplied?.code || '');
-  const [isApplied, setIsApplied] = useState(!!promoCodeApplied);
+  const [code, setCode] = useState(couponApplied?.code || '');
+  const [isApplied, setIsApplied] = useState(!!couponApplied);
   const applyCoupon = useApplyCoupon();
   const removeCoupon = useRemoveCoupon();
 
@@ -57,9 +57,9 @@ export const CartCoupon = ({ cart }: CartCouponProps) => {
   };
 
   useEffect(() => {
-    setCode(promoCodeApplied?.code || '');
-    setIsApplied(!!promoCodeApplied);
-  }, [promoCodeApplied]);
+    setCode(couponApplied?.code || '');
+    setIsApplied(!!couponApplied);
+  }, [couponApplied]);
 
   return (
     <Card className="p-4">
@@ -100,7 +100,7 @@ export const CartCoupon = ({ cart }: CartCouponProps) => {
       ) : (
         <div className="flex items-center">
           <p className="text-success subtitle2">
-            {code} <span className="text-text-secondary body3">applied</span>
+            {code} <span className="text-text-secondary body3">Applied</span>
           </p>
           <div className="flex-1" />
           <IconButton
@@ -112,6 +112,9 @@ export const CartCoupon = ({ cart }: CartCouponProps) => {
                   queryClient.setQueryData(['cart'], data);
                   setCart(data);
                   setIsApplied(false);
+                },
+                onError: (error) => {
+                  toast.error(error.message);
                 },
               });
             }}

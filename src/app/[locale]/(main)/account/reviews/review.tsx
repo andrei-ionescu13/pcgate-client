@@ -4,11 +4,9 @@ import { AppImage } from '@/components/app-image';
 import { Card } from '@/components/card';
 import { DialogAlert } from '@/components/dialog-alert';
 import { useOpen } from '@/hooks/use-open';
-import { Link } from '@/i18n/navigation';
-import { SteamIcon } from '@/icons/steam';
+import { Link, useRouter } from '@/i18n/navigation';
 import type { UserReview as UserReviewI } from '@/types/user';
 import { Button, Rating } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useDeleteReview } from './api-hooks';
 
@@ -17,10 +15,10 @@ interface UserReview {
 }
 
 export const Review = ({ review }: UserReview) => {
-  const queryClient = useQueryClient();
+  const router = useRouter();
   const [open, handleOpen, handleClose] = useOpen();
   const deleteReview = useDeleteReview(() => {
-    queryClient.invalidateQueries({ queryKey: ['user-reviews'] });
+    router.refresh();
   });
 
   const { product } = review;
@@ -69,8 +67,12 @@ export const Review = ({ review }: UserReview) => {
             >
               {product.title}
             </Link>
-            <div className="mt-2">
-              <SteamIcon />
+            <div className="relative mt-2 flex aspect-square w-full max-w-10">
+              <AppImage
+                src={product.platform.logo.publicId}
+                alt={product.platform.name}
+                fill
+              />
             </div>
           </div>
         </div>

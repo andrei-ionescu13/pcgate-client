@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run create-locales && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "create-locales": "tsx src/scripts/create-locales.ts"
   },
   "dependencies": {
     "@cloudinary/url-gen": "^1.22.0",
@@ -73,6 +74,7 @@
     "prettier-plugin-tailwindcss": "^0.6.9",
     "sass": "^1.89.2",
     "tailwindcss": "^4.1.11",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"
   },

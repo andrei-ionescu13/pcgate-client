@@ -1,5 +1,6 @@
 'use client';
 
+import { AppImage } from '@/components/app-image';
 import { Avatar } from '@/components/avatar';
 import { Divider } from '@/components/divider';
 import { ListButton } from '@/components/dropdown-button';
@@ -76,11 +77,10 @@ export const AccountPopover = (props: AccountPopoverProps) => {
             ref={anchorRef}
           >
             <Avatar>
-              <Image
-                unoptimized
+              <AppImage
                 fill
                 alt="avatar"
-                src={user.avatar}
+                src={user.avatar.publicId}
               />
             </Avatar>
           </button>

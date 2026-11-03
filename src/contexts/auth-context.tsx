@@ -1,14 +1,17 @@
 'use client';
 
 import { getCart } from '@/app/[locale]/(main)/cart/api';
+import { useIsMounted } from '@/hooks/use-is-mounted';
 import { useRouter } from '@/i18n/navigation';
 import { useCart } from '@/store/cart';
 import { useWishlist } from '@/store/wishlist';
 import type { Cart } from '@/types/cart';
+import type { Asset } from '@/types/common';
 import { appFetch } from '@/utils/app-fetch';
 import { useGoogleLogin } from '@react-oauth/google';
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useSettings } from './settings-context';
 
 export interface Decoded {
   userId: string;
@@ -18,10 +21,10 @@ export interface Decoded {
   avatar: string;
 }
 
-interface User extends Omit<Decoded, 'iat' | 'exp'> {
+interface User {
   cart: Cart;
   wishlist: string[];
-  avatar: string;
+  avatar: Asset;
   _id: string;
 }
 
@@ -122,13 +125,11 @@ export const logout = () =>
     config: {
       method: 'POST',
     },
-    responseType: 'no-content',
   });
 
 export const requestPasswordReset = (email: string) =>
   appFetch<void>({
     url: '/auth/password-reset-token',
-    responseType: 'no-content',
     config: {
       method: 'POST',
       body: JSON.stringify({ email }),
@@ -148,7 +149,6 @@ export const passwordReset = ({
 }) =>
   appFetch<void>({
     url: '/auth/password-reset',
-    responseType: 'no-content',
     config: {
       method: 'PUT',
       body: JSON.stringify({ userId, token, password, confirmPassword }),
@@ -157,10 +157,13 @@ export const passwordReset = ({
 
 export const AuthProvider = ({ decoded, children }: AuthProviderProps) => {
   const { refresh, push } = useRouter();
+  const { settings } = useSettings();
+  const { currency } = settings;
   const setWishlistProducts = useWishlist((state) => state.setWishlistProducts);
   const setCart = useCart((state) => state.setCart);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null | undefined>();
+  const mounted = useIsMounted();
   const isAuthenticated = !!decoded;
 
   const googleAuth = useGoogleLogin({
@@ -203,6 +206,24 @@ export const AuthProvider = ({ decoded, children }: AuthProviderProps) => {
     };
     isAuthenticated && getUser();
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const updateCart = async () => {
+      try {
+        setIsLoading(true);
+        const cart = await getCart();
+        setCart(cart);
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (mounted && isAuthenticated) {
+      updateCart();
+    }
+  }, [currency]);
 
   const updateUser = (user: Partial<User>) => {
     setUser((prev) => {

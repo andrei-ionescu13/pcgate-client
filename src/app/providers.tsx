@@ -73,8 +73,8 @@ const Providers = ({
       <AppRouterCacheProvider>
         <GoogleOAuthProvider clientId="750036915548-bdi2e09ms0r0sotdfrb0bi4098156qnr.apps.googleusercontent.com">
           <QueryClientProvider client={queryClient}>
-            <AuthProvider decoded={user}>
-              <SettingsProvider currency={currency}>
+            <SettingsProvider currency={currency}>
+              <AuthProvider decoded={user}>
                 <InitColorSchemeScript attribute="class" />
                 <ThemeProvider theme={theme}>
                   <Toaster richColors />
@@ -82,8 +82,8 @@ const Providers = ({
                   <CssBaseline />
                   {children}
                 </ThemeProvider>
-              </SettingsProvider>
-            </AuthProvider>
+              </AuthProvider>
+            </SettingsProvider>
           </QueryClientProvider>
         </GoogleOAuthProvider>
       </AppRouterCacheProvider>

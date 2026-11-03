@@ -1,15 +1,20 @@
+'use client';
+
 import { useCallback, useEffect, useRef } from 'react';
 
-export const useTimeout = (callback: any, delay: number): { start: () => void; reset: () => void; clear: () => void; } => {
+export const useTimeout = <T extends (...args: any[]) => void>(
+  callback: T,
+  delay: number
+): { start: () => void; reset: () => void; clear: () => void } => {
   const callbackRef = useRef(callback);
-  const timeoutRef = useRef<number | undefined>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     callbackRef.current = callback;
   }, [callback]);
 
   const start = useCallback(() => {
-    timeoutRef.current = window.setTimeout(() => callbackRef.current(), delay);
+    timeoutRef.current = setTimeout(() => callbackRef.current(), delay);
   }, [delay]);
 
   const clear = useCallback(() => {

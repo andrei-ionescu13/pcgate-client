@@ -1,7 +1,6 @@
 import { AppImage } from '@/components/app-image';
 import { useAmountFormatter } from '@/hooks/use-amount-formatter';
 import { Link } from '@/i18n/navigation';
-import { SteamIcon } from '@/icons/steam';
 import type { Product } from '@/types/product';
 import { cn } from '@/utils/cn';
 import type { ComponentProps } from 'react';
@@ -39,8 +38,12 @@ export const SearchItem = ({
       </div>
       <div className="ml-4 max-w-[300px] py-2">
         <p className="body2">{product.title}</p>
-        <div className="mt-1 flex items-center">
-          <SteamIcon />
+        <div className="relative mt-1 flex aspect-square w-full max-w-10">
+          <AppImage
+            src={product.platform.logo.publicId}
+            alt={product.platform.name}
+            fill
+          />
         </div>
       </div>
       <div className="flex-1" />

@@ -1,5 +1,6 @@
 //todo make it a server component
 'use client';
+import { Amount } from '@/components/amount';
 import { Button } from '@/components/button';
 import { Link } from '@/i18n/navigation';
 import type { Order as OrderI } from '@/types/orders';
@@ -36,10 +37,12 @@ export const Order = ({ order, className, ...rest }: OrderProps) => {
                 {item.product.title}
                 {item.quantity > 1 && `(x${item.quantity})`}
               </p>
-              <p className="body3">
-                {order.currency.symbol}
+              <Amount
+                currency={order.currency}
+                className="body3"
+              >
                 {item.finalLinePrice}
-              </p>
+              </Amount>
             </li>
           ))}
         </ul>

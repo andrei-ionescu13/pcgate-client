@@ -8,7 +8,7 @@ export interface SearchUserReviewsData {
 
 export const searchUserReviews = (query: Record<string, any>) =>
   appFetch<SearchUserReviewsData>({
-    url: '/auth/reviews',
+    url: '/reviews',
     query,
     withAuth: true,
   });

@@ -1,13 +1,21 @@
 import type { Coupon, LineItem } from './common';
+import type { Product } from './product';
 
-export interface CartLineItem extends LineItem {
+export interface CartLineItem {
+  product: Product;
+  finalLinePrice: number;
+  finalPrice: number;
+  originalPrice: number;
+  originalLinePrice: number;
+  quantity: number;
+  _id: string;
   isUnavailable: boolean;
   maxQuantity: number;
-  promoCodeIsApplied: boolean;
+  coupon: boolean;
 }
 
 export interface Cart {
-  promoCodeUsed: null | Coupon;
+  coupon: null | Coupon;
   currency: string;
   itemCount: number;
   items: CartLineItem[];

@@ -4,7 +4,6 @@ import { Amount } from '@/components/amount';
 import { Card } from '@/components/card';
 import { IconButton } from '@/components/icon-button';
 import { Link } from '@/i18n/navigation';
-import { SteamIcon } from '@/icons/steam';
 import { useCart } from '@/store/cart';
 import type { Cart, CartLineItem } from '@/types/cart';
 import { ApiError } from '@/utils/api-error';
@@ -14,6 +13,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { XIcon } from 'lucide-react';
 import { AppImage } from '../../../../components/app-image';
 import { CartItemQuantity } from './cart-item-quantity';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { useIsMounted } from '@/hooks/use-is-mounted';
+import { useTimeout } from '@/hooks/use-timeout';
 
 interface CartItemProps {
   item: CartLineItem;
@@ -50,7 +53,8 @@ export const CartItem = ({ item, className }: CartItemProps) => {
   const queryClient = useQueryClient();
   const removeFromCart = useRemoveFromCart();
   const updateQuantity = useUpdateQuantity();
-  const setCart = useCart((state) => state.setCart);
+  const [quantity, setQuantity] = useState(item.quantity);
+  const { setCart } = useCart();
   const { product } = item;
 
   const handleRemoveFromCart = () => {
@@ -64,14 +68,30 @@ export const CartItem = ({ item, className }: CartItemProps) => {
 
   const handleUpdateQuantity = (quantity: number): void => {
     updateQuantity.mutate(
-      { productId: item.productId, quantity },
+      { productId: item.product._id, quantity },
       {
         onSuccess: (data) => {
           queryClient.setQueryData(['cart'], data);
           setCart(data);
         },
+        onError: (error) => {
+          toast.error(error.message);
+          setQuantity(item.quantity);
+        },
       }
     );
+  };
+
+  const { reset } = useTimeout(() => handleUpdateQuantity(quantity), 1000);
+
+  const handleAdd = () => {
+    setQuantity((prev) => prev + 1);
+    reset();
+  };
+
+  const handleRemove = () => {
+    setQuantity((prev) => prev - 1);
+    reset();
   };
 
   return (
@@ -109,8 +129,12 @@ export const CartItem = ({ item, className }: CartItemProps) => {
           >
             {product.title}
           </Link>
-          <div className="mt-2 flex items-center">
-            <SteamIcon />
+          <div className="relative mt-2 flex aspect-square w-full max-w-10">
+            <AppImage
+              src={product.platform.logo.publicId}
+              alt={product.platform.name}
+              fill
+            />
           </div>
         </div>
       </div>
@@ -121,10 +145,12 @@ export const CartItem = ({ item, className }: CartItemProps) => {
         ) : (
           <>
             <CartItemQuantity
-              quantity={item.quantity}
+              onAdd={handleAdd}
+              onRemove={handleRemove}
+              quantity={quantity}
               maxQuantity={item.maxQuantity}
               onUpdateQuantity={handleUpdateQuantity}
-              hideButtons={item.promoCodeIsApplied}
+              hideButtons={item.coupon}
             />
             <div className="mx-4 flex min-w-[60px] flex-col justify-center">
               {item.originalLinePrice !== item.finalLinePrice && (
@@ -135,7 +161,7 @@ export const CartItem = ({ item, className }: CartItemProps) => {
               <Amount
                 className={cn(
                   'subtitle1 text-center',
-                  item.promoCodeIsApplied ? 'text-success' : 'text-primary'
+                  item.coupon ? 'text-success' : 'text-primary'
                 )}
               >
                 {item.finalLinePrice}

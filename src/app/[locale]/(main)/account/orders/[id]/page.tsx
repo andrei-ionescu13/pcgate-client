@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import Head from 'next/head';
 import { LibraryProduct } from '../../../../../../components/library-product';
 import { getUserOrder } from './api';
+import { Amount } from '@/components/amount';
 
 interface OrderProps {
   params: Promise<{
@@ -44,13 +45,10 @@ const Order = async ({ params }: OrderProps) => {
               <p>{format(new Date(order.createdAt), 'MMMM dd, y')}</p>
             </div>
             <div className="flex-1 px-4">
-              <p>COMPLETE</p>
+              <p>{order.status}</p>
             </div>
             <div className="flex-1 px-4">
-              <p>
-                {order.currency.symbol}
-                {order.totalPrice}
-              </p>
+              <Amount currency={order.currency}>{order.totalPrice}</Amount>
             </div>
           </div>
         </div>
@@ -66,12 +64,12 @@ const Order = async ({ params }: OrderProps) => {
             align={'horizontal'}
           />
           <PropertyItem
-            content="COMPLETE"
+            content={order.status}
             label="Status"
             align={'horizontal'}
           />
           <PropertyItem
-            content={`${order.currency.symbol}${order.totalPrice}`}
+            content={`${order.totalPrice}`}
             label="Total"
             align={'horizontal'}
           />
@@ -84,7 +82,7 @@ const Order = async ({ params }: OrderProps) => {
                 product={item.product}
                 productKey={key}
                 key={key._id}
-                // onActivateKey={onActivateKey}
+                hideRedeem={order.paymentStatus !== 'paid'}
               />
             ))
           )}

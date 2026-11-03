@@ -58,7 +58,9 @@ const Register = () => {
 
     mutation.mutate(values, {
       onSuccess: () => {
-        toast.success('An activation link has been sent to your email');
+        toast.success(
+          'An activation link has been sent to your email. Check your spam too'
+        );
       },
       onError: (error) => {
         setError('root.serverError', {

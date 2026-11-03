@@ -1,7 +1,36 @@
-import { useEffect } from 'react';
-import { useTimeout } from './use-timeout';
+import { useCallback, useEffect, useRef } from 'react';
 
-export const useDebounce = (callback: any, delay: number, dependencies: unknown[]): void => {
-  const { reset } = useTimeout(callback, delay);
-  useEffect(reset, [...dependencies, reset]);
-};
+export function useDebouncedCallback<T extends (...args: any[]) => void>(
+  callback: T,
+  delay = 500
+): (...args: Parameters<T>) => void {
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const callbackRef = useRef(callback);
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  const debouncedCallback = useCallback(
+    (...args: Parameters<T>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        callbackRef.current(...args);
+      }, delay);
+    },
+    [delay]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  return debouncedCallback;
+}

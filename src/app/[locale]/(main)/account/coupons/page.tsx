@@ -15,8 +15,8 @@ interface CouponsProps {
 const Coupons = async ({ searchParams }: CouponsProps) => {
   const params = await searchParams;
   const data = await searchCoupons(params);
-  const { promoCodes, count } = data;
-  console.log(promoCodes, count);
+  const { coupons, count } = data;
+
   return (
     <>
       <Head>
@@ -28,16 +28,16 @@ const Coupons = async ({ searchParams }: CouponsProps) => {
           <SearchParam />
         </div>
         <div>
-          {!promoCodes.length ? (
+          {!coupons.length ? (
             <NoData />
           ) : (
             <>
               <DataOverlay>
                 <div className="grid gap-4">
-                  {promoCodes.map((promoCode) => (
+                  {coupons.map((coupon) => (
                     <Coupon
-                      coupon={promoCode}
-                      key={promoCode._id}
+                      coupon={coupon}
+                      key={coupon._id}
                     />
                   ))}
                 </div>

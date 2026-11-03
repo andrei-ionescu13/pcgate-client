@@ -16,7 +16,7 @@ const Orders = async ({ searchParams }: OrdersProps) => {
   const params = await searchParams;
   const data = await searchOrders(params);
   const { orders, count } = data;
-
+  console.log(data);
   return (
     <>
       <Head>

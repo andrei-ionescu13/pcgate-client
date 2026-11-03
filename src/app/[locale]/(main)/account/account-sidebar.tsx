@@ -1,5 +1,6 @@
 'use client';
 
+import { AppImage } from '@/components/app-image';
 import { Avatar } from '@/components/avatar';
 import { Button } from '@/components/button';
 import { Skeleton } from '@/components/skeleton';
@@ -53,13 +54,11 @@ export const AccountSidebar = ({ onLinkClick }: AccountSidebarProps) => {
             onClick={handleOpen}
           >
             <Avatar size="large">
-              <Image
+              <AppImage
                 alt="avatar"
-                priority
-                src={user.avatar}
+                src={user.avatar.publicId}
                 layout="fill"
                 objectFit="cover"
-                unoptimized
               />
             </Avatar>
             <CameraIcon className="h4 text-primary absolute right-0 bottom-0 w-4" />

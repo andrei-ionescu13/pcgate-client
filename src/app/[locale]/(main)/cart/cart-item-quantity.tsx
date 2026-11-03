@@ -10,43 +10,23 @@ interface CartItemQuantityProps {
   maxQuantity: number;
   onUpdateQuantity: (quantity: number) => void;
   hideButtons?: boolean;
+  onAdd: () => void;
+  onRemove: () => void;
 }
 
 export const CartItemQuantity = ({
-  quantity: quantityProp,
-  onUpdateQuantity,
+  quantity,
+  onAdd,
+  onRemove,
   maxQuantity,
   hideButtons,
 }: CartItemQuantityProps) => {
-  const isMounted = useIsMounted();
-  const [quantity, setQuantity] = useState<number>(quantityProp);
-  const { reset } = useTimeout(() => onUpdateQuantity(quantity), 1000);
-
-  const handleAdd = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
-  const handleRemove = () => {
-    setQuantity((prev) => prev - 1);
-  };
-
-  useEffect(() => {
-    if (isMounted && quantityProp !== quantity) {
-      reset();
-    }
-  }, [quantity]);
-
-  useEffect(() => {
-    setQuantity(quantityProp);
-  }, [quantityProp]);
-  console.log(quantity);
   return (
     <div className="flex items-center gap-1">
       <IconButton
         className={hideButtons ? 'hidden' : ''}
         size="small"
-        // disabled={isLoading}
-        onClick={handleRemove}
+        onClick={onRemove}
         disabled={quantity <= 1}
       >
         <MinusIcon />
@@ -56,7 +36,7 @@ export const CartItemQuantity = ({
         className={hideButtons ? 'hidden' : ''}
         size="small"
         disabled={quantity >= maxQuantity}
-        onClick={handleAdd}
+        onClick={onAdd}
       >
         <PlusIcon />
       </IconButton>
