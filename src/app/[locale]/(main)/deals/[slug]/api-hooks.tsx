@@ -8,15 +8,19 @@ import { listDealProducts } from './api';
 export const useDealProducts = (initialProducts: {
   products: Product[];
   hasNext: boolean;
+  nextCursor: string | null;
 }) => {
   const { slug } = useParams<{ slug: string }>();
 
   return useInfiniteQuery({
     queryKey: ['deal-products', slug],
     queryFn: ({ pageParam }) => listDealProducts(slug, pageParam),
-    getNextPageParam: (lastPage, pages) =>
-      lastPage.hasNext ? pages.length : undefined,
-    initialPageParam: 0,
-    initialData: { pageParams: [0], pages: [initialProducts] },
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? lastPage.nextCursor : undefined,
+    initialData: {
+      pageParams: [null],
+      pages: [initialProducts],
+    },
   });
 };

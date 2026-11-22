@@ -4,6 +4,7 @@ import { appFetch } from '@/utils/app-fetch';
 
 interface ListDealProductsData {
   products: Product[];
+  nextCursor: string | null;
   hasNext: boolean;
 }
 
@@ -12,8 +13,8 @@ export const getDeal = (slug: string) =>
     url: `/deals/${slug}`,
   });
 
-export const listDealProducts = (slug: string, page: number) =>
+export const listDealProducts = (slug: string, cursor?: string) =>
   appFetch<ListDealProductsData>({
     url: `/deals/${slug}/products`,
-    query: { page },
+    query: { cursor },
   });

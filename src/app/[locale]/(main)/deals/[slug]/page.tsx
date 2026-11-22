@@ -9,7 +9,7 @@ const Deal = async (props: { params: Promise<{ slug: string }> }) => {
   const params = await props.params;
   const { slug } = params;
   const deal = await getDeal(slug);
-  const initialProducts = await listDealProducts(slug, 0);
+  const initialProducts = await listDealProducts(slug);
 
   return (
     <div className="relative min-h-screen overflow-hidden py-10">
