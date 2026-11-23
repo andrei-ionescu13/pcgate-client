@@ -120,11 +120,12 @@ export const register = ({
   });
 
 export const logout = () =>
-  appFetch<void>({
+  appFetch({
     url: '/auth/logout',
     config: {
       method: 'POST',
     },
+    responseType: 'no-content',
   });
 
 export const requestPasswordReset = (email: string) =>

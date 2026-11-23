@@ -8,7 +8,7 @@ type QueryValue =
 
 type Query = Record<string, QueryValue>;
 
-type ResponseType = 'json' | 'blob' | 'response';
+type ResponseType = 'json' | 'blob' | 'response' | 'no-content';
 
 type AppFetchOptions = {
   url: string;
@@ -22,7 +22,9 @@ type ResponseData<T, R extends ResponseType> = R extends 'blob'
   ? Blob
   : R extends 'response'
     ? Response
-    : T;
+    : R extends 'no-content'
+      ? void
+      : T;
 
 const buildQueryString = (query: Query): string => {
   const params = new URLSearchParams();
@@ -114,6 +116,9 @@ const parseResponse = async <T, R extends ResponseType>(
     case 'response':
       return response as ResponseData<T, R>;
 
+    case 'no-content':
+      return undefined as ResponseData<T, R>;
+
     case 'json': {
       const text = await response.text();
 
@@ -133,6 +138,8 @@ const handleResponse = async <T, R extends ResponseType>(
   return parseResponse<T, R>(response, responseType);
 };
 
+// Overloads
+
 export function appFetch<T = unknown>(
   options: AppFetchOptions & { responseType?: 'json' }
 ): Promise<T>;
@@ -145,13 +152,19 @@ export function appFetch(
   options: AppFetchOptions & { responseType: 'response' }
 ): Promise<Response>;
 
+export function appFetch(
+  options: AppFetchOptions & { responseType: 'no-content' }
+): Promise<void>;
+
+// Implementation
+
 export async function appFetch<T = unknown>({
   url,
   config = {},
   query,
   withAuth = false,
   responseType = 'json',
-}: AppFetchOptions): Promise<T | Blob | Response> {
+}: AppFetchOptions): Promise<T | Blob | Response | void> {
   const request = () => executeRequest(url, config, query);
 
   let response = await request();
