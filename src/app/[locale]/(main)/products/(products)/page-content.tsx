@@ -159,10 +159,7 @@ export const ProductsContent = ({ initialData }) => {
                 </Button>
                 <div className="flex-1" />
                 <div className="hidden md:block">
-                  <ViewModeButton
-                    viewMode={viewMode}
-                    onViewModeChange={handleViewModeChange}
-                  />
+                  <ViewModeButton />
                 </div>
                 <SortByPopoverQuery
                   items={sortByitems}
@@ -170,10 +167,7 @@ export const ProductsContent = ({ initialData }) => {
                 />
               </div>
               <div className="flex justify-end md:hidden">
-                <ViewModeButton
-                  viewMode={viewMode}
-                  onViewModeChange={handleViewModeChange}
-                />
+                <ViewModeButton />
               </div>
               <div className="flex flex-wrap gap-2">
                 {mappedQuery.map(([key, value]) => (

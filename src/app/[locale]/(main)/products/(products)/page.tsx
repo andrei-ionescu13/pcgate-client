@@ -55,6 +55,7 @@ export default async function Products(props: ProductsProps) {
 
   const data = await searchProducts(query);
   const { products, count, filters } = data;
+
   const chips: Array<[string, string]> = [];
   const chipFor = [
     'price_min',

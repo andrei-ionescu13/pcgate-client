@@ -45,7 +45,6 @@ const FilterCheckbox = ({ field, value, onClick }: FilterCheckboxProps) => {
 };
 export const FilterCardCheckbox = ({
   title,
-  limit = 12,
   field,
   items,
   minItems = 8,
@@ -63,11 +62,11 @@ export const FilterCardCheckbox = ({
   const inactiveItems = items.filter(
     (item) => !searchParams.has(field, item.value)
   );
-
-  const slicedItems = [...activeItems, ...inactiveItems].slice(
-    0,
-    showMore ? limit : minItems
+  const orderedItems = [...activeItems, ...inactiveItems];
+  const filteredItems = orderedItems.filter((x) =>
+    x.label.toLowerCase().startsWith(keyword.toLowerCase())
   );
+  const slicedItems = filteredItems.slice(0, showMore ? undefined : minItems);
 
   const handleShowMoreChange = () => {
     setshowMore((prev) => !prev);
@@ -82,6 +81,7 @@ export const FilterCardCheckbox = ({
       params.append(field, value);
     }
 
+    params.delete('page');
     startTransition(() => {
       push(`?${params.toString()}`);
     });
@@ -90,6 +90,7 @@ export const FilterCardCheckbox = ({
   const handleClear = () => {
     const params = new URLSearchParams(searchParams);
     params.delete(field);
+    params.delete('page');
 
     startTransition(() => {
       push(`?${params.toString()}`);
@@ -110,16 +111,14 @@ export const FilterCardCheckbox = ({
       field={field}
       onClear={searchParams.has(field) ? handleClear : undefined}
     >
-      {items.length > limit && (
-        <div className="mb-2">
-          <InputBase
-            className="border-divider rounded-lg border py-0.5"
-            placeholder="Search..."
-            value={keyword}
-            onChange={handleKeywordChange}
-          />
-        </div>
-      )}
+      <div className="mb-2">
+        <InputBase
+          className="border-divider rounded-lg border py-0.5"
+          placeholder="Search..."
+          value={keyword}
+          onChange={handleKeywordChange}
+        />
+      </div>
       <FormGroup>
         {slicedItems.map((item) => (
           <div
@@ -151,7 +150,7 @@ export const FilterCardCheckbox = ({
           </div>
         ))}
 
-        {items.length > minItems && (
+        {filteredItems.length > minItems && (
           <button
             onClick={handleShowMoreChange}
             className="text-primary subtitle2 mt-2 inline-flex hover:underline"
