@@ -7,6 +7,7 @@ import { ListButton } from '@/components/dropdown-button';
 import { Skeleton } from '@/components/skeleton';
 import { useAuth } from '@/contexts/auth-context';
 import { Link, useRouter } from '@/i18n/navigation';
+import { useWishlist } from '@/store/wishlist';
 import { ApiError } from '@/utils/api-error';
 import { Popover } from '@mui/material';
 import type { SxProps } from '@mui/system';
@@ -43,6 +44,7 @@ export const AccountPopover = (props: AccountPopoverProps) => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+  const { clearWishlist } = useWishlist();
 
   const handleOpen = (): void => {
     setOpen(true);
@@ -55,6 +57,7 @@ export const AccountPopover = (props: AccountPopoverProps) => {
   const handleLogout = () => {
     mutation.mutate(undefined, {
       onSuccess: () => {
+        clearWishlist();
         router.push('/');
         router.refresh();
       },

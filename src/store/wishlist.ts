@@ -5,6 +5,7 @@ interface WishlistState {
   setWishlistProducts: (productIds: string[]) => void;
   addWishlistProduct: (productId: string) => void;
   removeWishlistProduct: (productId: string) => void;
+  clearWishlist: () => void;
 }
 
 export const useWishlist = create<WishlistState>()((set) => ({
@@ -16,5 +17,9 @@ export const useWishlist = create<WishlistState>()((set) => ({
   removeWishlistProduct: (productId: string) =>
     set((state) => ({
       products: state.products.filter((product) => product !== productId),
+    })),
+  clearWishlist: () =>
+    set(() => ({
+      products: [],
     })),
 }));
