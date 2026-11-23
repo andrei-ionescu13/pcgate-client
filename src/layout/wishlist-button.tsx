@@ -1,6 +1,7 @@
 'use client';
 
 import { IconButton } from '@/components/icon-button';
+import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from '@/i18n/navigation';
 import { useWishlist } from '@/store/wishlist';
 import { ApiError } from '@/utils/api-error';
@@ -42,6 +43,7 @@ interface WishlistButtonProps {
 }
 
 export const WishlistButton = ({ productId }: WishlistButtonProps) => {
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const addToWishlist = useAddToWishlist();
   const removeFromWishlist = useRemoveFromWishlist();
@@ -78,6 +80,11 @@ export const WishlistButton = ({ productId }: WishlistButtonProps) => {
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+
+    if (!isAuthenticated) {
+      router.push('/login');
+    }
+
     if (addToWishlist.isPending || removeFromWishlist.isPending) return;
 
     isWishlisted ? handleRemoveFromWishlist() : handleAddToWishlist();
