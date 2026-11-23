@@ -93,7 +93,7 @@ export const ProductsContent = ({ initialData }) => {
       .forEach((value) => mappedQuery.push([chip, value]));
   });
 
-  const { products, productCount, filters } = data || initialData;
+  const { products, count, filters } = data || initialData;
 
   const {
     platforms,
@@ -202,9 +202,9 @@ export const ProductsContent = ({ initialData }) => {
                 viewMode={viewMode}
                 isLoading={isRefetching && isPlaceholderData}
               />
-              {Math.ceil(productCount / 36) > 1 && (
+              {Math.ceil(count / 36) > 1 && (
                 <div className="mt-20 flex justify-center">
-                  <PaginationParam count={Math.ceil(productCount / 36)} />
+                  <PaginationParam count={Math.ceil(count / 36)} />
                 </div>
               )}
             </div>

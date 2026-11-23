@@ -54,7 +54,7 @@ export default async function Products(props: ProductsProps) {
   );
 
   const data = await searchProducts(query);
-  const { products, productCount, filters } = data;
+  const { products, count, filters } = data;
   const chips: Array<[string, string]> = [];
   const chipFor = [
     'price_min',
@@ -132,9 +132,9 @@ export default async function Products(props: ProductsProps) {
                   products={products}
                   viewMode={searchParams?.view_mode || 'grid'}
                 />
-                {Math.ceil(productCount / 36) > 1 && (
+                {Math.ceil(count / 36) > 1 && (
                   <div className="mt-20 flex justify-center">
-                    <PaginationParam count={Math.ceil(productCount / 36)} />
+                    <PaginationParam count={Math.ceil(count / 36)} />
                   </div>
                 )}
               </div>
